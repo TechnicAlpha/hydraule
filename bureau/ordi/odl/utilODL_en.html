@@ -1,0 +1,457 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Page HTML composÃ©e et programmÃ©e par S.M.C.J. -->
+<html>
+ 
+<!-- Mirrored from hydraule.org/bureau/ordi/odl/utilODL_en.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:13:29 GMT -->
+<head>
+  <title>The usefulness of O.D.L. (Organ Definition Langage)</title>
+
+  <meta http-equiv="content-language" content="en" />
+  <meta http-equiv="content-type"     content="text/html; charset=UTF-8" />
+  <meta       name="author"           content="S.M.C.J." />
+  <meta       name="keywords"         content="Hydraule Orgue Orgao Organo Orgel Organ" />
+  <meta       name="description"      content="ODL, Organ Definition Langage." />
+
+  <link rel="shortcut icon" href="../../../images/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="styles.html" />
+
+  <style type="text/css">
+   body
+   {
+    font-family : Arial, Helvetica, sans-serif;
+    font-size : 110%;
+   }
+
+   h1, h2, h3 {font-family : Time, Serif;}
+   li  {text-align : justify;}
+
+   kbd, pre
+   {
+    font-weight : bold;
+          color : #008000;
+      font-size : 115%;
+   }
+
+   .exemple
+   {
+    background-color : #fff7e7;
+    border : 1px solid #000080;
+    padding-left : 10px; padding-right : 10px;
+    padding-top : 3px; padding-bottom : 4px;
+   }
+  </style>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../../images/kraft.gif">
+  <table border="0" width="100%">
+
+   <tr>
+    <td align="center" valign="center">
+     <br /><br /><h1><font color="#ff0000">The computer</font></h1>
+     <h2><font color="#008000">The usefulness of O.D.L. (<i>Organ Definition Langage</i>).</font></h2>
+     <h3><font color="#000080">Thoughts of an organbuilder on computer science.</font></h3>
+     <a href="utilODL_fr.html"><img src="../../../images/flag_fr.gif" border="0" width="40" height="28" alt="Version fran&ccedil;aise" title="Version fran&ccedil;aise"></a>&nbsp; &nbsp; 
+     <a href="utilODL_de.html"><img src="../../../images/flag_de.gif" border="0" width="40" height="28" alt="Deutsche Version" title="Deutsche Version"></a>&nbsp; &nbsp; 
+    </td>
+
+    <td align="right">
+     <a href="../../../index.html" target="_top"><img src="../../../images/hydraule.png" border="0" width="216" height="230" alt="L'Hydraule" title="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br />
+
+  <center>
+   <table border="1" width="90%" cellpadding="15" cellspacing="0" bgcolor="#f5e9cf" background="../../../images/ingres.jpg">
+    <tr align="left" valign="bottom">
+     <td>
+      <p align="justify">
+       <font color="#000080"><font size="-1"><b><u>Note from the author:</u></b><br /><br />
+       It is necessary to clarify here that the English version of this text is a result of an automatic translation corrected
+       by myself for specific things of the organ. Unfortunately I don&rsquo;t speak English enough to provide to the public a
+       version worthy of the language of Shakespeare. Also, the reader will forgive me for even multiple faults, all of grammar
+       than spelling, which abound in the following lines, but who, neverless, allow to the English readers to understand the
+       content of this text as long as I didn&rsquo;t find a translator worthy of this name.<br /><br />
+
+       <i>Note on Friday 21 August 2009</i>:<br />
+
+       I very much would like to thank <a href="http://ssosystems.com/pages/people.html" target="_blank">Adrian Wadey</a>
+       of the <a href="http://ssosystems.com/" target="_blank"><i>Solid&nbsp;State&nbsp;Organ&nbsp;Systems</i></a> companie
+       took the time to correct these lines that I know hardly readible to the public and whose thoughts on what could make a
+       language like ODL as open standard combinations. This will, of course, part of a discussion to follow.</font><br /><br />
+
+
+       <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+         <td width="80%">&nbsp;</td>
+         <td align="left">
+          <font size="-1"><a href="mailto:smcj@hydraule.org" title="S&eacute;bastien Matthieu Cosson Jacquet">S.M.C.J.</a></font>
+         </td>
+        </tr>
+       </table>
+      </p>
+     </td>
+    </tr>
+   </table>
+  </center>
+
+  <br /><br /><br />
+
+  <blockquote>
+   <p align="justify">Anyone who has at some time tried to publish on the web knows the basics of HTML. It is a mark-up language.
+   The text to be displayed in browsers is wrapped up in Internet tags which themselves are not intended to be displayed but to
+   control <i>how</i> the text is displayed. For those who do not know the principle (or to refresh the memory of those who have
+   forgotten) here is an example so you can see this basis for publication on the web.</p>
+
+   <p align="justify">Take the example of a very simple sentence: &quot;<i>The name of the Rose.</i>&quot;. Give it as is to
+   a Web browser and it will display normally in a standard font and without any formatting. If you want the word &quot;name&quot;
+   displayed in bold, it is necessary to enclose it in two tags, one <i>opening</i> and one <i>closing</i>, which gives this:</p>
+
+   <p align="justify"><kbd>The &lt;b&gt;Name&lt;/b&gt; of the Rose.</kbd>:
+   "<span class="exemple">The <b>Name</b> of the Rose.</span>".</p>
+
+   <p align="justify">Had we wanted to use italics or underline the word, instead of using the tag <kbd>&lt;b&gt;</kbd>
+   we would use <kbd>&lt;i&gt;</kbd> to get italics or <kbd>&lt;u&gt;</kbd> for underline. Many, but not all, <i>opening</i>
+   tags have a <i>closing</i> tag to turn off the formatting. This is of course true for italics or underlined. Some tags allow
+   you to change the colour of the text. These are tags which have one (or several) <i>attributes</i>. Thus, to display the word
+   &quot;<i>Rose</i>&quot; in pink, you must write the HTML code:</p>
+
+   <p align="justify"><kbd>The Name of the &lt;font color=&quot;pink&quot;>Rose&lt;/font&gt;.</kbd>:
+   "<span class="exemple">The Name of the <font color="pink">Rose</font>.</span>".</p>
+
+   <p align="justify">It should be noted that it is a <kbd>&lt;font&gt;</kbd> tag, that serves to change the font and in
+   addition the tag may have, among other things, a &quot;<kbd>color</kbd>&quot; attribute and an &quot;<kbd>=</kbd>&quot;
+   sign with a color between quotes. From this you will understand that it is easily possible to write:</p>
+
+   <p align="justify"><kbd>The Name of the &lt;font color=&quot;green&quot;>Rose&lt;/font&gt;.</kbd>:
+   "<span class="exemple">The Name of the <font color="green">Rose</font>.</span>".</p>
+
+   <p align="justify">for a Martian rose...</p>
+
+   <p align="justify">HTML has a large number of tags and here is not here the place to describe them all nor the specifics
+   of their syntax. The HTML language was created at CERN in Geneva in 1989 by
+   <a href="http://en.wikipedia.org/wiki/Tim_Berners-Lee" target="_blank">Tim Berner Lee</a>. From the late 1990s there
+   arose the question of the <i>structure</i> of the language <i>itself</i> (its syntax) and from this the extraordinary
+   <i>hierarchical tree structure</i> of the language emerged. In fact, every Web page is first constructed as an HTML entity,
+   within this there is a <i>header</i> and a <i>body</i>, within this again are paragraphs containing text, and so on.
+   The header of the document itself can contain a title, style definitions, script commands to dynamically modify the
+   document etc... The structure of an HTML document may take the form:</p>
+
+   <pre>
+    &lt;html&gt;
+     &lt;head&gt;
+      &lt;title&gt;
+       I am the title
+      &lt;/title&gt;
+     &lt;/head&gt;
+     &lt;body&gt;
+      &lt;p&gt;
+       I am a paragraph with the word &lt;font color="pink"&gt;Rose&lt;/font&gt; in &lt;font color="pink"&gt;rose&lt;/font&gt;.
+      &lt;/p&gt;
+      &lt;p&gt;
+       I am a paragraph with the word &lt;i&gt;italic&lt;/i&gt; in &lt;i&gt;italic&lt;/i&gt;.
+      &lt;/p&gt;
+     &lt;/body&gt;
+    &lt;/html&gt;
+   </pre>
+
+   <p align="justify">There is talk of <i>root</i> (the <kbd>&lt;html&gt;</kbd> tag) which gives rise to <i>nodes</i> and
+   <i>childrens</i>. But the fact that the tags contain words such as <kbd>html</kbd>, <kbd>head</kbd>, <kbd>body</kbd>,
+   &amp;c, is ultimately less important than the tree structure. For this reason, writing computer often written using
+   indentation, ie shift to the right the words according to their interlocking in the tree. This indentation is not taken
+   into account by the reading of the computer.  For against, it helps to read and understand the interlocking elements of
+   the language among themselves.</p>
+
+   <p align="justify">All words tags refer to the formatting <i>of a text document</i>, which may contain images, audio
+   or video, but whose final destination is <i>first</i> that of a Web browser capable of interpreting and , especially
+   (since it is the main aim of all HTML pages) can use
+   <a href="http://en.wikipedia.org/wiki/Hypertexte" target="_blank">hypertext</a> to link documents between them,
+   regardless of the physical place they occupy on the computers on the planet.</p>
+
+   <p align="justify">But it is quite possible to imagine <i>totally</i> separate vocabulary specific to HTML and replace
+   it with another, invented from scratch, for the purposes of any other cause than to view a Web page <i>but</i> retaining
+   the tree structure which all processing is so fond. In practice, this may, by example, giving this:</p>
+
+   <pre>
+    &lt;organ&gt;
+     Saint-Hippolyte-du-Fort
+     &lt;keyboard&gt;
+      Grand Orgue
+      &lt;stop&gt;Montre 8'&lt;/stop&gt;
+      &lt;stop&gt;Prestant 4'&lt;/stop&gt;
+      &lt;stop&gt;Fl&ucirc;te 4'&lt;/stop&gt;
+      &lt;stop&gt;Fourniture III-V&lt;/stop&gt;
+      &lt;stop&gt;Bourdon 8'&lt;/stop&gt;
+      &lt;stop&gt;Cornet IV&lt;/stop&gt;
+      &lt;stop&gt;Fl&ucirc;te 8'&lt;/stop&gt;
+      &lt;stop&gt;Trompette 8'&lt;/stop&gt;
+     &lt;/keyboard&gt;
+     &lt;keyboard&gt;
+      R&eacute;cit
+      &lt;stop&gt;Flageolet 4'&lt;/stop&gt;
+      &lt;stop&gt;Fl&ucirc;te douce 8'&lt;/stop&gt;
+      &lt;stop&gt;Haut-bois 8'&lt;/stop&gt;
+      &lt;stop&gt;Voix-Humaine 8'&lt;/stop&gt;
+     &lt;/keyboard&gt;
+     &lt;keyboard&gt;
+      P&eacute;dale
+      &lt;stop&gt;Bourdon 16'&lt;/stop&gt;
+      &lt;stop&gt;Fl&ucirc;te 8'&lt;/stop&gt;
+     &lt;/keyboard&gt;
+    &lt;/organ&gt;
+   </pre>
+
+   <p align="justify">Because the structure of the organ is extremely hierarchical, because you can quite describe how
+   much further the ramifications of the tree (a stop contains sets of pipes -&nbsp;wood, metal, open, closed, with
+   chimney&nbsp;- and the types of specific measures, &amp;c.), it is possible to describe almost anything and everything
+   in our instrument by following this principle, as long as the focus -&nbsp;still&nbsp;- to respect language tag defined
+   in referential (and therefore, very flexible). We talk of
+   <a href="http://en.wikipedia.org/wiki/Extensible_Markup_Language" target="_blank"><i>XML</i></a>, the first
+   <i>X</i> of the acronym is called the signifier of <i>eXtension</i>, since is first concerned with the structure
+   rather than the form. It accepts XML thousands of ways and it is no detail specified by
+   <a href="http://en.wikipedia.org/wiki/MusicXML" target="_blank"><i>MusicML</i></a>
+   open format that allows you to write music in a standard way.</p>
+
+   <p align="justify">In computer terms, the benefits are enormous. The first to receive the organ seems to be in the
+   <i>sustainability</i> as documents written in XML are in simple text files. The format should be human readable and must
+   always have the opportunity to alter the code <i>manually</i>. The mere reading of the composition of organ foregoing
+   demonstrates that software can <i>read</i> <kbd>&lt;keyboard&gt;</kbd> and understand as a <i>meaningful entity</i>,
+   ie, exploitable under specific conditions on that it deals.</p>
+
+   <p align="justify">And that's the whole point of a markup language as also the significance of its syntax, the tags are
+   for specific software, carry much more <i>meaning</i> than the cell contents of a spreadsheet. Moreover, the extraordinary
+   flexibility that allows the arrangement of data into a hierarchical tree structure is infinitely better than the tabular
+   structure of databases, much further away from the structure of our instrument.</p>
+
+   <p align="justify">Knowing that the first <i>C</i> of <i>Montre</i> made of 145&nbsp;mm and that the calculation of
+   progress follows the formula of Cavaill&eacute;-Coll based root forty-eighth of six is one thing; exchange statements of plans,
+   without the slightest problem translated into English, German and Japanese is another. We have in Europe the chance to own a
+   organological heritage an extent that the other four continents can be envy. But we also, still in Europe, ultimately
+   little taste to magnify our know-how, often preferring to let our knowledge resting in the shade of the library, or
+   even lose our knowledge gained since the abundance of our culture allows us to shine often without the slightest effort...</p>
+
+   <p align="justify">Since I believe I am the first (if not the only) that I looked at this problem, the first meaning example
+   of using XML in the field of organbuilding is, curiously, not in the simple setting database of organ compositions but in the
+   much more specific arrangement of mixtures. The reason is simple: an arrangement of mixture, for the organbuilder, is a thought
+   that <i>might</i> have nothing aesthetics but that can be purely accounting, so practice. The same applies to the scales pipes
+   that, if it gives a musical idea of where it goes, must be able for the worker, to be followed by planning practice. In this,
+   I think that I am in right line of a monk of the Benedictine Congregation of St. Maur with a history of organbuilding that did
+   not to much suffer...</p>
+
+   <p align="justify">A few years ago now, so I have programmed an organbuilding utility (which was not exactly my first...)
+   and it was tasked with planning the same pipes of mixture. The task is already difficult enough with a spreadsheet; it is
+   even more so with a Web browser whose forms are not exactly planned for organbuilding data processing (and one wonders why
+   for that matter)... But I still come to produce a favorite of some French pipemakers for one simple reason: apart from the
+   outflow table, it emerges very simply and cheaply (in
+   <a href="http://en.wikipedia.org/wiki/Art_ascii" target="_blank">art ASCII</a>), the <i>map</i> of mixture.
+   Moreover, because very didactic, it is very easy for the learner to understand the problem of mixture once after viewing
+   the map that appears each pipe and the educational aspect of things, within the exchange and continuity of know-how, was
+   rather far from displeasing me. Of course, where the apprentice discovers a practice, the expert can demonstrate the
+   presence of sound masses, favoring a particular area of the frequency spectrum that the mere statement of the arrangement
+   gave not necessarily understand..</p>
+
+   <p align="justify">My utility had several flaws that should be corrected (there always has to be refined, but they are
+   not fundamental). It was not multilingual and asked to perform data entry into two separate stages (two Web pages to produce
+   a third, in terms of <i>PHP</i> programming is realy too...). Above all, it did not save the data <i>as input data
+   structure</i> even if it was indeed already possible to make a copy of the data produced in several formats. But at
+   no time did they came out of the scheme of data to be published <i>in the form</i>, not <i> in the sense</i>...</p>
+
+   <p align="justify">&quot;<i>Tempus fugit</i>&quot;. But time can often provide much without any effort. Strict view of
+   the evolution of Web browsers and languages used on the Internet over the last ten years have obviously not missed to be
+   so much fruitful. XML, still very young in the early 2000s, where I developed my utility, has not made much progress. Anyway,
+   for the purpose of being <i>verb</i> (meaning) to be before the <i>word</i> (overt), XML is so trivial that we know it will
+   change little. For against, the languages that can turn around and have to treat them, greatly advanced in recent years.
+   <a href="http://en.wikipedia.org/wiki/PHP" target="_blank"><i>PHP</i></a> or
+   <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank"><i>JavaScript</i></a>, and especially the
+   <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_blank"><i>D.O.M.</i></a> specification became
+   objects with which we can now work easily, even if we does, as in my case, computer science that dilettante and autonomous. </p>
+
+   <p align="justify">Receiving an email from a young organ enthusiast proposing to put a link from my website on his own,
+   I realized that the young generation (the one that I really do not belong...) there was the question, it, much to use the
+   Internet effectively as the one before. Responding positively to this request, I returned to my notes, sometimes very old,
+   but still of course available (computer controlled, it serves to this). Apart from the fact that to be very careful notes,
+   I still remember the procedures used in my utility of outflow of mixture, I had also, in all these years, acquired the
+   certainty that XML could one day be used in organbuilding, especially in data storage restorations that we arrive, here in
+   Europe, and as an organbuilder restaurant worthy of the name, to publish.</p>
+
+   <p align="justify">The email from my young organ passionate has had the advantage of me wanted to reworked my utility.
+   And I did, this time, reaching the programming there. My original three pages written in PHP is reduced to one, it was
+   possible to envisage their Japanese translation but, finally, a prototype of ODL was emerging with the power to demonstrate
+   his abilities as long as the we give ourselves the trouble to reflect on the <i>meaning</i>. Of course I chose English as
+   the language center of my tags, but this did very little importance to a <i>specification</i> with the tag
+   <kbd>&lt;kb&gt;</kbd> (<i>keyboard</i>) rather than <kbd>&lt;clavier&gt;</kbd> or <kbd>&lt;werk&gt;</kbd> since
+   software and will be obviously to bring in a transparent manner these instructions defined in the language and present
+   the data so much fun as reading a code. In fact, it is undeniable that the English language is particularly suited to be
+   recovered in the form of code, but that is another debate.</p>
+
+   <p align="justify">As any implementation of program, things have taken place in stages. At first I almost completely
+   rewrite my form to make it much more dynamic, and license the ODL <i>export</i> that was not originally programmed.
+   Finally <i>import</i>, that which opens doors as I had interviews.</p>
+
+   <p align="justify">Because once made software production of ODL file, things are accelerating
+   for the least power in combinatorics it becomes possible to:</p>
+
+   <ul>
+    <li>Enter a mixture with the form and show its outflow in a HTML browser.</li>
+    <li>Enter a mixture with the form and export the data in ODL.</li>
+    <li>Import data from a <b><u>local</u></b> file in ODL format with the form for further processing.</li>
+    <li>Import data from an <b><u>online file</u></b> in ODL format <b><u>by changing the URL</u></b> for further processing.</li>
+    <li>Import data from an <b><u>online file</u></b> in ODL format <b><u>by changing the URL</u></b> to view its outflow <i>directly</i> in a HTML browser.</li>
+   </ul>
+
+   <p align="justify">On the web site of &quot;<i>l'Hydraule</i>&quot;, the
+   <a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank">URL</a>
+   adress of my treatment utility of mixtures is:<br />
+   &quot;<a href="../pleinjeu/pleinjeu.html" target="_blank" title="Text in French.">http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php</a>&quot;
+   <a href="../pleinjeu/pleinjeu.html" target="_blank"><img src="frlink.png" border="0" width="37" height="19" alt="Text in French." alt="Text in French." title="Text in French."/></a>.</p>
+
+   <p align="justify">So you download the file &quot;<i>pleinjeu.php</i>&quot; in your browser. If the address is given as-is,
+   the page is displayed in French. It should specify the language in the address for a display in another idiom.
+   For example, in English the address is:<br />
+   &quot;<a href="../pleinjeu/pleinjeud8cc.html?l=en" target="_blank">http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en</a>&quot;.</p>
+
+   <p align="justify">Following this principle and using the additional separator &quot;&amp;&quot;,
+   it is possible to write the URL in the form:<br />
+   &quot;<a href="../pleinjeu/pleinjeu7491.html?l=en&amp;f=0&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/PJ_STH.odl" target="_blank">http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en&amp;f=0&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/PJ_STH.odl</a>&quot;</p>
+
+   <p align="justify">There are three variables that are passed in the URL to the file &quot;<i>pleinjeu.php</i>&quot;:</p>
+
+   <ul>
+    <li>The variable &quot;<i>l</i>&quot; which contains &quot;<i>en</i>&quot;, causing a display in English. Of course, you can choose &quot;<i>de</i>&quot; for German and could choose &quot;<i>jp</i>&quot; for Japanese if I should have a available translation...</li>
+    <li>The variable &quot;<i>f</i>&quot; which contains &quot;<i>0</i>&quot;.</li>
+    <li>The variable &quot;<i>url</i>&quot; which contains<br />
+    &quot;<a href="../pleinjeu/src/exemples/PJ_STH.odl" target="_blank"><i>http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/PJ_STH.odl</i></a>&quot;.</li>
+   </ul>
+
+   <p align="justify">We must understand that &quot;<i>pleinjeu.php</i>&quot; <i>fetches</i> the file &quot;<i>PJ_STH.odl</i>&quot; which can be anywhere in the world and will display it in a format &quot;<i>f</i>&quot; where:</p>
+
+   <ul>
+    <li>f&nbsp;=&nbsp;0: the form will be filled with values contained in &quot;<i>PJ_STH.odl</i>&quot; but it will be possible to modify them for further processing.</li>
+    <li>f&nbsp;=&nbsp;1: the outflow of the mixture whose its definition is contained in &quot;<i>PJ_STH.odl</i>&quot;
+    will appear directly in an HTML file.</li>
+    <li>f&nbsp;=&nbsp;2: the outflow of the mixture whose its definition is contained in &quot;<i>PJ_STH.odl</i>&quot;
+    <li>f&nbsp;=&nbsp;2: the outflow of the mixture whose its definition is contained in &quot;<i>PJ_STH.odl</i>&quot;
+    will turn into an downloadable RTF file.</li>
+    <li>f&nbsp;=&nbsp;3: the outflow of the mixture whose its definition is contained in &quot;<i>PJ_STH.odl</i>&quot;
+    will turn into a downloadable text file (TXT).</li>
+    <li>f&nbsp;=&nbsp;4: the outflow of the mixture whose its definition is contained in &quot;<i>PJ_STH.odl</i>&quot;
+    will turn into a downloadable ODL file; it is no more or less a copy...</li>
+   </ul>
+
+   <p align="justify">Imagine the power... Very small data files containing highly calibrated, in a format readable by
+   humans in two hundred years but readable software or web pages capable of obtaining a sense, to use the data to derive
+   others, even to cross it...</p>
+
+   <p align="justify">For it is not finished and it does that even begin...</p>
+
+   <p align="justify">Reading the contents directory of
+   <a href="../pleinjeu/src/exemples/index.html" target="_blank">this server</a> allows to realize that I
+   put the examples of arrangements of mixtures. An ascendant Germanic mixture type, a ceiling mixture French style, the mixture of the
+   <a href="../../biblio/smcj/temp_sth/tuyaux/index.html" target="_blank" title="Text in French.">historic organ of
+   Saint-Hippolyte-du-Fort<img src="frlink.png" border="0" width="37" height="19" alt="Text in French." title="" /></a>
+   and the three mixtures of the
+   <a href="http://lplet.org/orgues/auxonne/tuyaux" target="_blank" title="Text in French.">historic organ of
+   Auxonne<img src="frlink.png" border="0" width="37" height="19" alt="Text in French." title="" /></a>.</p>
+
+   <p align="justify">This last one is interesting because it is spread over three distinct stops, each with its arrangement.
+   In server <a href="../pleinjeu/src/exemples/index.html" target="_blank">directory</a>,
+   files are naturally called
+   &quot;<a href="../pleinjeu/src/exemples/Aux_PJ_GO.odl" target="_blank"><i>Aux_PJ_GO.odl</i></a>&quot;
+   for the <i>Plein-Jeu</i> of <i>Grand-Orgue</i>,
+   &quot;<a href="../pleinjeu/src/exemples/Aux_FourIII_Pos.odl" target="_blank"><i>Aux_FourIII_Pos.odl</i></a>&quot;
+   for the <i>Fourniture</i> of <i>Positif</i> and
+   &quot;<a href="../pleinjeu/src/exemples/Aux_CymIII_Pos.odl" target="_blank"><i>Aux_CymIII_Pos.odl</i></a>&quot;
+   for the <i>Cymbale</i> of this last keyboard. For each of them, it is easy to read that the ODL code contains as many tags
+   &quot;<kbd>&lt;RANK&gt;&lt;/RANK&gt;</kbd>&quot; that each stop contains ranks, so three ranks for the two stops of the <i>Positif</i>
+   and eight for the stop of <i>Grand-Orgue</i>.</p>
+
+   <p align="justify">Reading the ODL code of file
+   &quot;<a href="../pleinjeu/src/exemples/Aux_Plenum.odl" target="_blank"><i>Aux_Plenum.odl</i></a>&quot;
+   demonstrates that it is <b><u>just</u></b> a concatenation of <b><u>three</u></b> files of data between the tags
+   &quot;<kbd>&lt;MIXTURE&gt;&lt;/MIXTURE&gt;</kbd>&quot; and added comments (in tags
+   &quot;<kbd>&lt;!--&nbsp;&nbsp;--&gt;</kbd>&quot;&nbsp;) can, of course, to facilitate reading. This is
+   so just a <i>copy/paste</i> into a text file! And this allows, from a file of less than 4&nbsp;kb to produce
+   <a href="../pleinjeu/pleinjeu8f16.html?l=en&amp;f=1&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/Aux_Plenum.odl" target="_blank">this</a>
+   or <a href="../pleinjeu/Plenum%20XIV05ff.rtf?l=en&amp;f=2&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/Aux_Plenum.odl" target="_blank">that</a>
+   with a simple combinatorial of URL...</p>
+
+   <p align="justify"><i>Merging arrangement</i> is so already possible in part with a simple text editor to the extent
+   that the reported times are the same composition of a mixture and the layout of notes, from an arrangement to the
+   other, is identical both in their numbers and in their &quot;<i>holes</i>&quot; (no first <i>C <sup>#</sup></i>,
+   short octave, &amp;c.) </p>
+
+   <p align="justify">The merger arrangement so consists to:</p>
+
+   <ul>
+    <li>Ensure that the number of all ranks do not exceed sixteen.</li>
+    <li>Ensure that breaks are on the same note, and if this is not the case, create intermediate
+    breaks and fill it with the above values so as not to create <i>holes</i> in the rank.</li>
+    <li>Ensure that the number of all breaks does not exceed sixteen.</li>
+    <li>Ensure that the keyboard definitions are the same.</li>
+    <li>Once done, simply put all the nodes RANK.BREAK one after another and re-create a single file.</li>
+   </ul>
+
+   <p align="justify">I have for the time not programmed utility to fetch multiple separate files on hard drives to merge
+   without manipulation of code, but I know it is very easy to do because the reading of ODL, which is pure XML, is extremely
+   easy to program in PHP. Because of its simplicity, the power of this language is astounding and allow to organ people of the
+   world to exchange data regardless of specific language. It becomes possible to create <i>a standard</i> organ database
+   compositions in all places and all times, which would be highly beneficial to everyone. It would arise over the huge problem of
+   changing standards of spreadsheets, databases or simply softwares because, in fact, XML was designed to cross the centuries.</p>
+
+   <p align="justify">This does not in any way to capture data on software like <i>M$-Word</i>, <i>M$-Excel</i> or
+   <a href="http://openoffice.org/" target="_blank"><i>OpenOffice.org</i></a> as this softwares can extend their capacity
+   through <i>macros</i>. For users of this office suite, I have proved
+   <a href="http://user.services.openoffice.org/fr/forum/viewtopic.php?f=15&amp;t=10095" target="_blank" title="Text in French.">here<img src="frlink.png" border="0" width="37" height="19" alt="Text in French." title="" /></a>
+   that it is easy to use the power given by this softwares to produce datas, standard and shareable,
+   even though I remain convinced that web forms have the undeniable advantage of lightness in their modularity.</p>
+
+   <p align="justify">In all cases, there is no problem to recover and unite the data set
+   as text, graphic, sound or videos. The organ drawings could be translated into
+   <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics" target="_blank">SVG</a> which is a already
+   established standard vector graphics, obviously compatible with ODL to be, itself, pure XML... Because significant,
+   the scales of pipe organs saved in ODL files could lead fairly quickly windchest grids, so rollerboards. The scales files
+   could be translate themselves into graphic files, such as abacuses scales that Dom Bedos engraved on copper plates in 1766
+   by the simple translation from ODL to PDF format. Having been used in some 
+   <a href="../../../tuyau/tailles/index.html" target="_blank" title="Text in French.">articles
+   on the methodology of the calculation of organ pipe 
+   scales<img src="frlink.png" border="0" width="37" height="19" alt="Text in French." title="" /></a>,
+   the utility already exists; it is a simple matter of establishing standards and the adaptation of a few lines of code...</p>
+
+   <br />
+
+   <p align="justify">My God, I have a dream, were you in?</p>
+
+   <br /><br />
+   <blockquote><table border="0" cellpadding="0"><tr><td><font size="3"><b><pre style="color:#800000; font-weight:normal;">----------------------------------------------------
+                          _
+                         | | _
+         <a href="../../../index-2.html" target="_top">S</a>&eacute;bastien       | || | _
+         <a href="../../../index-2.html" target="_top">M</a>atthieu        | || || | _
+         <a href="../../../index-2.html" target="_top">C</a>osson          | || || || | _
+         <a href="../../../index-2.html" target="_top">J</a>acquet         | || || || || | _
+                         | || || || || || | _
+                         | || || || || || || |
+                         | || || || || || || |
+          ,-~~-.___.     | || || || || || || |___
+         /  | .     \    |_||_||_||_||_||_||_|  /|
+        (   )        O   |_||_||_||_||_||_||_| / |
+         \_/-. ,----'   / V  V  V  V  V  V  V /  |
+            ====      _/____________________ /  /
+           /  \-'~;  /|  The Organbuilder   |  /
+          /  __/~|  /_|   and his organ     | /
+       o=(_______|  |_|_____________________|/
+  
+  ----------------------------------------------------
+     Site web : <a href="../../../index-2.html" target="_top">http://www.hydraule.org</a>
+        E-mail: <a href="mailto:smcj@hydraule.org">smcj@hydraule.org</a>
+  ----------------------------------------------------</pre></b></font></td></tr></table></blockquote>
+  </blockquote>
+
+  <br /><br /><br />
+
+ </body>
+
+<!-- Mirrored from hydraule.org/bureau/ordi/odl/utilODL_en.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:13:33 GMT -->
+</html>
+

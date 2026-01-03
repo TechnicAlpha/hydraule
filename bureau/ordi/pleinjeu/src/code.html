@@ -1,0 +1,2188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Page HTML compos�e et programm�e par S.M.C.J. -->
+<html>
+ 
+<!-- Mirrored from hydraule.org/bureau/ordi/pleinjeu/src/code.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:41:38 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+  <title>Code source.</title>
+
+  <meta http-equiv="content-language" content="fr" />
+  <meta http-equiv="content-type"     content="text/html; charset=utf-8" />
+  <meta       name="author"           content="S.M.C.J." />
+  <meta       name="keywords"         content="Hydraule Orgue Orgao Organo Orgel Organ" />
+
+  <meta       name="description"      content="Calcul du nombre de tuyaux identiques d'un plein-jeu." />
+
+  <link rel="shortcut icon" href="../img/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="../styles.css" />
+
+  <script type="text/javascript" src="../../scripts/shCore.js"></script>
+  <script type="text/javascript" src="../../scripts/shBrushPhp.js"></script>
+  <script type="text/javascript" src="../../scripts/shBrushJScript.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="../../styles/shCore.css" />
+  <!-- shThemeDefault.css - shThemeDjango.css - shThemeEmacs.css - shThemeFadeToGrey.css - shThemeMidnight.css - shThemeRDark.css -->
+  <link type="text/css" rel="stylesheet" href="../../styles/shThemeDefault.css" />
+
+  <script type="text/javascript">
+   SyntaxHighlighter.config.clipboardSwf = '../../scripts/clipboard.html';
+   SyntaxHighlighter.all();
+  </script>
+
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000">
+  <table border="0" width="100%">
+
+   <tr>
+    <td align="center" valign="center">
+     <br /><br /><h1><font color="#ff0000">L'ordinateur</font></h1>
+     <h2><font color="#008000">D&eacute;bit et graphiques<br />de plein-jeux.</font></h2>
+     <h3><font color="#000080">Code source.</font></h3>
+     <p>La totalit&eacute; des sources est disponible en archive ZIP <a href="pleinjeu.src.zip">ici</a>.</p>
+    </td>
+
+    <td align="right">
+     <a href="../../../../index.html" target="_top"><img src="../img/hydraule.png" border="0" width="216" height="230" alt="L'Hydraule" title="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br /><br />
+
+  <h2 align="center"><font color="#008000">Le code.</font></h2>
+
+  <blockquote>
+  <h3 align="center"><font color="#000080">pleinjeu.inc.php.</font></h2>
+   <pre class="brush:php">
+&lt;?php
+
+ // ************************************************************************************************
+ // ***                 Les constantes déterminées dans ce fichier sont partagées                ***
+ // *** par le script principal (./pleinjeu.php) et l'image graphique PNG (./pleinjeuGraph.php). ***
+ // ************************************************************************************************
+
+ // Noms des notes ; la traduction des NOMS DE NOTATION est faite automatiquement plus bas.
+ $note[1] = array(0 =&gt; "Anglo-Saxonne", "C",  "C#",  "D",  "D#",  "E",  "F",  "F#",   "G",   "G#",  "A",  "A#",  "B");
+ $note[2] = array(0 =&gt; "Allemande 1",   "C",  "C#",  "D",  "D#",  "E",  "F",  "F#",   "G",   "G#",  "A",   "B",  "H");
+ $note[3] = array(0 =&gt; "Allemande 2",   "C",  "Cs",  "D",  "Ds",  "E",  "F",  "Fs",   "G",   "Gs",  "A",   "B",  "H");
+ $note[4] = array(0 =&gt; "Allemande 3",   "C", "Cis",  "D", "Dis",  "E",  "F", "Fis",   "G",  "Gis",  "A", "Ais",  "H");
+ $note[5] = array(0 =&gt; "Latine 1",     "Ut", "Ut#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si");
+ $note[6] = array(0 =&gt; "Latine 2",     "Ut", "Ut#", "Ré", "Mib", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "Sib", "Si");
+ $note[7] = array(0 =&gt; "Dom Bedos",     "C",  "C#",  "D",  "Eb",  "E",  "F",  "F#",   "G",   "G#",  "A",  "Bb",  "B");
+
+ // Noms par défaut des notes.
+ $nbRanRom = array(1 =&gt;  "I", "II", "III",  "IV",    "V",  "VI", "VII", "VIII",
+                        "IX",  "X",  "XI", "XII", "XIII", "XIV",  "XV",  "XVI");
+  
+ // Définition des couleurs des rangs.
+ $couleur  = array(1 =&gt; "#000000", "#ff0000", "#008000", "#0000ff", "#ff00ff", "#ffaa00", "#00ffff", "#ffa0a0",
+                        "#909090", "#800000", "#ff00ff", "#ffaa00", "#00ff00", "#ffa0a0", "#909090", "#800000");
+
+ // Nom des tessitures.
+ $nomTessi  [0] = " - "   ; $nomTessi  [1] = "32'"    ; $nomTessi  [5] = "25'3/5" ; $nomTessi  [8] = "21'1/3" ;
+ $nomTessi [13] = "16'"   ; $nomTessi [17] = "12'4/5" ; $nomTessi [20] = "10'2/3" ; $nomTessi [25] = "8'"     ;
+ $nomTessi [29] = "6'2/5" ; $nomTessi [32] = "5'1/3"  ; $nomTessi [37] = "4'"     ; $nomTessi [41] = "3'1/5"  ;
+ $nomTessi [44] = "2'2/3" ; $nomTessi [49] = "2'"     ; $nomTessi [53] = "1'3/5"  ; $nomTessi [56] = "1'1/3"  ;
+ $nomTessi [61] = "1'"    ; $nomTessi [65] = "4/5'"   ; $nomTessi [68] = "2/3'"   ; $nomTessi [73] = "1/2'"   ;
+ $nomTessi [77] = "2/5'"  ; $nomTessi [80] = "1/3'"   ; $nomTessi [85] = "1/4'"   ; $nomTessi [89] = "1/5'"   ;
+ $nomTessi [92] = "1/6'"  ; $nomTessi [97] = "1/8'"   ; $nomTessi[101] = "1/10'"  ; $nomTessi[104] = "1/12'"  ;
+ $nomTessi[109] = "1/16'" ; $nomTessi[113] = "1/20'"  ; $nomTessi[116] = "1/24'"  ; $nomTessi[121] = "1/32'"  ;
+ 
+ // Convertit en binaire en formatant la chaîne avec les zéros de gauche.
+ function deciBin($valeur) {return sprintf("%08s", decbin($valeur)); };
+
+ // Encode une valeur numérique sur deux octets.
+ function encodeVal($input)
+ {
+  //      |&lt;----- Poids fort -----&gt;|   |&lt;- Poids faible -&gt;|
+  return chr(floor($input / 256)) . chr($input % 256);
+ };
+
+ // Décode une valeur numérique sur deux octets.
+ function decodeVal($input)
+ {
+  //      |&lt;---------- Poids fort ----------&gt;|    |&lt;---- Poids faible -----&gt;|
+  return (ord(substr($input, 0, 1)) * 256) + ord(substr($input, 1, 1));
+ };
+?&gt;   </pre>
+
+   <br /><br />
+
+  <h3 align="center"><font color="#000080">pleinjeu.php.</font></h2>
+   <pre class="brush:php">
+&lt;?php
+ /*
+
+
+                                                ----------------------------------------------------
+                                                                        _
+                 ORGANUM                                               | | _
+                                                       Sébastien       | || | _
+              Logiciel libre                           Matthieu        | || || | _
+          de gestion de données                        Cosson          | || || || | _
+           de facture d'orgues                         Jacquet         | || || || || | _
+                                                                       | || || || || || | _
+                                                                       | || || || || || || |
+                    M                                                  | || || || || || || |
+                  *   *                                ,-~~-.___.      | || || || || || || |___
+                S A T O R                             /  | .     \     |_||_||_||_||_||_||_|  /|
+              * A R E P O *                          (   )        O    |_||_||_||_||_||_||_| / |
+            S   T E N E T   C                         \_/-. ,----'    / V  V  V  V  V  V  V /  |
+              * O P E R A *                               ====      _/____________________ /  /
+                R O T A S                                /  \-'~;  /|  The Organbuilder   |  /
+                  *   *                                 /  __/~|  /_|   and his organ     | /
+                    J                                o=(_______|  |_|_____________________|/
+
+                                                ----------------------------------------------------
+                                                   Site web : http://www.hydraule.org/
+                                                     E-mail : smcj@hydraule.org
+                                                ----------------------------------------------------
+
+
+ Choses à faire.
+  - Traduire l'aide de l'utilitaire et l'article sur ODL en allemand.
+  - S’occuper du cas de la liste de coche rapide pour éviter l’erreur quand aucune case n’est cochée.
+
+ Choses à revoir
+  - Si $t1, $t2 et $t3 existent, on considère la saisie valide ; c'est peut-être sujet à caution.
+  - Améliorer l'image graphique.
+
+  - Lecture du fichier XML :
+    - Récupérer le nom du clavier dans l'attribut "def_kb" de &lt;MIXTURE&gt;.
+    - Chercher un &lt;KB&gt; qui porte la même valeur dans l'attribut "name".
+*/
+
+ // Les constantes déterminées dans ce fichier include sont partagées par l'image graphique PNG (./pleinjeuGraph.php).
+ include("./pleinjeu.inc.php");
+
+ // Fixe le nombre de ligne et de colonne de la grille AFFICHÉES (et non PRÉSENTES car elles le sont toutes) au départ.
+ $lignes = 3; $colonnes = 4;
+
+ // Masque de coches des 54 premières notes.
+ $XMLclavier = str_repeat("1", 54) . str_repeat("0", 7);
+
+ // Chaine « $comprep » et « $noterep » contenant les composition des tessitures et des reprises.
+ $comprep = str_repeat(chr(0), 256); $noterep = str_repeat(chr(0), 16);
+ $noterep = substr_replace($noterep, chr(1), 0, 1);                          // Première note à Do1.
+
+ // Fixe la largeur et la hauteur par défaut de l'image graphique.
+ $largImgGraph = 450; $hautImgGraph = 278;
+
+ // Traitement du choix de la langue.
+   $listeLangue = array(0 =&gt; "fr", "en", "de"); $defautLangue = 0;
+ $commentLangue = array(0 =&gt; "Version fran&ccedil;aise", "English version", "Deutsche Version");
+
+ $choixLangue = isset($_GET ['l']) ? $_GET ['l'] : $listeLangue[$defautLangue]; $passe = false;
+ for ($i = 0; $i &lt;= (count($listeLangue) - 1); $i++) {if ($choixLangue == $listeLangue[$i]) {$passe = true; }; };
+ if (!$passe) {$choixLangue = $listeLangue[$defautLangue]; };
+
+ switch ($choixLangue) // Une certaine idée de l'Europe...
+ {
+  case $listeLangue[0] : $langueActive = 0; $notNot = 1; $notOct = 1; break; // Français.
+  case $listeLangue[1] : $langueActive = 1; $notNot = 1; $notOct = 1; break; // English.
+  case $listeLangue[2] : $langueActive = 2; $notNot = 2; $notOct = 2; break; // Deutsch.
+ };
+
+ // Titres généraux.
+ $langue [0] = array(0 =&gt; "L'ordinateur", "The computer", "Der Computer");
+ $langue [1] = array(0 =&gt; "D&eacute;bit et graphiques&lt;br /&gt;de plein-jeux", "Data outflows and&lt;br /&gt;graphics of mixtures", "Datendurchsatz und&lt;br /&gt;Grafiken von Mixturen");
+ $langue [2] = array(0 =&gt; "Formulaire de saisie", "Entry Form", "Eingabeformular");
+
+ // Titre haut et bas du formulaire des cases à cocher.
+ $langue [3] = array(0 =&gt; "Notes du&lt;br /&gt;clavier", "Notes of&lt;br /&gt;keyboard", "Tonklaviatur");
+ $langue [4] = array(0 =&gt; "Coche&lt;br /&gt;rapide", "Quickly&lt;br /&gt;check", "Schnellhäkchen");
+ $langue [5] = array(0 =&gt; "Oct. c.", "S. oct", "K. Okt.");
+
+ // Sous-titres de la colonne de droite.
+ $langue [6] = array(0 =&gt; "Donn&eacute;es g&eacute;n&eacute;rales&nbsp;", "General Datas", "Allgemeine Daten");
+ $langue [7] = array(0 =&gt; "Composition&nbsp;", "Composition", "Zusammenstellung");
+ $langue [8] = array(0 =&gt; "Commandes et r&eacute;sultats&nbsp;", "Orders and results", "Befehle und Ergebnisse");
+
+ // Contenu du formulaire de données générales.
+ $langue [9] = array(0 =&gt; "Nom du jeu&nbsp;", "Stop name", "Registerbezeichnung");
+ $langue[10] = array(0 =&gt; "Nombre de rangs&nbsp;", "Number of ranks", "Zahl der fache");
+ $langue[11] = array(0 =&gt; "Nombre de reprises&nbsp;", "Number of repetitions", "Zahl der Wiederholungen");
+ $langue[12] = array(0 =&gt; "Notation des notes&nbsp;", "Notes notation", "Tonbezeichnunge");
+ $langue[13] = array(0 =&gt; "Notation des octaves&nbsp;", "Octaves notation", "Oktavebezeichnunge");
+ $langue[14] = array(0 =&gt; "Image graphique&nbsp;", "Graphic image", "Grafik");
+ $langue[15] = array(0 =&gt; "Largeur&nbsp;", "Width", "Breite");
+ $langue[16] = array(0 =&gt; "Hauteur", "Height", "H&ouml;he");
+ $langue[17] = array(0 =&gt; "Fourniture", "Mixture", "Mixtur");
+
+ // Liste de notation des notes.
+ // Attention, il faut que le choix français soit au moins en partie présent dans la liste des noms des notes.
+ $langue[18] = array(0 =&gt; "Anglo-Saxonne", "Anglo-Saxon", "Anglo-amerikanischen");
+ $langue[19] = array(0 =&gt; "Allemande", "German", "Deutsch");
+ $langue[20] = array(0 =&gt; "Latine", "Latin", "Latein");
+
+ if ($langueActive != 0) // Pas la peine de traduire du français par du français.
+ {
+  for ($i = 18; $i &lt;= 20; $i++)
+  {
+   for ($j = 1; $j &lt;= 7; $j++) {$note[$j][0] = str_replace($langue[$i][0], $langue[$i][$langueActive], $note[$j][0]); };
+  };
+ };
+
+ // Liste de notation des octaves.
+ $langue[21] = array(0 =&gt; "Num&eacute;rique", "Digital", "Digital");
+ $langue[22] = array(0 =&gt; "Allemande", "German", "Deutsch");
+
+ // Contenu du formulaire de composition des reprises et des tessitures.
+ $langue[23] = array(0 =&gt; "Reprises&nbsp;", "Breaks", "Punkten");
+ $langue[24] = array(0 =&gt; "Tessitures&nbsp;", "Ranges", "Tonbereichen");
+ $langue[25] = array(0 =&gt; "   Valider   ", "   Submit   ", " Übermitteln ");
+
+ // Contenu des deux formulaires d'entrée et de sortie.
+ $langue[26] = array(0 =&gt; "Entrée O.D.L.", "O.D.L. input", "O.D.L. eingabe");
+ $langue[27] = array(0 =&gt; "Sortie", "Output", "Ausgabe");
+ $langue[28] = array(0 =&gt; " Entrée du fichier ", " File input ", " Datei eingabe ");
+ $langue[29] = array(0 =&gt; "   D&eacute;bit   ", "    Outflows    ", " Durchsatz ");
+ $langue[30] = array(0 =&gt; "Texte seulement", "Text only", "Nur Text");
+ $langue[31] = array(0 =&gt; "Initialiser", "Initialize", "Initialisieren");
+ $langue[32] = array(0 =&gt; "    Aide    ", "    Help    ", "    Hilfe    ");
+
+ // Boites de dialogue de messages.
+ $langue[33] = array(0 =&gt; "Votre saisie est impossible.\\nFaites-en une autre ou corrigez\\nles valeurs des cellules avoisinantes.", "Your input is impossible.\\nDo another or fix the values\\nof neighboring cells.", "Ihre Eingabe ist nicht möglich.\\nMachen Sie einer anderen oder korrigieren Sie\\ndie Werte der benachbarten Zellen.");
+ $langue[34] = array(0 =&gt; "Au moins douze notes\\ndoivent être cochées.", "At least twelve notes\\nmust be checked.", "Mindestens zwölf Noten\\nmüssen häkchen sein.");
+ $langue[35] = array(0 =&gt; "Saisissez un nom de jeu.", "Enter a name stop.", "Geben Sie einen Stimmenname.");
+ $langue[36] = array(0 =&gt; "Vous n\'avez pas saisi toutes\\nles notes des reprises.", "You have not entered all\\nthe notes of the repetitions.", "Sie haben nich alle\\nTonwiederholungen gegeben.");
+ $langue[37] = array(0 =&gt; "Entrez au moins\\nune tessiture par rang.", "Enter at least\\na range by rank.", "Geben Sie mindestens\\neinen Tonbereichen von Fach.");
+ $langue[38] = array(0 =&gt; "Choisissez d\'abord un fichier ODL\\nsur votre disque dur.", "Choose first a ODL file\\non your hard drive.", "Wählen Sie zunächst\\neine ODL Datei auf Ihrer Festplatte.");
+ $langue[39] = array(0 =&gt; "Entrez une AAA d\'image\\nBBB ou égale à", "Enter an image AAA\\nBBB or equal than", "Geben Sie eine AAA des Bildes\\nBBB oder gleich zu");
+ $langue[40] = array(0 =&gt; "largeur", "width", "Breite");
+ $langue[41] = array(0 =&gt; "hauteur", "height", "Höhe");
+ $langue[42] = array(0 =&gt; "inférieure", "less", "bis");
+ $langue[43] = array(0 =&gt; "supérieure", "greater", "größer");
+ $langue[44] = array(0 =&gt; "Êtes-vous sûr de vouloir\\nrecharger cette page à blanc ?", "Are you sure you want to\\nreload this page blank?", "Sind Sie sicher, dass wollen Sie\\ndiese Seite leer zu machen?");
+
+ // Résultats.
+ $langue[45] = array(0 =&gt; "Composition&nbsp;:", "Arrangement:", "Zusammenstellung:");
+ $langue[46] = array(0 =&gt; "Graphiques ASCII&nbsp;:", "ASCII graphics:", "ASCII Grafik:");
+ $langue[47] = array(0 =&gt; "D&eacute;bit&nbsp;:", "Data outflows:", "Datendurchsatz:");
+ $langue[48] = array(0 =&gt; "Nombre total de tuyaux&nbsp;:", "Total number of pipes:", "Anzahl der Pfeifen:");
+ $langue[49] = array(0 =&gt; "Cliquez ici pour cacher ce tableau.", "Click here to hide this table.", "Klicken Sie hier für die Tabelle verstecken.");
+ $langue[50] = array(0 =&gt; "Cliquez ici pour afficher tous les tableaux.", "Click here to view all tables.", "Klicken Sie hier für alle Tabellen anzeigen.");
+
+ // Place les noms des notes en première et dernière ligne du tableau de composition.
+ function titreTab()
+ {
+  global $nbRep, $noteOctave, $affiNoteOctave, $repri, $formSort;
+  switch ($formSort)                                                    // La mise en forme n'est pas la même selon le format de sortie.
+  {
+   case 1 : // Mise en forme HTML.
+    echo("    &lt;tr valign=\"bottom\"&gt;\n");
+    for ($i = 0; $i &lt;= ($nbRep -1); $i++) {echo("     &lt;th&gt;&nbsp;" . $affiNoteOctave[$repri[$i]] . "&nbsp;&lt;/th&gt;\n"); };
+    echo ("    &lt;/tr&gt;\n");
+   break;
+
+   case 2 : // Mise en forme RTF.
+    echo ("\par\plain\qj\\f2\\fs24\cf0");
+    for ($i = 0; $i &lt;= ($nbRep -1); $i++) {echo("\\tab " . str_replace("°", "\\'b0", utf8_decode($affiNoteOctave[$repri[$i]]) )); };
+    echo ("\n");
+   break;
+
+   case 3 : // Mise en forme TXT.
+    for ($i = 0; $i &lt;= ($nbRep -1); $i++) {echo("\t " . $noteOctave[$repri[$i]]); };
+    echo ("\n");
+   break;
+  };
+ };
+
+ // Analyse de la chaîne pour mettre les fractions des tessitures en exposant.
+ function expoTessi($chaine)
+ {
+  global $formSort; $place = strpos($chaine, "'");
+  switch ($formSort)                                       // Les enrichissements ne sont pas les mêmes selon le format de sortie.
+  {
+   case 1 : // Enrichissements HTML.
+    if (($place &gt;= 1) && ($place != (strlen($chaine) - 1)))
+    {
+     $chaine = substr($chaine, 0, ($place + 1)) . "&lt;sup&gt;" . substr($chaine, ($place + 1)) . "&lt;/sup&gt;";
+    };
+   break;
+
+   case 2 : // Enrichissements RTF.
+    if ($place &gt;= 1) 
+    {
+     if ($place != (strlen($chaine) - 1))
+     {
+      $chaine = substr($chaine, 0, $place) . "\\rquote {\super " . substr($chaine, ($place + 1)) . "}";
+     };
+     if ($place == (strlen($chaine) - 1))
+     {
+      $chaine = substr($chaine, 0, $place) . "\\rquote ";
+     };
+    };
+   break;
+  };
+  return $chaine;
+ };
+
+ // Sans doute ce que je crois avoir programmé de plus dense et de plus beau dans ma vie...
+ function debitASCII()
+ {
+  global $formSort, $couleur, $ligne, $cell, $note, $notNot, $notOct, $nomTessi, $repri, $nbRep, $nbTuy, $premOct, $dernOct, $haut, $bas;
+
+  // Détermination des lignes de titre du pseudo-graphique.
+  for ($i = 0; $i &lt;= 6; $i++)
+  {
+   $ligne[$i] = "              ";
+   for ($j = $repri[0]; $j &lt;= ($repri[$nbRep] - 1); $j++) {$ligne[$i] .= " ";}
+   $ligne[$i] .= "                    \n";
+  };
+
+  $repri[$nbRep]--;                                                      // Pour pouvoir afficher la dernière note.
+  for ($i = 0; $i &lt;= $nbRep; $i++)
+  {
+   $chaine = $note[$notNot][(($repri[$i] - 1) % 12) + 1];                // Nom de la note.
+   $a = ($repri[$i] + 14) - $repri[0];                                   // Place de la note ; 14 est le nombre de caractère de la marge.
+
+   // Passe le nom des notes en minuscules.
+   if (($notOct == 2) && ($repri[$i] &gt; 12)) {$chaine = strtolower($chaine);}
+
+   for ($j = 1; $j &lt;= strlen($chaine); $j++)                             // Affiche la note.
+   {
+    $ligne[$j] = substr_replace($ligne[$j], substr($chaine, ($j - 1), 1), $a, 1);
+   }
+   if ($notOct == 1)                                                     // Notation numérique.
+   {
+    $ligne[$j] = substr_replace($ligne[$j], (floor($repri[$i] / 12) + 1), $a, 1);
+   }
+   else                                                                  // Notation allemande des octaves.
+   {
+    if (($repri[$i] &gt;= 12) && ($repri[$i] &lt; 25))                         // Affiche le null.
+    {
+     $ligne[$j] = substr_replace($ligne[$j], "X", $a, 1);
+    }
+    if ($repri[$i] &gt;= 25)                                                // Affiche les guillemets.
+    {
+     for ($k = $j; $k &lt;= ($j + (floor($repri[$i] / 12) - 2)); $k++)
+     {
+      $ligne[$k] = substr_replace($ligne[$k], "'", $a, 1);
+     };
+    };
+   };
+  };
+  $repri[$nbRep]++;                                                      // On restitue en l'état...
+
+  // substr_replace est fâché avec l'UTF8 car il prend deux caractères pour « ° »...
+  for ($i = 2; $i &lt;= 6; $i++) {$ligne[$i] = str_replace("X", "&deg;", $ligne[$i]); };
+
+  // Affichage des lignes de titre.
+  function affiLigneTitre()
+  {
+   global $formSort, $ligne;
+
+   for ($i = 1; $i &lt;= 6; $i++)                                                                   
+   {
+    if ($ligne[$i] != $ligne[0])
+    {
+     switch ($formSort)
+     {
+      case 1 : echo($ligne[$i]);                                          break;                  // HTML.
+      case 2 : echo("\par " . str_replace("&deg;", "\\'b0", $ligne[$i])); break;                  // RTF.
+      case 3 : echo(          str_replace("&deg;", "°",     $ligne[$i])); break;                  // TXT.
+     };
+    };
+   };
+  };
+
+  affiLigneTitre();
+  $nbTuy = 0; $haut = 121; $bas = 1;                                                              // Initialisation des variables.
+  while($cell[$haut] == $cell[0]) {$haut--; };                                                    // Empêche l'affichage des aigus inutiles.
+
+  for ($i = $haut; $i &gt;= 1; $i--)                                                                 // Toutes les tessitures qui possèdent des tuyaux.
+  {
+   // Titre des lignes.
+   $titre = $note[$notNot][(($i - 1) % 12) + 1] . "      ";
+   $titre = substr($titre, 0, (6 - strlen($titre)));
+   // Détection des Octaves, Tierces et Quintes.
+   if (((($i - 1) % 12) == 0 ) || ((($i + 7) % 12) == 0 ) || ((($i + 4) % 12) == 0 ))
+   {
+    $titre .= $nomTessi[$i];
+   };
+   $titre .= "            "; $titre = substr($titre, 0, (12 - iconv_strlen($titre)));             // Seul endroit (pour l'instant) où la fonction iconv_strlen() est utilisé (à cause de l'UTF8 sur la notation latine "Ré").
+   if (($formSort == 1) || ($formSort == 3)) {echo(" "      .             $titre  . "|"); };      // HTML et TXT.
+   if  ($formSort == 2)                      {echo("\par  " . utf8_decode($titre) . "|"); };      // RTF.
+  
+   // Traduction de la chaîne $cell[$i] en une chaîne ($a) affichable à l'écran.
+   $a = ""; $b = ""; $c = 0; $d = 0; $r = 0;
+
+   for ($t = ((($repri[0] - 1) * 2) + 1); $t &lt;= (($repri[$nbRep] - 1) * 2); $t += 2)              // Tout le clavier par saut de deux octets.
+   {
+    $b = deciBin(ord(substr($cell[$i], ($t + 1), 1))) . deciBin(ord(substr($cell[$i], $t, 1)));   // Extrait et concatène deux octets.
+    $c = strlen(str_replace("0", "", $b)); $d += $c;                                              // Comptabilise le nombre de tuyau sur cette note. Ajoute au total de la ligne.
+    if ($c == 0)                                                                                  // Tout ce qui ne concerne pas le slash.
+    {
+     if ((((($t - 1) / 2) + 1) == $repri[$r]) && ($r != 0))                                       // Barre des reprises sauf sur la première.
+     {
+      // Sur les octaves et les quintes : croisement. Sur le reste : barre verticale.
+      if (((($i - 1) % 12) == 0 ) || ((($i + 4) % 12) == 0 ) || ($i == $haut)) {$a .= "+"; } else {$a .= "|"; };
+     }
+     else
+     {
+      // Sur les octaves et les quintes : tiret. Sur le reste : espace.
+      if (((($i - 1) % 12) == 0 ) || ((($i + 4) % 12) == 0 ) || ($i == $haut)) {$a .= "-"; } else {$a .= " "; };
+     };
+    }
+    else                                                                                          // Y'en a !
+    {
+     if ($c == 1)                                                                                 // Un si petit slash...
+     {
+      switch ($formSort)
+      {
+       case 1 : $a .= "&lt;font color=\"" . $couleur[16 - strpos($b, "1")] . "\"&gt;/&lt;/font&gt;";          break; // HTML.
+       case 2 : $a .= "\plain\\f3\\fs12\cf" . (16 - strpos($b, "1")) . "\b /\plain\\f3\\fs12\b "; break; // RTF.
+       case 3 : $a .= "/";                                                                        break; // TXT.
+      };
+     };
+     if (($c &gt;= 2) && ($c &lt;= 9)) {$a .= $c;}                                                      // Doublures, triplures, chiures et bavochures.
+     if ($c &gt;= 10) {$a .= "*";}                                                                   // Accordeur, sois patient, tu fais un bÔ métier.
+    };
+    if ( ((($t - 1) / 2) + 1) == $repri[$r] ) {$r++; };                                           // Changement de reprise.
+   };
+
+   $b = $d . "";  $c = strlen($b);                                                                // Mesure (en caractère) de la longueur de $d.
+   switch ($formSort)                                                                             // En rouge et aligné à droite.
+   {
+    case 1 : $chaine = "&lt;font color=\"#ff0000\"&gt;" . $d . "&lt;/font&gt; - $titre \n";                                break; // HTML.
+    case 2 : $chaine = "\plain\\f3\\fs12\cf2\b " . $d . "\plain\\f3\\fs12\b  - " . utf8_decode($titre) . "\n"; break; // RTF.
+    case 3 : $chaine = $d . " - $titre \n";                                                                    break; // TXT.
+   };
+   echo($a . "|" . substr("   ", 0, (3 - $c)) . $chaine);
+   $cell[$i] = substr_replace($cell[$i], chr($d), 0, 1);                                          // Stockage dans le premier octet de $cell[$i].
+   $nbTuy += $d;                                                                                  // Comptabilise le nombre total de tuyaux.
+
+   // Empêche l'affichage du grave s'il est vide en totalité.
+   $j = $i - 1; while (($j &gt; 0) && ($cell[$j] == $cell[0])) {$j--; }; if ($j &lt; 1) {$i = 0; }
+  };
+
+  affiLigneTitre();
+  
+  // $premOct et $dernOct ==&gt; Nécessaire à l'établissement des tableaux de débit --&gt;
+  $t = 0; $i = 1;   while ($t == 0) {$t = ord(substr($cell[$i], 0, 1)); $i++;} $premOct = floor(($i - 2) / 12);
+  $t = 0; $i = 121; while ($t == 0) {$t = ord(substr($cell[$i], 0, 1)); $i--;} $dernOct = floor($i / 12);
+
+  // Localise la première tessiture grave ==&gt; $haut et $bas nécessaires au graphique PNG.
+  for ($i = 1; $i &lt;= 121; $i++) {if ($cell[$i] != $cell[0]) {$bas = $i; $i = 122; }; };
+ };
+
+ // Détermination des variables reçues en provenance de la validation du formulaire.
+ $t1 = isset($_POST ['t1']) ? $_POST ['t1'] : "";
+ $t2 = isset($_POST ['t2']) ? $_POST ['t2'] : "";
+ $t3 = isset($_POST ['t3']) ? $_POST ['t3'] : "";
+
+ // Traitement des données depuis un fichier XML s'il y a lieu.
+ $adresseFichier = isset($_GET ['url']) ? $_GET ['url'] : "";                   // L'adresse du fichier est dans l'URL.
+ if (!$adresseFichier) {$adresseFichier = isset($_FILES['XMLfichier']['tmp_name']) ? $_FILES['XMLfichier']['tmp_name'] : ""; };
+ 
+ // Le fichier est transféré depuis le disque dur.
+ if ((is_uploaded_file($adresseFichier)) || ($adresseFichier))
+ {
+  $xmlDoc = new DOMDocument(); $xmlDoc-&gt;load($adresseFichier);                  // Chargement du fichier.
+  
+  // Coches du clavier.
+  $XMLclavier = $xmlDoc-&gt;getElementsByTagName("KB")-&gt;item(0)-&gt;getElementsByTagName("PRESENT_NOTE")-&gt;item(0)-&gt;firstChild-&gt;nodeValue;
+  $XMLclavier = preg_replace( '`[^0-1]`', '', $XMLclavier);                     // Supprime tout ce qui n'est pas 0 ou 1 dans le contenu.
+
+  $XMLpleinjeu = $xmlDoc-&gt;getElementsByTagName("MIXTURE")-&gt;item(0);
+  $langue[17][$langueActive] = $XMLpleinjeu-&gt;getAttributeNode('name')-&gt;value;   // Nom du jeu.
+    $lignes = $XMLpleinjeu-&gt;getElementsByTagName("RANK")-&gt;length;               // Nombre de rangs.
+                                                                                // Nombre de reprises (du premier rang).
+  $colonnes = $XMLpleinjeu-&gt;getElementsByTagName("RANK")-&gt;item(0)-&gt;getElementsByTagName("BREAK")-&gt;length;
+
+  for ($j = 1; $j &lt;= $colonnes; $j++)                                           // Notes des reprises.
+  {
+   $k = $XMLpleinjeu-&gt;getElementsByTagName("RANK")-&gt;item(0)-&gt;getElementsByTagName("BREAK")-&gt;item($j - 1)-&gt;getAttributeNode('pos')-&gt;value;
+   $noterep = substr_replace($noterep, chr($k), ($j - 1), 1);                   // Toujours du premier rang.
+  };
+
+  for ($j = 1; $j &lt;= $lignes; $j++)                                             // Composition du plein jeu.
+  {
+   for ($i = 1; $i &lt;= $colonnes; $i++)
+   {
+    $k = $XMLpleinjeu-&gt;getElementsByTagName("RANK")-&gt;item($j - 1)-&gt;getElementsByTagName("BREAK")-&gt;item($i - 1)-&gt;getAttributeNode('range')-&gt;value;
+    $comprep = substr_replace($comprep, chr($k), ((($j - 1) * 16) + ($i - 1)), 1);
+   };
+  };
+
+  $eXecute = isset($_GET ['f']) ? $_GET ['f'] : 0;                       // Exécutera le débit si f != 0 (format).
+  if ($eXecute != 0)                                                     // en reconstituant les chaines $t1, $t2 et $t3
+  {                                                                      // qui sont normalement issues du formulaire.
+   $chaine1 = $XMLclavier . "000"; $chaine2 = "";                        // On a besoin d'une chaîne de 64 caractères.
+   for ($i = 0; $i &lt;= 7; $i++)                                           // Réduit les 64 bits précédents à huit octets.
+   {
+    $chaine2 .= chr(bindec(substr($chaine1, ($i * 8), 8)));              // Notes du clavier.
+   };
+   $chaine  = $chaine2 . encodeVal($lignes);                             // Nombre de rangs.
+   $chaine .= encodeVal($colonnes);                                      // Nombre de reprises.
+   $chaine .= encodeVal($notNot);                                        // Notation des notes.
+   $chaine .= encodeVal($notOct);                                        // Notation des octaves.
+   $chaine .= encodeVal($largImgGraph);                                  // Largeur de l'image graphique.
+   $chaine .= encodeVal($hautImgGraph);                                  // Hauteur de l'image graphique.
+   $chaine .= encodeVal($eXecute);                                       // Format de sortie.
+   $chaine .= $XMLpleinjeu-&gt;getAttributeNode('name')-&gt;value;             // Nom du jeu (255 octets maximum).
+
+        $t1 = base64_encode($chaine);                                    // Encodage de la chaîne $t1.
+        $t2 = base64_encode($noterep);                                   // Encodage de la chaîne $t2.
+        $t3 = base64_encode($comprep);                                   // Encodage de la chaîne $t3.
+  };
+ };
+
+ // Si les trois existent, on considère la saisie valide.
+ if ($t1 && $t2 && $t3)
+ {
+  // +--------------------------------------------------------------+
+  // | Récupération des variables à partir des chaînes transférées. |
+  // +--------------------------------------------------------------+
+  $chaine = base64_decode($t1);                                          // Décodage de la chaîne $t1.
+
+  $noteCoche = "";                                                       // Notes du clavier.
+  for ($i = 0; $i &lt;= 7; $i++)
+  {
+   $chaine1 = decbin(ord(substr($chaine, $i, 1))); while (strlen($chaine1) &lt; 8) {$chaine1 = "0" . $chaine1;}
+   $noteCoche .= $chaine1;
+  };
+
+     $nbRan =    decodeVal(substr($chaine,  8,                      2)); // Nombre de rangs.
+     $nbRep =    decodeVal(substr($chaine, 10,                      2)); // Nombre de reprises.
+    $notNot =    decodeVal(substr($chaine, 12,                      2)); // Notation des notes.
+    $notOct =    decodeVal(substr($chaine, 14,                      2)); // Notation des octaves.
+     $l_img =    decodeVal(substr($chaine, 16,                      2)); // Largeur de l'image graphique.
+     $h_img =    decodeVal(substr($chaine, 18,                      2)); // Hauteur de l'image graphique.
+  $formSort =    decodeVal(substr($chaine, 20,                      2)); // Format de sortie.
+    $nomJeu = stripslashes(substr($chaine, 22, (strlen($chaine) - 22))); // Nom du jeu (255 octets maximum).
+
+  // Valeurs des notes de reprises.
+  $chaine = base64_decode($t2);                                          // Décodage de la chaîne $t2.
+  for ($i = 0; $i &lt;= 15; $i++) {$repri[$i] = ord(substr($chaine, $i, 1)); };
+
+  // Valeurs des tessitures.
+  $chaine = base64_decode($t3);                                          // Décodage de la chaîne $t3.
+  for ($i = 0; $i &lt;= 15; $i++)
+  {
+   for ($j = 0; $j &lt;= 15; $j++) {$tessi[$i][$j] = ord(substr($chaine, (($i * 16) + $j), 2)); };
+  };
+
+  // +---------------------------------------------------------------------------------+
+  // |                         Mise en mémoire des données.    +-----+                 |
+  // | On est prié de remarquer que le tableau/chaînes ne fait | QUE | 15006 octets... |
+  // +---------------------------------------------------------+-----+-----------------+
+  // Déclaration des chaînes vierges.
+  $cell[0] = str_repeat(chr(0), 123);                                    // $cell[0] servira à la comparaison de chaînes vides.
+  for ($i = 1; $i &lt;= 121; $i++) {$cell[$i] = $cell[0]; };                // Initialisation des chaînes en copie de $cell[0].
+
+  $repri[$nbRep] = strlen(rtrim($noteCoche, "0")) + 1;                   // Pour pouvoir passer la dernière reprise.
+
+  for ($i = 1; $i &lt;= $nbRan; $i++)                                       // Boucle des rangs.
+  {
+   for ($j = 1; $j &lt;= $nbRep; $j++)                                      // Boucle des reprises.
+   {
+    if ($tessi[$i - 1][$j - 1] != 0)                                     // Cas des reprises vides (trous).
+    {
+     $vraiNote = $tessi[$i - 1][$j - 1] + $repri[$j - 1] - 1;            // Première note RÉELLE de la reprise.
+     for ($k = $repri[$j - 1]; $k &lt; $repri[$j]; $k++)                    // Boucle des notes.
+     {
+      if (substr($noteCoche, ($k - 1), 1) == "1")                        // À la condition que les notes soient présentes.
+      {
+       if ($i &lt;= 8)                                                      // Les huit premiers rangs.
+       {
+        $place = ((($k - 1) * 2) + 1);                                   // Localise la place pour $cell[$vraiNote]
+
+        // Extrait la valeur, la convertit en binaire et ajoute le bit à la place du rang.
+        $chaine = substr_replace(deciBin(ord(substr($cell[$vraiNote], $place))), "1", (8 - $i), 1);
+       }
+       else                                                              // Les huit derniers rangs.
+       {
+        $place = ((($k - 1) * 2) + 2);                                   // Localise la place pour $cell[$vraiNote].
+
+        // Extrait la valeur, la convertit en binaire et ajoute le bit à la place du rang.
+        $chaine = substr_replace(deciBin(ord(substr($cell[$vraiNote], $place))), "1", (16 - $i), 1);
+       };
+       // Stocke la valeur en décimal sur la bonne tessiture et à la bonne note.
+       $cell[$vraiNote] = substr_replace($cell[$vraiNote], chr(bindec($chaine)), $place, 1);
+      };
+      $vraiNote++;                                                       // Incrémente la reprise.
+     };
+    };
+   };
+  };
+ }; // Fin de la condition sur $t1, $t2 et $t3.
+
+ // Détermination des chaînes de caractères de notation des notes avec enrichissement.
+ for ($j = 1; $j &lt;= count($note); $j++)
+ {
+  for ($i = 1; $i &lt;= 12; $i++)
+  {
+   $chaine = ""; $traitementFormSort = isset($formSort) ? $formSort : 1; // Traitement de la mise en exposant ou indice pur « # », « b », « s » et « is ».   
+   switch ($traitementFormSort)                                          // Les enrichissements ne sont pas les mêmes selon le format de sortie.
+   {
+    case 1 : // Enrichissements HTML.
+     if (strpos($note[$j][$i], "#", 0)) {$chaine = substr_replace($note[$j][$i], "&lt;sup&gt;#&lt;/sup&gt;", strpos($note[$j][$i], "#", 0), 1); };
+     if (strpos($note[$j][$i], "b", 0)) {$chaine = substr_replace($note[$j][$i], "&lt;sub&gt;b&lt;/sub&gt;", strpos($note[$j][$i], "b", 0), 1); };
+     if (strpos($note[$j][$i], "s", 0)) // Notation allemande.
+     {
+      if (strpos($note[$j][$i], "is", 0))
+      {
+       $chaine = substr_replace($note[$j][$i], "&lt;sup&gt;is&lt;/sup&gt;", strpos($note[$j][$i], "is", 0), 2);
+      }
+      else
+      {
+       $chaine = substr_replace($note[$j][$i], "&lt;sup&gt;s&lt;/sup&gt;", strpos($note[$j][$i], "s", 0), 1);
+      };
+     };
+    break;
+    case 2 : // Enrichissements RTF.
+     if (strpos($note[$j][$i], "#", 0)) {$chaine = substr_replace($note[$j][$i], "{\super #}", strpos($note[$j][$i], "#", 0), 1); };
+     if (strpos($note[$j][$i], "b", 0)) {$chaine = substr_replace($note[$j][$i], "\\'b0", strpos($note[$j][$i], "b", 0), 1); };
+     if (strpos($note[$j][$i], "s", 0))                                  // Notation allemande.
+     {
+      if (strpos($note[$j][$i], "is", 0))
+      {
+       $chaine = substr_replace($note[$j][$i], "{\super is}", strpos($note[$j][$i], "is", 0), 2);
+      }
+      else
+      {
+       $chaine = substr_replace($note[$j][$i], "{\super s}", strpos($note[$j][$i], "s", 0), 1);
+      };
+     };
+    break;
+   };
+   if (!$chaine) {$chaine = $note[$j][$i]; };                            // Note sans retouche.
+   $affiNote[$j][$i] = $chaine;                                          // $affiNote[$j][$i] sera sans retouche pour TXT.
+  };
+ };
+
+ // Fabrication de la combination de la notation des notes ET des octaves.
+ $noteOctave[0] = " - ";                                                 // Utile à l'affichage des cellules vides.
+ for ($i = 1; $i &lt;= 61; $i++)
+ {
+  $j = ((($i - 1) % 12) + 1); $k = floor((($i - 1) / 12) + 1);
+
+  // Notation numérique des octaves.
+  if ($notOct == 1)
+  {
+       $noteOctave[$i] =     $note[$notNot][$j] . $k;                    // Sans enrichissement.
+   $affiNoteOctave[$i] = $affiNote[$notNot][$j] . $k;                    // Avec enrichissement (pour le résultat).
+  };
+
+  // Notation allemande des octaves.
+  if ($notOct == 2)
+  {
+   if ($k == 1)
+   {
+        $noteOctave[$i] =     $note[$notNot][$j];                        // Sans enrichissement.
+    $affiNoteOctave[$i] = $affiNote[$notNot][$j];                        // Avec enrichissement (pour le résultat).
+   }
+   else                                                                  // Passe en minuscule.
+   {
+        $noteOctave[$i] = strtolower    ($note[$notNot][$j]);            // Sans enrichissement.
+    $affiNoteOctave[$i] = strtolower($affiNote[$notNot][$j]);            // Avec enrichissement (pour le résultat).
+   };
+
+   if ($k == 2)                                                          // Ajoute le null pour la deuxième octave.
+   {
+        $noteOctave[$i] .= "°";                                          // Sans enrichissement.
+    $affiNoteOctave[$i] .= "°";                                          // Avec enrichissement (pour le résultat).
+   };
+
+   if ($k &gt;= 3)                                                          // Ajoute les guillemets à partir de la troisième octave.
+   {
+    for ($l = 1; $l &lt;= ($k - 2); $l++)
+    {
+         $noteOctave[$i] .= "'";                                         // Sans enrichissement.
+     $affiNoteOctave[$i] .= "'";                                         // Avec enrichissement (pour le résultat).
+    };
+   };
+  };
+ };
+
+ // Ne commence à envoyer du HTML que dans le cas du formulaire de saisie ou de la sortie demandée en HTML.
+ if ((!isset($formSort)) || ($formSort &lt;= 1))
+ {
+  header("Content-type:text/html; charset=UTF-8");
+
+?&gt;&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;!-- Page HTML composée et programmée par S.M.C.J. --&gt;
+&lt;!-- Sources PHP ./src/code.php --&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;&lt;?php echo(str_replace("&lt;br /&gt;", " ", $langue[1][$langueActive])); ?&gt;.&lt;/title&gt;
+
+  &lt;meta http-equiv="content-language" content="&lt;?php echo($choixLangue); ?&gt;" /&gt;
+  &lt;meta http-equiv="content-type"     content="text/html; charset=UTF-8" /&gt;
+  &lt;meta       name="author"           content="S.M.C.J." /&gt;
+  &lt;meta       name="keywords"         content="Hydraule Orgue Orgao Organo Orgel Organ" /&gt;
+  &lt;meta       name="description"      content="Calcul du nombre de tuyaux identiques d'un plein-jeu." /&gt;
+
+  &lt;link rel="shortcut icon" href="img/favicon.png" /&gt;
+  &lt;link rel="stylesheet" type="text/css" href="styles.css" /&gt;
+
+  &lt;script language="javaScript"&gt;
+   &lt;!--
+&lt;?php
+ if (!isset($formSort))  // Insertion du JavaScript du formulaire.
+ {
+?&gt;
+    // Déclaration des variables GLOBALES.
+    var  base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    var note = new Array(&lt;?php echo(count($note)); ?&gt;);
+&lt;?php
+ // Transfert des notation de notes de PHP à JavaScript.
+ for ($j = 1; $j &lt;= count($note); $j++)
+ {
+  echo("    note[" . $j . "] = new Array(");
+  for ($i = 1; $i &lt;= 12; $i++)
+  {
+   echo("\"" . $note[$j][$i] . "\"");
+   if ($i &lt; 12) {echo(", "); }
+  };
+  echo(");\n");
+ };
+?&gt;
+
+    // Initialisation des variables, reset des champs de saisie Focus sur la saisie du nom de jeu et activation de la première cellule.
+    function init()
+    {
+     // Composition du plein jeu et des emplacements de reprises. « testcomprep » sert à tester la validité de la saisie.
+     noterep = base64_decode(document.form_06.t2.value); comprep = base64_decode(document.form_06.t3.value);
+     testcomprep = ""; for (i = 0; i &lt;= 15; i++) {testcomprep += String.fromCharCode(0); };
+
+     cellActive = document.getElementById("cellInputTessi_1");
+     document.form_01.reset(); document.form_02.reset(); document.form_03.reset();
+     document.form_04.reset(); document.form_05.reset(); document.form_06.reset();
+     scrollTo(0, 0); document.form_02.nomjeu.focus();
+    };
+
+    // Recharge la page avec le bouton « Initialiser ».
+    function recharge()
+    {
+     if (confirm("&lt;?php echo($langue[44][$langueActive]); ?&gt;")) {document.location.href = document.location.href; };
+    };
+
+    // Attribue une valeur (un caractère) dans une chaine - Simplification d'écriture.
+    function attrib(chaine, place, remp)
+    {
+     return chaine.substr(0, place) + remp + chaine.substr(place + remp.length);
+    };
+
+    // Conversion d'une chaîne en binaire. Source : Philippe Baumann - http://kevin.vanzonneveld.net
+    function binDec(input) {input = (input + '').replace(/[^01]/gi, ''); return parseInt(input, 2); };
+    
+    // Encodage et décodage en base 64. Source : Tyler Akins - http://rumkin.com
+    function base64_encode(input)
+    {
+     var output = ""; var chr1, chr2, chr3; var enc1, enc2, enc3, enc4; var i = 0;
+
+     do
+     {
+      chr1 = input.charCodeAt(i++); chr2 = input.charCodeAt(i++); chr3 = input.charCodeAt(i++);
+      enc1 = chr1 &gt;&gt; 2; enc2 = ((chr1 & 3) &lt;&lt; 4) | (chr2 &gt;&gt; 4); enc3 = ((chr2 & 15) &lt;&lt; 2) | (chr3 &gt;&gt; 6); enc4 = chr3 & 63;
+
+      if (isNaN(chr2)) {enc3 = enc4 = 64;} else if (isNaN(chr3)) {enc4 = 64;}
+
+      output = output + base64.charAt(enc1) + base64.charAt(enc2) + base64.charAt(enc3) + base64.charAt(enc4);
+     }
+     while (i &lt; input.length);
+
+     return output;
+    };
+
+    function base64_decode(input)
+    {
+     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+     var output = ""; var i = 0;
+     input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+     do
+     {
+      enc1 = base64.indexOf(input.charAt(i++)); enc2 = base64.indexOf(input.charAt(i++));
+      enc3 = base64.indexOf(input.charAt(i++)); enc4 = base64.indexOf(input.charAt(i++));
+      chr1 = (enc1 &lt;&lt; 2) | (enc2 &gt;&gt; 4); chr2 = ((enc2 & 15) &lt;&lt; 4) | (enc3 &gt;&gt; 2); chr3 = ((enc3 & 3) &lt;&lt; 6) | enc4;
+
+      output = output + String.fromCharCode(chr1);
+
+      if (enc3 != 64) {output = output + String.fromCharCode(chr2); };
+      if (enc4 != 64) {output = output + String.fromCharCode(chr3); };
+     } while (i &lt; input.length);
+
+     return output;
+    };
+
+
+    // Encode une valeur numérique sur deux octets.
+    function encodeVal(input)
+    {
+     //     |&lt;------------- Poids fort -------------&gt;|   |&lt;------- Poids faible -------&gt;| 
+     return String.fromCharCode(parseInt(input / 256)) + String.fromCharCode(input % 256);
+    };
+
+    // Empêche la saisie d'autre chose que des neuf chiffres.
+    // Fonctions écrites par Bertrand Wattel (http://bertrand.wattel.free.fr/)
+    // et trouvé sur le site SELFHTML (http://actuel.fr.selfhtml.org/articles/javascript/entrees_formulaire/index.htm).
+    function codeTouche(evenement)
+    {
+     for (prop in evenement) {if (prop == 'which') return (evenement.which); };
+     return(evenement.keyCode);
+    };
+
+    function scanTouche(evenement)
+    {
+     var reCarSpeciaux = /[\x00\x08\x0D]/;
+     var reCarValides = /[0-9]/;
+
+     var codeDecimal  = codeTouche(evenement);
+     var car = String.fromCharCode(codeDecimal);
+     var autorisation = reCarValides.test(car) || reCarSpeciaux.test(car);
+
+     return autorisation;
+    };
+
+    // Fenêtre d'aide.
+    function ouvre(nomFenetre)
+    {
+     var nomFenetre = nomFenetre + "_&lt;?php echo($choixLangue); ?&gt;";
+     var posgauche = 1; var poshaut = 1; var largeur = 300; var hauteur = 300;
+     if (screen.width)  {largeur = Math.floor(screen.width  / 1.5); posgauche = Math.floor(screen.width  / 50); };
+     if (screen.height) {hauteur = Math.floor(screen.height / 1.5);   poshaut = Math.floor(screen.height / 50); };
+
+     var para = "toolbar=1,location=0,directories=0,status=0,menubar=1,resizable=1,scrollbars=1,width=" + largeur + ",height=" + hauteur + ",top=" + poshaut + ",left=" + posgauche;
+     nomFenetre = window.open(nomFenetre + ".htm", nomFenetre, para); nomFenetre.focus();
+    };
+
+    // Travail sur les étiquettes du tableau de coche. Du D.O.M. en toutes choses...
+    function renommeCoch(notation)
+    {
+     for (i = 1; i &lt;= 61; i++)
+     {
+      // Écrit la notation des notes.
+      j = ((i - 1) % 12); chaine = note[notation][j]; // « chaine » juste pour la lisibilité du code.
+
+      // Afin de savoir si la notation des notes est allemande.
+      with(document.form_02.notNot) {estTeuton = (options[selectedIndex].text.toLowerCase().indexOf("allemande", 0) == -1); };
+
+      // Mise en minuscules des notes (hors la première octave) pour la notation des octaves allemande.
+      if ((document.form_02.notOct.options[1].selected == true) && (Math.floor((((i - 1) / 12)) + 1) &gt; 1)) {chaine = chaine.toLowerCase(); };
+
+      // Ne laisse qu'un seul enfant D.O.M. dans les cellules afin de conserver le nom de l'ID.
+      eval("noeud = document.getElementById('nomCoch" + i + "')");
+      while (noeud.childNodes[1]) {noeud.removeChild(noeud.childNodes[1]); };
+
+      // Remplacement à la condition que « chaine » NE CONTIENNE PAS « # », « b » et « s ».
+      if ((chaine.indexOf("#", 0) == -1) && ((chaine.indexOf("b", 0) == -1) || (!estTeuton)) && (chaine.indexOf("s", 0) == -1))
+      {
+       eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine);");
+      };
+
+      // Traitement de la mise en exposant ou en indice si « chaine » contient « # », « b », « s » ou « is ».
+      if (chaine.indexOf("#", 0) != -1)
+      {
+       eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('#', 0)));"); // Partie gauche.
+       enfant = document.createElement('sup'); enfant.appendChild(document.createTextNode('#')); noeud.appendChild(enfant); // Incorporation du nouveau &lt;sup&gt;.
+      };
+
+      if ((chaine.indexOf("b", 0) != -1) && (estTeuton)) // Pas de traitement de &lt;sub&gt; sur la lettre « B » en Allemagne !
+      {
+       eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('b', 0)));"); // Partie gauche.
+       enfant = document.createElement('sub'); enfant.appendChild(document.createTextNode('b')); noeud.appendChild(enfant); // Incorporation du nouveau &lt;sub&gt;.
+      };
+
+      if (chaine.indexOf("s", 0) != -1)
+      {
+       if (chaine.indexOf("is", 0) != -1)
+       {
+        eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('is', 0)));"); // Partie gauche.
+        enfant = document.createElement('sup'); enfant.appendChild(document.createTextNode('is')); noeud.appendChild(enfant); // Incorporation du nouveau &lt;sup&gt;.
+       }
+       else
+       {
+        eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('s', 0)));"); // Partie gauche.
+        enfant = document.createElement('sup'); enfant.appendChild(document.createTextNode('s')); noeud.appendChild(enfant); // Incorporation du nouveau &lt;sup&gt;.
+       };
+      };
+
+      // Écrit la notation des octaves.
+      if (document.form_02.notOct.options[0].selected == true)
+      {
+       eval("with(document.getElementById('numeroCoch" + i + "').firstChild) replaceData(0, length, '" + i + "');"); // Numéro de note.
+      }
+      else                                                                            // Notation allemande.
+      {
+       k = Math.floor(((i - 1) / 12) + 1);
+       if (k == 1) {chaine = " "; };                                                  // Première octave.
+       if (k == 2) {chaine = "°"; };                                                  // Deuxième octave.
+       if (k &gt;= 3) {chaine = ""; for (l = 1; l &lt;= (k - 2); l++) {chaine += "'"; }; }; // Octaves suivantes.
+
+       eval("with(document.getElementById('numeroCoch" + i + "').firstChild) replaceData(0, length, chaine);");
+      };
+     };
+    };
+
+    // Écriture dans la liste déroulante. Ceci arrive :
+    //  * Quand on change la notation des notes ou des octaves.
+    //  * Quand on change les cases à cocher en cliquant dessus ou par la liste des coches rapides.
+    function actuListeRep(coche)
+    {
+     // Garde en mémoire la VALEUR de la sélection de la liste.
+     with (document.getElementById("listeRep")) memoValSel = options[selectedIndex].value;
+
+     // Mise à blanc de la liste déroulante avant reconstitution immédiate afin de respecter le « miroir » des cases à cocher.
+     with(document.getElementById("listeRep")) while (firstChild) {removeChild(firstChild); };
+
+     // Établissement de la combination de la notation des notes ET des octaves en fonction de la notation en cours.
+     var noteOctave = new Array(61);
+     premNote = "";
+     for (i = 1; i &lt;= 61; i++) // i : numéro de note dans le jeu - j : numéro de note dans l'octave - k : numéro d'octave.
+     {
+      j = ((i - 1) % 12); k = Math.floor(((i - 1) / 12) + 1);
+
+      // Notation numérique des octaves.
+      if (document.form_02.notOct.options[0].selected == true) {noteOctave[i] = note[document.form_02.notNot.value][j] + k; };
+
+      // Notation allemande des octaves.
+      if (document.form_02.notOct.options[1].selected == true)
+      {
+       if (k == 1)
+       {
+        noteOctave[i] = note[document.form_02.notNot.value][j];
+       }
+       else
+       {
+        noteOctave[i] = note[document.form_02.notNot.value][j].toLowerCase();  // Passe en minuscule.
+       };
+
+       if (k == 2) {noteOctave[i] += "°"; };                                            // Ajoute le null.
+
+       if (k &gt;= 3) {for (l = 1; l &lt;= (k - 2); l++) {noteOctave[i] += "'"; }; };         // Ajoute les guillemets.
+      };
+
+      // Attribution du texte et de son attribut au sein même de la liste déroulante en « miroir » des cases cochées.
+      if (eval("document.getElementById('cochNote" + i + "').checked == true;"))
+      {
+       if (!premNote) // Écriture de la première note dans la première cellule du tableau.
+       {
+        premNote = noteOctave[i]; document.getElementById("cellInputRep_1").value = premNote;
+         noterep = attrib(noterep, 0, String.fromCharCode(i));                          // Sans oublier d'en prendre note...
+       }
+       else          //  Écriture du reste dans la liste déroulante (De l'art du D.O.M.).
+       {
+            enfant = document.createElement("option");           enfant.appendChild(document.createTextNode(noteOctave[i]));
+        enfantAttr = document.createAttribute("value");          enfantAttr.value = i;
+        document.getElementById("listeRep").appendChild(enfant); enfant.setAttributeNode(enfantAttr);
+       };
+      };
+
+      // Traitement des en-têtes de reprises pour les changement de notations et pour la dévalidation des coches.
+      for (k = 2; k &lt;= 16; k++)                                                  // La première reprise, c'est déjà fait.
+      {
+       if ((noterep.charAt(k - 1).charCodeAt(0) == i) && (eval("document.getElementById('cochNote" + i + "').checked == false")))
+       {
+        eval("document.getElementById('cellInputRep_" + k + "').value = ' - '"); // Mise à blanc de l'en-tête.
+        noterep = attrib(noterep, (k - 1), String.fromCharCode(0));              // Mise en mémoire de cette suppression.
+       };
+
+       if (noterep.charAt(k - 1).charCodeAt(0) == i)                             // Réaffiche le contenu des en-têtes.
+       {
+        eval("document.getElementById('cellInputRep_" + k + "').value = noteOctave[i]");
+       }
+      };
+     };
+
+     // Remet la position de la sélection de la liste en place.
+     //  Si la coche se fait AU DESSUS de la sélection ==&gt; Cherche dans la liste le « value » adéquat pour en connaître la place.
+     // Si la coche se fait EN DESSOUS de la sélection ==&gt; Pas de traitement.
+     //         Si la décoche se fait SUR la sélection ==&gt; memoValSel = 0, soit le premier choix de la liste.
+     indexSelection = 0;
+     for (i = 0; i &lt;= (memoValSel - 1); i++) // Recherche sur la valeur et non sur la position à cause des trous possibles.
+     {
+      if (document.getElementById("listeRep").options[i].value == memoValSel)  {indexSelection = i; i = memoValSel; };  // Sortie de la boucle.
+     };
+     document.getElementById("listeRep").selectedIndex = indexSelection;
+
+     // Met à jour la liste de coches rapides avec la notation.
+     for (i = 1; i &lt;= (document.form_01.rapidCoch.length - 2); i++)
+     {
+      with (document.form_01.rapidCoch.options[i])
+      {
+       text = noteOctave[value.indexOf("X") + 1] + " - " + noteOctave[value.lastIndexOf("X") + 1];
+      };
+     };
+    };
+
+    // Coche les cases en série en fonction de types prédéfinis.
+    function serieCoche(serie)
+    {
+     for (i = 1; i &lt;= 61; i++)
+     {
+      if (serie.substr((i - 1), 1) == "X")
+      {
+       eval("document.getElementById('cochNote" + i + "').checked = true;");
+      }
+      else
+      {
+       eval("document.getElementById('cochNote" + i + "').checked = false;");
+      }
+     }
+     actuListeRep(-1);
+    };
+
+    // N'accepte pas la notation allemande des octaves si la notation des notes est « Latine » ou « Dom Bedos ».
+    function verifNotAllemande()
+    {
+     with(document.form_02.notNot) {chaine = options[selectedIndex].text; };
+     if ((chaine.toLowerCase().indexOf("&lt;?php echo(strtolower($langue[20][$langueActive])); ?&gt;", 0) != -1) || (chaine.toLowerCase().indexOf("bedos", 0) != -1))
+     {
+      document.form_02.notOct.options[0].selected = true;
+     };
+    };
+
+    // Contrôle la saisie des largeurs et hauteurs du futur fichier graphique.
+    function controle(objet, type, memo)
+    {
+     valeur = objet.value; saisie = true;
+
+     switch(type)
+     {
+      case 1:
+&lt;?php
+ $chaine = str_replace("AAA", $langue[40][$langueActive], $langue[39][$langueActive]);
+ $chaine = str_replace("BBB", $langue[42][$langueActive], $chaine);
+?&gt;
+       if (valeur &gt; 800) {alert('&lt;?php echo($chaine); ?&gt; 800.'); saisie = false; };
+&lt;?php
+ $chaine = str_replace("AAA", $langue[40][$langueActive], $langue[39][$langueActive]);
+ $chaine = str_replace("BBB", $langue[43][$langueActive], $chaine);
+?&gt;
+       if (valeur &lt; 200) {alert('&lt;?php echo($chaine); ?&gt; 200.'); saisie = false; };
+      break;
+
+      case 2:
+&lt;?php
+ $chaine = str_replace("AAA", $langue[41][$langueActive], $langue[39][$langueActive]);
+ $chaine = str_replace("BBB", $langue[42][$langueActive], $chaine);
+?&gt;
+       if (valeur &gt; 600) {alert('&lt;?php echo($chaine); ?&gt; 600.'); saisie = false; };
+&lt;?php
+ $chaine = str_replace("AAA", $langue[41][$langueActive], $langue[39][$langueActive]);
+ $chaine = str_replace("BBB", $langue[43][$langueActive], $chaine);
+?&gt;
+       if (valeur &lt; 150) {alert('&lt;?php echo($chaine); ?&gt; 150.'); saisie = false; };
+      break;
+
+      case 3: // Validation du formulaire de téléchargement du fichier XML.
+       if (!valeur) {alert('&lt;?php echo($langue[38][$langueActive]); ?&gt;'); saisie = false; } else {document.form_04.submit(); };
+      break;
+     };
+
+     if (!saisie)
+     {
+      if (type &lt; 3)  {objet.value = memo; objet.select(); };
+      objet.focus();
+     };
+    };
+
+    // Change le nombre de lignes ou de colonnes affichées du tableau.
+    function changeAffich(colonnes, lignes)
+    {
+     // Cellules de titre (NOTES du tableau).
+     for (i = 2; i &lt;= 16; i++)
+     {
+      commande = "document.getElementById('cellTdNot_" + i + "').className = '";
+      if (i &lt;= colonnes) {eval(commande + "affiCell'"); } else {eval(commande + "disparait'"); };
+     };
+
+     // Cellules de valeurs (REPRISES du tableau).
+     for (j = 1; j &lt;= 16; j++)
+     {
+      // Action sur les lignes (ceci est fait pour éviter les &lt;tr&gt;&lt;/tr&gt; vide qui prennent quand même de la place même quand les &lt;td&gt;&lt;/td&gt; sont neutralisés.
+      commande = "document.getElementById('ligne_" + j + "').className = '";
+      if ((j &lt;= lignes)) {eval(commande + "affiLigne'"); } else {eval(commande + "disparait'"); };
+      for (i = 1; i &lt;= 16; i++)
+      {
+       // Action sur les cellules.
+       commande = "document.getElementById('cellTdTessi_" + String.fromCharCode(i + 64) + j + "').className = '";
+       if ((j &lt;= lignes) && (i &lt;= colonnes)) {eval(commande + "affiCell'"); } else {eval(commande + "disparait'"); };
+      };
+     };
+    };
+
+    function changeTitrePleinJeu()
+    {
+     with(document.form_02) {titre = nomjeu.value + " " + nbRangs.options[nbRangs.value - 1].text; };
+     with(document.getElementById("titrePleinJeu").firstChild) {replaceData(0, length, titre); };
+    };
+
+    // Change la classe de la cellule, met en mémoire son contenu, change son contenu et passe le focus à la liste.
+    function re1(c)
+    {
+     c.className="cellFocus"; memo = c.value; c.value = " &lt;&lt;&lt; ";
+     document.getElementById("listeRep").focus(); document.getElementById("listeRep").className = "cellFocus";
+    };
+
+    // Traite le remplissage visible de la cellule de reprises et s'occupe de la mise en mémoire dans la variable « noterep ».
+    function re2(c)
+    {
+     if (c.id.indexOf("cellInputRep") != -1)
+     {
+      with (document)
+      {
+       // Attribue la valeur d'une reprise à la bonne place dans la bonne cellule.
+       c.value = getElementById("listeRep")[getElementById("listeRep").selectedIndex].text;
+       noCell = parseInt(c.id.substr(13, (c.id.length - 13)))                                    // « cellInputRep_ » fait 12 caractères.
+       // Comparaison avec les valeurs des cellules voisines.
+       // Attention, cette comparaison de s'éffectue que de proche en proche ; il doit être possible d'améliorer
+       i = noterep.charAt(noCell - 2).charCodeAt(0);                                             // Cellule précédente.
+       j = parseInt(getElementById("listeRep")[getElementById("listeRep").selectedIndex].value); // Cellule active.
+       k = noterep.charAt(noCell).charCodeAt(0);                                                 // Cellule suivante.
+
+       if ((j &lt;= i) || ((j &gt;= k) && (k != 0)))
+       {
+        alert("&lt;?php echo($langue[33][$langueActive]); ?&gt;");
+        c.value = memo;                                                                          // Remet la valeur d'origine.
+       }
+       else
+       {
+        // Attribue la valeur d'une reprise à la bonne place dans la chaîne « noterep ».
+        noterep = attrib(noterep, (noCell - 1), String.fromCharCode(j));
+       };
+      };
+      c.className = "fondSaisie"; document.getElementById("listeRep").className = "fondSaisie";
+     };
+    };
+
+    // Change la classe de la cellule, met en mémoire son contenu, change son contenu et passe le focus à la liste.
+    function te1(c)
+    {
+     c.className="cellFocus"; memo = c.value; c.value = " &lt;&lt;&lt; ";
+     document.getElementById("listeTessi").focus(); document.getElementById("listeTessi").className = "cellFocus";
+    };
+
+    // Traite le remplissage visible de la cellule de tessitures et s'occupe de la mise en mémoire dans la variable « comprep ».
+    function te2(c)
+    {
+     if (c.id.indexOf("cellInputTessi") != -1)
+     {
+      with (document)
+      {
+       // Attribue la valeur d'une tessiture à la bonne place dans la bonne cellule.
+       c.value = getElementById("listeTessi")[getElementById("listeTessi").selectedIndex].text;
+       noCell = parseInt(c.id.substr(15, (c.id.length - 15)));                                       // « cellInputTessi_ » fait 14 caractères.
+       j = parseInt(getElementById("listeTessi")[getElementById("listeTessi").selectedIndex].value); // Cellule active.
+
+       // Attribue la valeur d'une tessiture à la bonne place dans la chaîne COMPREP.
+       comprep = attrib(comprep, (noCell - 1), String.fromCharCode(j))
+      };
+      c.className = "fondSaisie"; document.getElementById("listeTessi").className = "fondSaisie";
+     };
+    };
+
+    // Remet les choses en place si la saisie n'a pas été modifiée.
+    function memoCell(c)
+    {
+     if (c.value == " &lt;&lt;&lt; ")
+     {
+      document.getElementById("listeRep").className = "fondSaisie"; document.getElementById("listeTessi").className = "fondSaisie";
+      c.className = "fondSaisie"; c.value = memo;
+     };
+    };
+
+    // Convertit les trois chaînes « noterep » et « comprep » en base 64 (pour le transfert).
+    function debit()
+    {
+     passe = true;
+
+     // À la condition que douze notes soient cochées au minimum.
+     j = 0; for (i = 1; i &lt;= 61; i++) {if (eval("document.getElementById('cochNote" + i + "').checked == true;")) {j++;}; };
+     if (j &lt; 12) {alert('&lt;?php echo($langue[34][$langueActive]); ?&gt;'); passe = false; };
+
+     // À la condition qu'un nom de jeu soit saisi.
+     if (document.form_02.nomjeu.value == "") {alert("&lt;?php echo($langue[35][$langueActive]); ?&gt;"); passe = false;}
+
+     // À la condition que toutes les reprises du tableau affiché aient été saisies.
+     if (noterep.substr(1, (document.form_02.nbReps.value - 1)).indexOf(String.fromCharCode(0)) == -1)
+     {
+      chaine1 = "";                                  // Traitement de « chaine1 ».
+      for (i = 1; i &lt;= 61; i++)
+      {
+       if (eval("document.getElementById('cochNote" + i + "').checked == true")) {chaine1 += "1"; } else {chaine1 += "0"; };
+      };
+      chaine1 += "000"; chaine2 = "";                // On a besoin d'une chaîne de 64 caractères.
+      for (i = 0; i &lt;= 7; i++)                       // Réduit les 64 bits précédents à huit octets.
+      {
+       chaine2 += String.fromCharCode(binDec(chaine1.substr((i * 8), 8)));
+      };
+
+      // Code les valeurs numériques de form_02 par une suite de deux octets et rajoute le format de sortie et le nom du jeu.
+      with (document.form_02)
+      {
+       chaine1 = chaine2 + encodeVal(nbRangs.value); // Nombre de rangs.
+       chaine1 +=          encodeVal( nbReps.value); // Nombre de reprises.
+       chaine1 +=          encodeVal( notNot.value); // Notation des notes.
+       chaine1 +=          encodeVal( notOct.value); // Notation des octaves.
+       chaine1 +=          encodeVal(  l_img.value); // Largeur de l'image graphique.
+       chaine1 +=          encodeVal(  h_img.value); // Hauteur de l'image graphique.
+      };
+
+      with (document.form_05)                        // Format de sortie.
+      {
+       for (i = 1; i &lt;= formatSortie.length; i++)
+       {
+        if (formatSortie[(i - 1)].checked) {chaine1 += encodeVal(i); i = formatSortie.length; };
+       };
+      };
+      
+      chaine1 += document.form_02.nomjeu.value;      // Nom du jeu (255 octets maximum).
+
+      document.form_06.t1.value = base64_encode(chaine1);
+      document.form_06.t2.value = base64_encode(noterep);
+      document.form_06.t3.value = base64_encode(comprep);
+     }
+     else
+     {
+      alert('&lt;?php echo($langue[36][$langueActive]); ?&gt;');  passe = false;
+     };
+
+     // À la condition qu'au moins une tessiture par rang ait été saisie.
+     for (i = 0; i &lt;= (document.form_02.nbRangs.value - 1); i++)
+     {
+      if (comprep.substr((i * 16), 16) == testcomprep)
+      {
+       alert("&lt;?php echo($langue[37][$langueActive]); ?&gt;");  i = 16; passe = false;
+      };
+     };
+
+     // Valide ou - non - le formulaire.
+     if (passe) {document.form_06.submit(); };
+    };
+&lt;?php
+ }  // Fin de l'insertion du JavaScript du formulaire.
+ else
+ {  // Insertion du JavaScript du résultat.
+?&gt;
+    // Cache une partie du résultat pour l'impression.
+    function cacheBlock(objet) {objet.className = "disparait"; };
+
+    // Affiche tous les tableaux de résultat pour l'impression.
+    function affiBlock()
+    {
+     var affiId = new Array("Compo", "ASCII", "Debit", "Graphique");
+     for (i = 0; i &lt; affiId.length; i++) {document.getElementById("tableau" + affiId[i]).className = "affiBloc"; };
+    };
+&lt;?php
+ }; // Fin de l'insertion du JavaScript du résultat.
+?&gt;
+   // --&gt;
+  &lt;/script&gt;
+ &lt;/head&gt;
+
+ &lt;body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000"&lt;?php if (!isset($formSort)) {echo(" onLoad=\"javaScript:init();\"");}; ?&gt;&gt;
+  &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
+   &lt;tr&gt;
+    &lt;td align="center" valign="center"&gt;
+     &lt;br /&gt;&lt;br /&gt;&lt;h1&gt;&lt;font color="#ff0000"&gt;&lt;?php echo($langue[0][$langueActive]); ?&gt;&lt;/font&gt;&lt;/h1&gt;
+     &lt;h2&gt;&lt;font color="#008000"&gt;&lt;?php echo($langue[1][$langueActive]); ?&gt;.&lt;/font&gt;&lt;/h2&gt;
+     &lt;h3&gt;&lt;font color="#000080"&gt;&lt;?php
+
+ if (!isset($formSort)) // Mode formulaire.
+ {
+  echo($langue[2][$langueActive] . "&lt;/font&gt;&lt;/h3&gt;\n");
+  for ($i = 0; $i &lt;= 2; $i++)
+  {
+   if ($choixLangue != $listeLangue[$i])
+   {
+    echo("     &lt;a href=\"pleinjeu.php?l=" . $listeLangue[$i] . "\"&gt;&lt;img src=\"img/flag_" . $listeLangue[$i] . ".gif\" border=\"0\" width=\"40\" height=\"28\" alt=\"" . $commentLangue[$i] . "\" title=\"" . $commentLangue[$i] . "\"&gt;&lt;/a&gt;");
+    echo("&nbsp; &nbsp; \n");
+   };
+  };
+ }
+ else
+ {
+  $nomJeu = utf8_encode($nomJeu) . " " . $nbRanRom[$nbRan];
+  echo("&lt;span onClick=\"javaScript:affiBlock();\" style=\"cursor:pointer;\" title=\"" . $langue[50][$langueActive] . "\"&gt;" . $nomJeu . "&lt;/span&gt;&lt;/font&gt;&lt;/h3&gt;\n");
+ };
+?&gt;
+    &lt;/td&gt;
+    &lt;td align="right"&gt;
+     &lt;a href="http://hydraule.org/" target="_top"&gt;&lt;img src="img/hydraule.png" border="0" width="216" height="230" alt="L'Hydraule" title="L'Hydraule"&gt;&lt;/a&gt;
+    &lt;/td&gt;
+   &lt;/tr&gt;
+  &lt;/table&gt;
+
+  &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+
+  &lt;center&gt;
+&lt;?php
+ // Affichage du formulaire.
+ if (!isset($formSort))
+ {
+?&gt;
+   &lt;table border="0" width="88%" cellpadding="0" cellspacing="0"&gt;
+    &lt;tr&gt;
+     &lt;!-- Cellule de la coche des notes (gauche).--&gt;
+     &lt;td width="10%"&gt;
+      &lt;form name="form_01"&gt;
+       &lt;!-- Table de la coche des notes. --&gt;
+       &lt;table border="5" cellspacing="0" cellpadding="15" bgcolor="#f5e9cf" background="img/ingres.jpg"&gt;
+        &lt;tr&gt;
+         &lt;td align="center"&gt;
+          &lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+           &lt;tr&gt;&lt;th colspan="3" nowrap&gt;&lt;?php echo($langue[3][$langueActive]); ?&gt;&lt;br /&gt;&lt;br /&gt;&lt;/th&gt;&lt;/tr&gt;
+&lt;?php
+ // Affichage des cases à cocher avec leur étiquettes.
+ for ($i = 1; $i &lt;= 61; $i++)
+ {
+  $j = ((($i - 1) % 12) + 1); $k = floor((($i - 1) / 12) + 1);
+  echo("           &lt;tr&gt;&lt;td align=\"right\"&gt;&lt;span id=\"nomCoch" . $i . "\"&gt;");
+  if (($notOct == 2) && ($k &gt;= 2)) {echo(strtolower($affiNote[$notNot][$j])); } else {echo($affiNote[$notNot][$j]); };
+  echo("&lt;/span&gt;&lt;/td&gt;&lt;td align=\"left\"&gt;&nbsp;&lt;span id=\"numeroCoch" . $i . "\"&gt;");
+  if ($notOct == 1)
+  {
+   echo($i);                                                                             // Numéro de note.
+  }
+  else
+  {
+   if ($k == 1) {$chaine = " "; };                                                       // Première octave.
+   if ($k == 2) {$chaine = "°"; };                                                       // Deuxième octave.
+   if ($k &gt;= 3) {$chaine = ""; for ($l = 1; $l &lt;= ($k - 2); $l++) {$chaine .= "'"; }; }; // Octaves suivantes.
+   echo($chaine);
+  };
+
+  echo("&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;input type=\"checkbox\" id=\"cochNote" . $i . "\" onChange=\"javaScript:actuListeRep(" . $i . ")\"");
+
+  // Application du masque de coches.
+  if (substr($XMLclavier, ($i - 1), 1) == "1") {echo(" checked"); };
+  echo(" /&gt;&lt;/td&gt;&lt;/tr&gt;\n");
+ };
+?&gt;
+           &lt;tr&gt;
+            &lt;th colspan="3"&gt;
+             &lt;br /&gt;&lt;?php echo($langue[4][$langueActive]); ?&gt;&lt;br /&gt;
+             &lt;select name="rapidCoch" class="fondSaisie" onChange="javaScript:serieCoche(this.value);"&gt;
+              &lt;option value="OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" selected&gt;----------&lt;/option&gt;
+              &lt;option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"&gt;&lt;?php echo($noteOctave[1]  . " - " . $noteOctave[61]); ?&gt;&lt;/option&gt;&lt;!-- C1 - C6 --&gt;
+              &lt;option value="XXXXXXXXXXXXXXXXXXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"&gt;&lt;?php echo($noteOctave[1]  . " - " . $noteOctave[18]); ?&gt;&lt;/option&gt;&lt;!-- C1 - F2 --&gt;
+              &lt;option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"&gt;&lt;?php echo($noteOctave[1]  . " - " . $noteOctave[30]); ?&gt;&lt;/option&gt;&lt;!-- C1 - F3 --&gt;
+              &lt;option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"&gt;&lt;?php echo($noteOctave[1]  . " - " . $noteOctave[32]); ?&gt;&lt;/option&gt;&lt;!-- C1 - G3 --&gt;
+              &lt;option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO"&gt;&lt;?php echo($noteOctave[1]  . " - " . $noteOctave[54]); ?&gt;&lt;/option&gt;&lt;!-- C1 - F5 --&gt;
+              &lt;option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOO"&gt;&lt;?php echo($noteOctave[1]  . " - " . $noteOctave[56]); ?&gt;&lt;/option&gt;&lt;!-- C1 - G5 --&gt;
+              &lt;option value="OOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO"&gt;&lt;?php echo($noteOctave[6]  . " - " . $noteOctave[54]); ?&gt;&lt;/option&gt;&lt;!-- F1 - F5 --&gt;
+              &lt;option value="OOOOOOOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO"&gt;&lt;?php echo($noteOctave[13] . " - " . $noteOctave[54]); ?&gt;&lt;/option&gt;&lt;!-- C2 - F5 --&gt;
+              &lt;option value="OOOOOOOOOOOOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO"&gt;&lt;?php echo($noteOctave[18] . " - " . $noteOctave[54]); ?&gt;&lt;/option&gt;&lt;!-- F2 - F5 --&gt;
+              &lt;option value="OOOOOOOOOOOOOOOOOOOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO"&gt;&lt;?php echo($noteOctave[25] . " - " . $noteOctave[54]); ?&gt;&lt;/option&gt;&lt;!-- C3 - F5 --&gt;
+              &lt;option value="XOXOXXOXOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOOOO"&gt;&lt;?php echo($langue[5][$langueActive]); ?&gt;&lt;/option&gt;&lt;!-- Octave courte --&gt;
+             &lt;/select&gt;
+            &lt;/th&gt;
+           &lt;/tr&gt;
+          &lt;/table&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt; &lt;!-- Fin de la table de la coche des notes. --&gt;
+      &lt;/form&gt;
+     &lt;/td&gt; &lt;!-- Fin de la cellule de gauche. --&gt;
+
+     &lt;!-- Cellule de droite. --&gt;
+     &lt;td valign="top" align="center"&gt;
+      &lt;h2&gt;&lt;font color="#008000"&gt;&lt;?php echo($langue[6][$langueActive]); ?&gt;:&lt;/font&gt;&lt;/h2&gt;&lt;br /&gt;
+
+      &lt;form name="form_02"&gt;
+       &lt;!-- Table de la sélection des données générales. --&gt;
+       &lt;table border="5" cellpadding="14" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg" width="75%"&gt;
+        &lt;tr&gt;
+         &lt;td&gt;
+          &lt;table border="0" cellpadding="7" cellspacing="0" width="100%"&gt;
+           &lt;tr&gt;
+            &lt;td&gt;
+             &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+               &lt;td width="1%" nowrap&gt;&lt;b&gt;&lt;?php echo($langue[9][$langueActive]); ?&gt;:&lt;/b&gt; &nbsp;&lt;/td&gt;
+               &lt;td class="pointsDeSuite"&gt;&nbsp;&lt;/td&gt;
+               &lt;td align="right" width="1%" nowrap&gt;
+                &nbsp;
+                &lt;input type="text" name="nomjeu" size="25" value="&lt;?php echo($langue[17][$langueActive]); ?&gt;" onFocus="javaScript:this.select()" onChange="javaScript:changeTitrePleinJeu()" class="fondSaisie" /&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td&gt;
+             &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+               &lt;td width="1%" nowrap&gt;&lt;b&gt;&lt;?php echo($langue[10][$langueActive]); ?&gt;:&lt;/b&gt; &nbsp;&lt;/td&gt;
+               &lt;td class="pointsDeSuite"&gt;&nbsp;&lt;/td&gt;
+               &lt;td align="right" width="1%" nowrap&gt;
+                &nbsp;
+                &lt;select name="nbRangs" onChange="javaScript:changeAffich(document.form_02.nbReps.value, this.value); changeTitrePleinJeu()" class="fondSaisie"&gt;
+&lt;?php
+for ($i = 1; $i &lt;= 16; $i++)
+{
+ echo("                 &lt;option value=\"" . $i . "\"");
+ if ($i == $lignes) {echo(" selected"); };
+ echo("&gt;" . $nbRanRom[$i] . " &lt;/option&gt;\n");
+}; ?&gt;
+                &lt;/select&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td&gt;
+             &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+               &lt;td width="1%" nowrap&gt;&lt;b&gt;&lt;?php echo($langue[11][$langueActive]); ?&gt;:&lt;/b&gt; &nbsp;&lt;/td&gt;
+               &lt;td class="pointsDeSuite"&gt;&nbsp;&lt;/td&gt;
+               &lt;td align="right" width="1%" nowrap&gt;
+                &nbsp;
+                &lt;select name="nbReps" onChange="javaScript:changeAffich(this.value, document.form_02.nbRangs.value)" class="fondSaisie"&gt;
+&lt;?php
+for ($i = 1; $i &lt;= 16; $i++)
+{
+ echo("                 &lt;option value=\"" . $i . "\"");
+ if ($i == $colonnes) {echo(" selected"); };
+ echo("&gt;" . $i . " &lt;/option&gt;\n");
+}; ?&gt;
+                &lt;/select&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td&gt;
+             &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+               &lt;td width="1%" nowrap&gt;&lt;b&gt;&lt;?php echo($langue[12][$langueActive]); ?&gt;:&lt;/b&gt; &nbsp;&lt;/td&gt;
+               &lt;td class="pointsDeSuite"&gt;&nbsp;&lt;/td&gt;
+               &lt;td align="right" width="1%" nowrap&gt;
+                &nbsp;
+                &lt;select name="notNot" class="fondSaisie" onChange="javaScript:verifNotAllemande(); renommeCoch(this.value); actuListeRep(0);"&gt;
+&lt;?php
+for ($i = 1; $i &lt;= count($note); $i++)
+{
+ echo("                &lt;option value=\"" . $i . "\"");
+ if ($i == $notNot) {echo(" selected"); };
+ echo("&gt;" . $note[$i][0] . "&lt;/option&gt;\n");
+};
+?&gt;
+                &lt;/select&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td&gt;
+             &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+               &lt;td width="1%" nowrap&gt;&lt;b&gt;&lt;?php echo($langue[13][$langueActive]); ?&gt;:&lt;/b&gt; &nbsp;&lt;/td&gt;
+               &lt;td class="pointsDeSuite"&gt;&nbsp;&lt;/td&gt;
+               &lt;td align="right" width="1%" nowrap&gt;
+                &nbsp;
+                &lt;select name="notOct" class="fondSaisie" onChange="javaScript:verifNotAllemande(); renommeCoch(document.form_02.notNot.value); actuListeRep(0);"&gt;
+                 &lt;option value="1"&lt;?php if ($notOct == 1) {echo(" selected"); }; echo ("&gt;" . $langue[21][$langueActive]); ?&gt;&lt;/option&gt;
+                 &lt;option value="2"&lt;?php if ($notOct == 2) {echo(" selected"); }; echo ("&gt;" . $langue[22][$langueActive]); ?&gt;&lt;/option&gt;
+                &lt;/select&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td&gt;
+             &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+              &lt;tr&gt;
+               &lt;td width="1%" nowrap&gt;&lt;b&gt;&lt;?php echo($langue[14][$langueActive]); ?&gt;:&lt;/b&gt; &nbsp;&lt;/td&gt;
+               &lt;td class="pointsDeSuite"&gt;&nbsp;&lt;/td&gt;
+               &lt;td align="right" width="1%" nowrap&gt;
+                &nbsp;
+                &lt;?php echo($langue[15][$langueActive]); ?&gt;:
+                &lt;input type="text" name="l_img" size="4" maxlength="3" onKeyPress="return scanTouche(event);" value="&lt;?php echo($largImgGraph); ?&gt;" onFocus="javaScript:this.select(); memo=this.value;" onBlur="javaScript:controle(this, 1, memo);" class="fondSaisie" /&gt; -
+                &lt;?php echo($langue[16][$langueActive]); ?&gt;:
+                &lt;input type="text" name="h_img" size="4" maxlength="3" onKeyPress="return scanTouche(event);" value="&lt;?php echo($hautImgGraph); ?&gt;" onFocus="javaScript:this.select(); memo=this.value;" onBlur="javaScript:controle(this, 2, memo);" class="fondSaisie" /&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+          &lt;/table&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt; &lt;!-- Fin de la table de la sélection des données générales. --&gt;
+      &lt;/form&gt;
+
+      &lt;br /&gt;&lt;br /&gt;&lt;h2&gt;&lt;font color="#008000"&gt;&lt;?php echo($langue[7][$langueActive]); ?&gt;:&lt;/font&gt;&lt;/h2&gt;&lt;br /&gt;
+
+      &lt;form name="form_03"&gt;
+       &lt;!-- Table de la sélection des reprises. --&gt;
+       &lt;table border="5" cellpadding="15" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg"&gt;
+        &lt;tr&gt;
+         &lt;caption align="top"&gt;&lt;font size="+1"&gt;&lt;b&gt;&lt;span id="titrePleinJeu"&gt;&lt;?php echo($langue[17][$langueActive] . " " . $nbRanRom[$lignes]); ?&gt;&lt;/span&gt;&lt;/b&gt;&lt;/font&gt;&lt;/caption&gt;
+         &lt;td&gt;
+          &lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+           &lt;tr&gt;&lt;th colspan="3" align="left"&gt;&lt;?php echo($langue[23][$langueActive]); ?&gt;:&lt;/th&gt;&lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td valign="top" rowspan="2"&gt;
+             &lt;select id="listeRep" onChange="javaScript:re2(cellActive)" onBlur="javaScript:memoCell(cellActive)" class="fondsaisie"&gt;
+&lt;?php
+for ($i = 2; $i &lt;= 54; $i++)
+{
+ echo("               &lt;option value=\"" . $i . "\"");
+ if ($i == 13) {echo(" selected"); };
+ echo("&gt;" . $noteOctave[$i] . "&lt;/option&gt;\n");
+};
+?&gt;
+             &lt;/select&gt;
+            &lt;/td&gt;
+            &lt;td rowspan="3" width="10"&gt;&nbsp;&lt;/td&gt;
+            &lt;td&gt;
+             &lt;table border="0"&gt;
+              &lt;tr&gt;
+               &lt;td id="cellTdRep_1" class="affiCell"&gt;&lt;input type="text" id="cellInputRep_1" readOnly="1" value="&lt;?php echo($noteOctave[ord(substr($noterep, 0 , 1))]);?&gt;" size="4" class="fondSaisieDisabled" /&gt;&lt;/td&gt;
+&lt;?php for ($i = 2; $i &lt;= 16; $i++){ ?&gt;
+               &lt;td id="cellTdNot_&lt;?php echo($i . "\"");
+
+// Neutralisation des cellules (colonnes).
+if ($i &gt; $colonnes) {echo(" class=\"disparait\""); } else {echo(" class=\"affiCell\""); };
+
+?&gt;&gt;&lt;input type="text" value="&lt;?php echo($noteOctave[ord(substr($noterep, ($i - 1) , 1))]);?&gt;" id="cellInputRep_&lt;?php echo($i);?&gt;" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /&gt;&lt;/td&gt;
+&lt;?php }; ?&gt;
+               &lt;/td&gt;
+              &lt;/tr&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+           &lt;tr&gt;&lt;td&gt;&lt;hr&gt;&lt;/td&gt;&lt;/tr&gt;
+           &lt;tr&gt;
+            &lt;td valign="top"&gt;
+             &lt;b&gt;&lt;?php echo($langue[24][$langueActive]); ?&gt;:&lt;/b&gt;&lt;br /&gt;
+             &lt;select id="listeTessi" onChange="javaScript:te2(cellActive)" onBlur="javaScript:memoCell(cellActive)" class="fondSaisie"&gt;
+&lt;?php
+for ($i = 0; $i &lt;= 121; $i++)
+{
+ if (isset($nomTessi[$i]))
+ {
+  echo("              &lt;option value=\"" . $i . "\"");
+  if ($i == 49) {echo(" selected"); };
+  echo("&gt;" . $nomTessi[$i] . "&lt;/option&gt;\n");
+ };
+};
+?&gt;
+             &lt;/select&gt;
+
+             &lt;br /&gt;&lt;br /&gt;
+             &lt;center&gt;
+              &lt;input type="button" value="&lt;?php echo($langue[25][$langueActive]); ?&gt;" onClick="javaScript:if (cellActive.id.indexOf('cellInputRep') != -1) {re2(cellActive); } else {te2(cellActive); };" class="bouton" /&gt;
+             &lt;/center&gt;
+            &lt;/td&gt;
+            &lt;td valign="top"&gt;
+             &lt;table border="0"&gt;
+&lt;?php for ($j = 1; $j &lt;= 16; $j++){ ?&gt;
+              &lt;tr id="ligne_&lt;?php echo($j . "\"");
+
+// Neutralisation des lignes vides (ceci est fait pour éviter les &lt;tr&gt;&lt;/tr&gt; vide qui prennent quand même de la place même quand les &lt;td&gt;&lt;/td&gt; sont neutralisés.
+if ($j &gt; $lignes) {echo(" class=\"disparait\""); } else {echo(" class=\"affiLigne\""); };
+echo("&gt;\n");
+
+for ($i = 65; $i &lt;= 80; $i++){ ?&gt;
+               &lt;td id="cellTdTessi_&lt;?php echo(chr($i) . $j . "\"");
+
+// Neutralisation des cellules (colonnes).
+if ((($i - 64) &gt; $colonnes) || ($j &gt; $lignes)) {echo(" class=\"disparait\""); } else {echo(" class=\"affiCell\""); };
+$noCell = (($j - 1) * 16) + ($i - 64);
+?&gt;&gt;&lt;input type="text" value="&lt;?php echo($nomTessi[ord(substr($comprep, ($noCell - 1), 1))]);?&gt;" id="cellInputTessi_&lt;?php echo($noCell);?&gt;" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /&gt;&lt;/td&gt;
+&lt;?php }; ?&gt;
+               &lt;td background="img/pix.gif" bgcolor="&lt;?php echo($couleur[$j]); ?&gt;"&gt;&nbsp;&lt;/td&gt;
+              &lt;/tr&gt;
+&lt;?php }; ?&gt;
+             &lt;/table&gt;
+            &lt;/td&gt;
+           &lt;/tr&gt;
+          &lt;/table&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+       &lt;/table&gt; &lt;!-- Fin de la table de la sélection des reprises --&gt;
+      &lt;/form&gt;
+
+      &lt;br /&gt;&lt;br /&gt;&lt;h2&gt;&lt;font color="#008000"&gt;&lt;?php echo($langue[8][$langueActive]); ?&gt;:&lt;/font&gt;&lt;/h2&gt;&lt;br /&gt;
+
+      &lt;!-- Table des commandes et résultats --&gt;
+      &lt;table border="5" cellpadding="14" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg" width="85%"&gt;
+       &lt;tr&gt;
+        &lt;td&gt;
+         &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
+          &lt;tr valign="top"&gt;
+           &lt;td align="center" width="48%"&gt;
+            &lt;fieldset&gt;
+             &lt;legend title="Organ Definition Language (XML)"&gt;&lt;?php echo($langue[26][$langueActive]); ?&gt;&lt;/legend&gt;
+             &lt;form name="form_04" ENCTYPE="multipart/form-data" method="POST" action="pleinjeu.php?l=&lt;?php echo($listeLangue[$langueActive]); ?&gt;"&gt;
+              &lt;input type="hidden" name="MAX_FILE_SIZE" value="50000" /&gt;
+              &lt;input type="file" name="XMLfichier" size="20" title="Organ Definition Language (XML)" class="fondSaisie" /&gt;&lt;br /&gt;&lt;br /&gt;
+              &lt;input type="button" value="&lt;?php echo($langue[28][$langueActive]); ?&gt;" onClick="javaScript:controle(document.form_04.XMLfichier, 3, '');" title="Organ Definition Language (XML)" class="bouton" /&gt;
+             &lt;/form&gt;
+            &lt;/fieldset&gt;
+           &lt;/td&gt;
+           &lt;td width="4%"&gt;&nbsp;&lt;/td&gt;
+           &lt;td width="48%"&gt;
+            &lt;fieldset&gt;
+             &lt;legend&gt;&lt;?php echo($langue[27][$langueActive]); ?&gt;&lt;/legend&gt;
+             &lt;form name="form_05"&gt;
+              &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
+               &lt;tr valign="top"&gt;
+                &lt;td width="25%"&gt;
+                 &lt;input type="button" value="&lt;?php echo($langue[29][$langueActive]); ?&gt;" onClick="javaScript:debit()" class="bouton" /&gt;
+                &lt;/td&gt;
+                &lt;td width="10%"&gt;&nbsp;&lt;/td&gt;
+                &lt;td nowrap&gt;
+                 &lt;input name="formatSortie" type="radio" value="1" id="html" class="fondSaisie" checked /&gt; &nbsp; &nbsp;
+                 &lt;label for="html" style="cursor:pointer;" title="Hyper Text Markup Language"&gt;H.T.M.L.&lt;/label&gt;&lt;br /&gt;
+                 &lt;input name="formatSortie" type="radio" value="2" id="rtf" class="fondSaisie" /&gt; &nbsp; &nbsp;
+                 &lt;label for="rtf" style="cursor:pointer;" title="Rich Text Format"&gt;R.T.F.&lt;/label&gt;&lt;br /&gt;
+                 &lt;input name="formatSortie" type="radio" value="3" id="txt" class="fondSaisie" /&gt; &nbsp; &nbsp;
+                 &lt;label for="txt" style="cursor:pointer;" title="TXT"&gt;&lt;?php echo($langue[30][$langueActive]); ?&gt;&lt;/label&gt;&lt;br /&gt;
+                 &lt;input name="formatSortie" type="radio" value="4" id="odl" class="fondSaisie" /&gt; &nbsp; &nbsp;
+                 &lt;label for="odl" style="cursor:pointer;" title="Organ Definition Language (XML)"&gt;O.D.L.&lt;/label&gt;
+                &lt;/td&gt;
+               &lt;/tr&gt;
+              &lt;/table&gt;
+             &lt;/form&gt;
+            &lt;/fieldset&gt;
+           &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+           &lt;td colspan="3" align="center"&gt;
+            &lt;br /&gt;
+            &lt;input type="button" value="&lt;?php echo($langue[32][$langueActive]); ?&gt;" onClick="javaScript:ouvre('aide');" class="bouton" /&gt;
+            &nbsp; &nbsp; &nbsp;
+            &lt;input type="button" value="&lt;?php echo($langue[31][$langueActive]); ?&gt;" onClick="javaScript:recharge();" class="bouton" /&gt; &nbsp; &nbsp; &nbsp;
+           &lt;/td&gt;
+          &lt;/tr&gt;
+         &lt;/table&gt;
+        &lt;/td&gt;
+       &lt;/tr&gt;
+      &lt;/table&gt; &lt;!-- Fin de la table des commandes et résultats --&gt;
+
+      &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+      &lt;table border="0" cellpadding="0" cellspacing="0"  title="S.M.C.J. me direxit"&gt;&lt;tr&gt;&lt;td&gt;&lt;pre&gt;&lt;b&gt;&lt;font color="#000080"&gt;
+    ____  ____  ____  ____   
+   /\   \/\   \/\   \/\   \  
+  /  \___\ \___\ \___\ \___\ 
+  \  / __/_/   / /   / /   / 
+   \/_/\   \__/\/___/\/___/  
+     /  \___\ &lt;a href="./src/code.php" target="_blank" style="text-decoration:none" alt="Code source" title="Code source"&gt;  &lt;/a&gt; /  \___\    
+     \  / __/_&lt;a href="./src/code.php" target="_blank" style="text-decoration:none" alt="Code source" title="Code source"&gt;  &lt;/a&gt;_\  /   /    
+      \/_/\   \/\ \/___/     
+        /  \__/  \___\       
+        \  / _\  /   /       
+         \/_/\ \/___/        
+           /  \___\          
+           \  /   /          
+            \/___/           
+&lt;/font&gt;&lt;/b&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+      &lt;!-- C'est le seul formulaire (très léger) qui est envoyé. --&gt;
+      &lt;form name="form_06" method="post" action="pleinjeu.php?l=&lt;?php echo($listeLangue[$langueActive]); ?&gt;" target="_blank"&gt;
+       &lt;!-- Contient les cases à cocher de form_01, les données générales de form_02 et le type de sortie de form_05. --&gt;
+       &lt;input type="hidden" name="t1" value="" /&gt;
+       &lt;!-- Contient les notes de reprises de form_03. --&gt;
+       &lt;input type="hidden" name="t2" value="&lt;?php echo base64_encode($noterep); ?&gt;" /&gt;
+       &lt;!-- Contient la composition de form_03. --&gt;       
+       &lt;input type="hidden" name="t3" value="&lt;?php echo base64_encode($comprep); ?&gt;" /&gt;
+      &lt;/form&gt;
+     &lt;/td&gt; &lt;!-- Fin de la cellule de droite --&gt;
+    &lt;/tr&gt;
+   &lt;/table&gt;
+
+&lt;?php
+ }  // Fin de la condition d'affichage du formulaire.
+ else
+ {  // Début de l'affichage des résultats.
+?&gt;
+
+  &lt;!-- Début du code du tableau de composition --&gt;
+  &lt;div id="tableauCompo" onClick="cacheBlock(this);" style="cursor:pointer;" title="&lt;?php echo($langue[49][$langueActive]); ?&gt;"&gt;
+   &lt;table border="5" width="75%" cellpadding="0" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg"&gt;
+    &lt;caption&gt;&lt;p&gt;&lt;b&gt;&lt;?php echo($langue[45][$langueActive]); ?&gt;&lt;/b&gt;&lt;/p&gt;&lt;br /&gt;&lt;/caption&gt;
+&lt;?php
+ titreTab();
+ for ($i = 1; $i &lt;= $nbRan; $i++)
+ {
+  echo ("    &lt;tr align=\"center\" valign=\"bottom\"&gt;\n");
+  for ($j = 1; $j &lt;= $nbRep; $j++)
+  {
+   $chaine = $nomTessi[$tessi[($i - 1)][($j - 1)]];
+   echo("     &lt;td&gt;&nbsp;&lt;font color=\"" . $couleur[$i] . "\"&gt;" . expoTessi($chaine) . "&lt;/font&gt;&lt;/td&gt;\n");
+  };
+  echo ("    &lt;/tr&gt;\n");
+ };
+ titreTab();
+?&gt;
+   &lt;/table&gt;
+   &lt;br /&gt;&lt;br /&gt;
+  &lt;/div&gt;
+  &lt;!-- Fin du code du tableau de composition --&gt;
+
+  &lt;!-- Début du code du pseudo-graphique --&gt;
+  &lt;div id="tableauASCII" onClick="cacheBlock(this);" style="cursor:pointer;" title="&lt;?php echo($langue[49][$langueActive]); ?&gt;"&gt;
+   &lt;table border="5" width="75%" cellpadding="15" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg"&gt;
+    &lt;caption&gt;&lt;p&gt;&lt;b&gt;&lt;?php echo($langue[46][$langueActive]); ?&gt;&lt;/b&gt;&lt;/p&gt;&lt;br /&gt;&lt;/caption&gt;&lt;tr&gt;&lt;td align="center"&gt;
+    &lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+     &lt;tr&gt;&lt;td&gt;&lt;font size="2"&gt;&lt;b&gt;&lt;pre&gt;
+&lt;?php
+ debitASCII();
+?&gt;
+     &lt;/pre&gt;&lt;/b&gt;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+   &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+   &lt;br /&gt;&lt;br /&gt;
+  &lt;/div&gt;
+  &lt;!-- Fin du code du pseudo-graphique --&gt;
+  
+  &lt;!-- Début du code du tableau de débit --&gt;
+  &lt;div id="tableauDebit" onClick="cacheBlock(this);" style="cursor:pointer;" title="&lt;?php echo($langue[49][$langueActive]); ?&gt;"&gt;
+   &lt;table border="5" width="75%" cellpadding="0" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg"&gt;
+    &lt;caption&gt;&lt;p&gt;&lt;b&gt;&lt;?php echo($langue[47][$langueActive]); ?&gt;&lt;/b&gt;&lt;/p&gt;&lt;br /&gt;&lt;/caption&gt;
+    &lt;tr&gt;
+     &lt;td&gt;&nbsp;&lt;/td&gt;&lt;?php
+ for ($i = (($premOct * 12) + 1); $i &lt;= (($dernOct * 12) + 1); $i += 12)
+ {
+  echo("&lt;th&gt;&nbsp;" . $nomTessi[$i] . "&nbsp;&lt;/th&gt;");
+ }
+ for ($i = 1; $i &lt;= 12; $i++)
+ {
+  echo("    &lt;/tr&gt;\n    &lt;tr align=\"center\"&gt;&lt;th align=\"left\"&gt;&nbsp;" . $affiNote[$notNot][$i] . "&nbsp;&lt;/th&gt;");
+  for ($j = $premOct; $j &lt;= $dernOct; $j++)
+  {
+   $a = ord(substr($cell[($j * 12) + $i], 0, 1)); if ($a == 0) {$a = "&nbsp;";}
+   echo("&lt;td&gt;" . $a . "&lt;/td&gt;");
+  };
+ };
+?&gt;
+    &lt;/tr&gt;
+   &lt;/table&gt;
+   &lt;br /&gt;&lt;br /&gt;
+  &lt;/div&gt;
+  &lt;!-- Fin du code du tableau de débit --&gt;
+
+  &lt;!-- Début du tableau de l'image graphique --&gt;
+  &lt;div id="tableauGraphique" onClick="cacheBlock(this);" style="cursor:pointer;" title="&lt;?php echo($langue[49][$langueActive]); ?&gt;"&gt;
+   &lt;br /&gt;
+   &lt;table border="5" cellpadding="0" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg"&gt;
+    &lt;tr&gt;
+&lt;?php $chaine = "pleinjeuGraph.php?haut=" . $haut . "&bas=" . $bas . "&t1=" . $t1 . "&t2=" . $t2 . "&t3=" . $t3; ?&gt;
+     &lt;td&gt;&lt;img width="&lt;?php echo($l_img); ?&gt;" height="&lt;?php echo($h_img); ?&gt;" border="0" alt="&lt;?php echo($nomJeu); ?&gt;" title="&lt;?php echo($nomJeu); ?&gt;" src="&lt;?php echo($chaine); ?&gt;"&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+   &lt;/table&gt;
+   &lt;br /&gt;&lt;br /&gt;
+  &lt;/div&gt;
+  &lt;!-- Fin du tableau de l'image graphique --&gt;
+
+  &lt;p align="center"&gt;&lt;b&gt;&lt;?php echo($langue[48][$langueActive] . " &lt;font color=\"#ff0000\"&gt;" . $nbTuy); ?&gt;&lt;/font&gt;.&lt;/b&gt;&lt;/p&gt;
+  &lt;br /&gt;&lt;br /&gt;
+&lt;?php
+ }; // Fin de la condition de l'affichage des résultats.
+?&gt;
+  &lt;/center&gt;
+
+  &lt;br /&gt;&lt;br /&gt;
+
+ &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;?php
+ }; // Fin de la condition sur la sortie HTML.
+
+ switch ($traitementFormSort) // Formats de sortie autre qu'HTML
+ {
+  case 2 :          // Sortie RTF.
+   header("Content-type:application/rtf");
+   header("Content-Disposition:attachment; filename=\"" . $nomJeu . " " . $nbRanRom[$nbRan] . ".rtf\"");
+?&gt;
+{\rtf1\ansi\ansicpg1252\deff0\deftab720
+{\fonttbl
+{\f0\fswiss MS Sans Serif;}
+{\f1\froman\fcharset2 Symbol;}
+{\f2\froman Times New Roman;}
+{\f3\fmodern Courier New;}
+}
+{\colortbl;
+&lt;?php
+ for ($i = 1; $i &lt;= 16; $i++)
+ {
+  echo("\\red" . base_convert(substr($couleur[$i], 1, 2), 16, 10) . "\\green" . base_convert(substr($couleur[$i], 3, 2), 16, 10) . "\\blue" . base_convert(substr($couleur[$i], 5, 2), 16, 10) . ";\n");
+ };
+?&gt;
+}
+\par\plain\qc\f2\fs32\cf1\i\b &lt;?php echo($nomJeu . " " . $nbRanRom[$nbRan]); ?&gt;
+\par\plain\qj\f2\fs24\ 
+&lt;?php
+ // RTF-RTF-RTF-RTF-RTF - Début de l'affichage du tableau de composition - RTF-RTF-RTF-RTF-RTF
+ echo("\par\plain\qj\\f2\cf1\n");
+ echo("\par\plain\qj\li1136\\f2\\fs24\b " . str_replace("&nbsp;", "\~", $langue[45][$langueActive]));
+ echo("\par\pard\plain\qj\\f2\\fs24\cf1\n");
+
+ titreTab();
+ for ($i = 1; $i &lt;= $nbRan; $i++)
+ {
+  echo ("\par\plain\qj\\f2\\fs24\cf$i");
+  for ($j = 1; $j &lt;= $nbRep; $j++)
+  {
+   $chaine = $nomTessi[$tessi[($i - 1)][($j - 1)]]; echo("\\tab " . expoTessi($chaine));
+  };
+  echo ("\n");
+ };
+ titreTab();
+ echo("\par\pard\plain\qj\\f2\\fs24\cf1 \n\par \n");
+ // RTF-RTF-RTF-RTF-RTF - Fin de l'affichage du tableau de composition - RTF-RTF-RTF-RTF-RTF
+
+ // RTF-RTF-RTF-RTF-RTF - Début de l'affichage du pseudo-graphique - RTF-RTF-RTF-RTF-RTF
+ echo("\par\plain\qj\li1136\\f2\\fs24\b " . str_replace("&nbsp;", "\~", $langue[46][$langueActive]));
+ echo("\par \n\par \n\pard\li1136\\f3\\fs12\b");
+ debitASCII();
+ echo("\par\li0\plain\\f2\\fs24 \n");
+ // RTF-RTF-RTF-RTF-RTF - Fin de l'affichage du pseudo-graphique - RTF-RTF-RTF-RTF-RTF
+
+ // RTF-RTF-RTF-RTF-RTF - Début de l'affichage du tableau de débit - RTF-RTF-RTF-RTF-RTF
+ echo("\par\plain\qj\\f2\cf1");
+ $chaine = str_replace("&nbsp;", "\~", $langue[47][$langueActive]); $chaine = str_replace("&eacute;", "\\'e9", $chaine);
+ echo("\par\plain\qj\li1136\\f2\\fs24\b " . $chaine);
+ echo("\par\pard\plain\qj\\f2\\fs24\cf1");
+
+ echo("\par\plain\qj\\f2\\fs24\cf1\b"); $tabulateur = 1136;               // Premier tabulateur à deux centimètres.
+ for ($i = (($premOct * 12) + 1); $i &lt;= (($dernOct * 12) + 1); $i += 12)
+ {
+  echo("\\tx$tabulateur"); $tabulateur += 852;                            // Tabulateur tous les 1.5 centimètres.
+ };
+ echo("\\tx$tabulateur\\tab ");
+
+ for ($i = (($premOct * 12) + 1); $i &lt;= (($dernOct * 12) + 1); $i += 12)
+ {
+  echo("\\tab " . $nomTessi[$i]);
+ };
+ for ($i = 1; $i &lt;= 12; $i++)
+ {
+  echo("\par\plain\qj\\f2\\fs24\cf1\b\\tab " . utf8_decode( $affiNote[$notNot][$i] ) . "\plain\\f2\\fs24\cf1");
+  for ($j = $premOct; $j &lt;= $dernOct; $j++)
+  {
+   $a = ord(substr($cell[($j * 12) + $i], 0, 1)); if ($a == 0) {$a = "-";}
+   echo("\\tab " . $a);
+  };
+  echo("\n");
+ };
+ echo("\par\pard\plain\\f2\\fs24\cf1");
+ // RTF-RTF-RTF-RTF-RTF - Fin de l'affichage du tableau de débit - RTF-RTF-RTF-RTF-RTF
+
+ echo("\par\plain\qc\\f2\\fs24\b " . str_replace("&nbsp;", "\~", $langue[48][$langueActive]) . " \plain\\f2\\fs24\cf2\b " . $nbTuy . "\plain\\f2\\fs24.\n\par\n");
+?&gt;
+\par
+\par
+\par }
+&lt;?php
+  break;            // Fin de la sortie RTF.
+
+  case 3 :          // Sortie TXT.
+   header("Content-type:application/txt");
+   header("Content-Disposition:attachment; filename=\"" . $nomJeu . " " . $nbRanRom[$nbRan] . ".txt\"");
+
+   echo("\n\n             " . $nomJeu . " " . $nbRanRom[$nbRan] . "\n\n");
+
+   // TXT-TXT-TXT-TXT-TXT - Début de l'affichage du tableau de composition - TXT-TXT-TXT-TXT-TXT
+   echo("             " . str_replace("&nbsp;", " ", $langue[45][$langueActive]) . "\n\n");
+   titreTab();
+   for ($i = 1; $i &lt;= $nbRan; $i++)
+   {
+    for ($j = 1; $j &lt;= $nbRep; $j++) {echo("\t" . $nomTessi[$tessi[($i - 1)][($j - 1)]]); };
+    echo ("\n");
+   };
+   titreTab(); echo("\n\n");
+   // TXT-TXT-TXT-TXT-TXT - Fin de l'affichage du tableau de composition - TXT-TXT-TXT-TXT-TXT
+
+   // TXT-TXT-TXT-TXT-TXT - Début de l'affichage du pseudo-graphique - TXT-TXT-TXT-TXT-TXT
+   echo("             " . str_replace("&nbsp;", " ", $langue[46][$langueActive]) . "\n\n");
+   debitASCII();
+   echo("\n\n");
+   // TXT-TXT-TXT-TXT-TXT - Fin de l'affichage du pseudo-graphique - TXT-TXT-TXT-TXT-TXT
+
+
+   // TXT-TXT-TXT-TXT-TXT - Début de l'affichage du tableau de débit - TXT-TXT-TXT-TXT-TXT
+   $chaine = str_replace("&nbsp;", " ", $langue[47][$langueActive]); $chaine = str_replace("&eacute;", "é", $chaine);
+   echo("             " . $chaine . "\n\n\t");
+   for ($i = (($premOct * 12) + 1); $i &lt;= (($dernOct * 12) + 1); $i += 12) {echo("\t" . $nomTessi[$i]); };
+   echo("\n");
+ 
+   for ($i = 1; $i &lt;= 12; $i++)
+   {
+    echo("\t" . $affiNote[$notNot][$i]);
+    for ($j = $premOct; $j &lt;= $dernOct; $j++)
+    {
+     $a = ord(substr($cell[($j * 12) + $i], 0, 1)); if ($a == 0) {$a = "-";}
+     echo("\t" . $a);
+    };
+    echo("\n");
+   };
+   // TXT-TXT-TXT-TXT-TXT - Fin de l'affichage du tableau de débit - TXT-TXT-TXT-TXT-TXT
+
+  break;            // Fin de la sortie TXT.
+
+  case 4 :          // Sortie XML.
+   header("Content-type:application/xml");
+   header("Content-Disposition:attachment; filename=\"" . $nomJeu . " " . $nbRanRom[$nbRan] . ".odl\"");
+   echo ("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n");
+?&gt;
+&lt;ODL version="0.1"&gt;
+ &lt;KB name="&lt;?php echo($nomJeu); ?&gt;"&gt;
+  &lt;PRESENT_NOTE&gt;
+   &lt;?php echo(substr($noteCoche, 0, 61) . "\n"); ?&gt;
+  &lt;/PRESENT_NOTE&gt;
+ &lt;/KB&gt;
+ &lt;MIXTURE name="&lt;?php echo($nomJeu); ?&gt;" def_kb="&lt;?php echo($nomJeu); ?&gt;"&gt;
+&lt;?php
+for ($j = 0; $j &lt; $nbRan; $j++)
+{ ?&gt;
+  &lt;RANK&gt;
+&lt;?php
+ for ($i = 0; $i &lt; $nbRep; $i++)
+ {
+  echo("   &lt;BREAK pos=\"" . $repri[$i] . "\" range=\"" . $tessi[$j][$i] . "\" /&gt;\n");
+ }; ?&gt;
+  &lt;/RANK&gt;
+&lt;?php
+}; ?&gt;
+ &lt;/MIXTURE&gt;
+&lt;/ODL&gt;
+
+&lt;?php
+  break;           // Fin de la sortie XML
+ };
+
+?&gt;
+   </pre>
+
+   <br /><br />
+
+  <h3 align="center"><font color="#000080">pleinjeuGraph.php.</font></h2>
+   <pre class="brush:php">
+&lt;?php
+
+ // ***************************************************
+ // *** Image graphique de plein jeu au format PNG. ***
+ // ***************************************************
+
+ // Les constantes déterminées dans ce fichier include sont partagées par le script principal (./pleinjeu.php).
+ include("./pleinjeu.inc.php");
+
+   $t1 = isset($_GET ['t1'])   ? $_GET ['t1']   : "";
+   $t2 = isset($_GET ['t2'])   ? $_GET ['t2']   : "";
+   $t3 = isset($_GET ['t3'])   ? $_GET ['t3']   : "";
+ $haut = isset($_GET ['haut']) ? $_GET ['haut'] : 0;
+  $bas = isset($_GET ['bas'])  ? $_GET ['bas']  : 0;
+
+ // Analyse de la chaîne pour mettre les fractions des tessitures en exposant.
+ function expoTessi($im, $x, $y, $chaine, $coul)
+ {
+  $place = strpos($chaine, "'");
+  if (($place &gt;= 1) && ($place != (strlen($chaine) - 1)))
+  {
+   imagestring ($im, 2, $x, $y, substr($chaine, 0, ($place + 1)), $coul);
+   imagestring ($im, 1, ($x + 17), ($y - 2), substr($chaine, ($place + 1)), $coul);
+  }
+  else
+  {
+   imagestring ($im, 2, $x, $y, substr($chaine, 0, ($place + 1)), $coul);
+  }
+ }
+
+ // +--------------------------------------------------------------+
+ // | Récupération des variables à partir des chaînes transférées. |
+ // +--------------------------------------------------------------+
+
+ $chaine = base64_decode($t1);                                          // Décodage de la chaîne $t1.
+
+ $noteCoche = "";                                                       // Notes du clavier.
+ for ($i = 0; $i &lt;= 7; $i++)
+ {
+  $chaine1 = decbin(ord(substr($chaine, $i, 1))); while (strlen($chaine1) &lt; 8) {$chaine1 = "0" . $chaine1;}
+  $noteCoche .= $chaine1;
+ };
+    $nbNot = strlen(rtrim(substr($noteCoche, 0, 61), "0"));             // Nombre de notes
+
+    $nbRan =    decodeVal(substr($chaine,  8,                      2)); // Nombre de rangs.
+    $nbRep =    decodeVal(substr($chaine, 10,                      2)); // Nombre de reprises.
+   $notNot =    decodeVal(substr($chaine, 12,                      2)); // Notation des notes.
+   $notOct =    decodeVal(substr($chaine, 14,                      2)); // Notation des octaves.
+    $l_img =    decodeVal(substr($chaine, 16,                      2)); // Largeur de l'image graphique.
+    $h_img =    decodeVal(substr($chaine, 18,                      2)); // Hauteur de l'image graphique.
+ $formSort =    decodeVal(substr($chaine, 20,                      2)); // Format de sortie.
+   $nomJeu = stripslashes(substr($chaine, 22, (strlen($chaine) - 22))); // Nom du jeu (255 octets maximum).
+
+ // Valeurs des notes de reprises (index à 1 au contraire de pleinjeu.php).
+ $chaine = base64_decode($t2);                                          // Décodage de la chaîne $t2.
+ for ($i = 1; $i &lt;= 16; $i++) {$repri[$i] = ord(substr($chaine, ($i - 1), 1)); };
+
+ // Valeurs des tessitures (index à 1 au contraire de pleinjeu.php).
+ $chaine = base64_decode($t3);                                          // Décodage de la chaîne $t3.
+ for ($i = 1; $i &lt;= 16; $i++)
+ {
+  for ($j = 1; $j &lt;= 16; $j++) {$tessi[$i][$j] = ord(substr($chaine, ((($i - 1) * 16) + ($j - 1)), 2)); };
+ };
+
+ $nomFichier = $nomJeu . " " . $nbRanRom[$nbRan];
+ header("Content-Type:image/png"); 
+ header("Content-Disposition:filename=\"" . $nomFichier . ".png\"");
+
+ // +----------------------------+
+ // | Construction du graphique. +
+ // +----------------------------+
+ $im = imagecreate($l_img, $h_img); $l_img--; $h_img--; 
+
+ // Détermination des couleurs.
+ $fond = imagecolorallocate($im, 0xf5, 0xe9, 0xcf); imagecolortransparent($im, $fond);
+ for ($i = 1; $i &lt;= 16; $i++)
+ {
+  $couleur[$i] = imagecolorallocate($im, base_convert(substr($couleur[$i], 1, 2), 16, 10), base_convert(substr($couleur[$i], 3, 2), 16, 10), base_convert(substr($couleur[$i], 5, 2), 16, 10));
+ };
+
+ imagefill($im, 0, 0, $fond);
+
+ // Marge des reprises et des tessitures et police de caractère employée.
+ $mt = 50; $mr = 40; $police = 2; 
+
+ // Largeur et hauteur du graphique ($lg et $hg).
+ // On relève $haut pour pouvoir faire suivre les lignes sans rupture même si c'est de la triche.
+ $haut++; $lg = ($l_img - $mt); $hg = ($h_img - $mr);
+
+ // Nombre de tessitures présentes dans le graphique.
+ $nbtessi = ($haut - $bas) + 1;
+
+ // Largeur et hauteur PAR DEFAUT de chaque cellule du graphique ($lc et $hc).
+ $lc = floor($lg / $nbNot); $hc = floor($hg / $nbtessi);
+ for ($i = 1; $i &lt;= $nbNot; $i++) {$x[$i] = $lc;}
+ for ($i = 1; $i &lt;= $nbtessi; $i++) {$y[$i] = $hc;}
+
+ // Détermine et dispatche l'erreur.
+ $lc_err = floor($lg % $nbNot);  $hc_err = floor($hg % $nbtessi);
+ $j = 1; for ($i = 1; $i &lt;= $lc_err; $i++) {$x[$j]++; $j += floor($nbNot / $lc_err);}
+ $j = 1; for ($i = 1; $i &lt;= $hc_err; $i++) {$y[$j]++; $j += floor($nbtessi / $hc_err);}
+
+ // Positionne les X et les Y de manière progressive.
+ $x[1] += ($mt - $lc - 1); for ($i = 2; $i &lt;= $nbNot;   $i++) {$x[$i] += $x[$i - 1];}
+ $y[1] += ($mr - $hc - 1); for ($i = 2; $i &lt;= $nbtessi; $i++) {$y[$i] += $y[$i - 1];}
+
+ // En voiture...
+ $repri[$nbRep + 1]  = $nbNot + 1;                         // Pour pouvoir passer la dernière reprise.
+ for ($i = 1; $i &lt;= $nbRan; $i++)                          // Boucle des rangs. 
+ {
+  for ($j = 1; $j &lt;= $nbRep; $j++)                         // Boucle des reprises.
+  {
+   if ($tessi[$i][$j] != 0)                                // Cas des reprises vides (trous).
+   {
+    $vrainote = $tessi[$i][$j] + $repri[$j] - 1;           // Première note RÉELLE de la reprise.
+
+    $decal = 0;                                            // Compte les doublures qui vont provoquer un décalage
+    for ($k = 1; $k &lt; $i; $k++)
+    {
+     if (($tessi[$k][$j] + $repri[$j] - 1) == $vrainote) {$decal++;}
+    }
+
+    $nbNotRep = $repri[$j + 1] - $repri[$j];               // Nombre de notes dans la reprise.
+    if ($j == $nbRep) {$nbNotRep--;}                       // Dernière reprise plus courte d'une note.
+
+    $x1 = $x[$repri[$j]];              $y1 = $y[($haut - $vrainote) + 1] - $decal;
+    $x2 = $x[$repri[$j] + $nbNotRep];  $y2 = $y[($haut - $vrainote) - $nbNotRep + 1] - $decal;
+
+    // Trace la reprise.
+    imageline ($im, $x1, $y1, $x2, $y2, $couleur[$i]);
+   }
+  }
+ }
+
+ // Marque des tessitures plus graves au milieu de graphique.
+ for ($i = 1; $i &lt;= $nbRep; $i++)                         // Boucle des reprises.
+ {
+  $plusgrave = 121;                                       // Analyse la reprise la plus grave.
+  for ($j = 1; $j &lt;= $nbRan; $j++)                        // Boucle des rangs.
+  {
+   if ($plusgrave &gt; $tessi[$j][$i]) {$plusgrave = $tessi[$j][$i];}
+  }
+
+  if ($plusgrave &lt; $bas)
+  {
+   $vrainote = $plusgrave + $repri[$i] - 1;               // Première note RÉELLE de la reprise.
+   // Plantage sur y1 à revoir ; original : $y1 = $y[($haut - $vrainote) + 1];
+   $x1 = $x[$repri[$i]];  $y1 = $y[$bas];
+   expoTessi($im, ($x1 - 10), ($y1 + 4), $nomTessi[$plusgrave], $couleur[1]);
+  }
+ }
+
+ // Trace le cadre général.
+ imagerectangle ($im, $x[1], $y[1], $x[$nbNot], $y[$nbtessi], $couleur[1]);
+ imagestring ($im, 3, $mt, 5, $nomJeu . " " . $nbRanRom[$nbRan], $couleur[1]);
+
+ // Lignes des reprises
+ $repri[$nbRep + 1]--;                                    // Pour pouvoir afficher
+ for ($i = 1; $i &lt;= ($nbRep + 1); $i++)                   // la dernière note.
+ {
+  $chaine = $note[$notNot][(($repri[$i] - 1) % 12) + 1];
+
+  // Passe le nom des notes en minuscules.
+  if (($notOct == 2) && ($repri[$i] &gt; 12)) {$chaine = strtolower($chaine);}
+
+  if ($notOct == 1)                                       // Notation numérique.
+  {
+   $chaine .= (floor($repri[$i] / 12) + 1);
+  }
+  else                                                    // Notation allemande des octaves.
+  {
+   if (($repri[$i] &gt;= 12) && ($repri[$i] &lt; 25))           // Affiche le null.
+   {
+    $chaine .= "o";                                       // On attend que PHP gère l'UTF8.
+   }
+   if ($repri[$i] &gt;= 25)                                  // Affiche les guillemets.
+   {
+    for ($j = 1; $j &lt;= (floor($repri[$i] / 12) - 1); $j++) {$chaine .= "'";}
+   }
+  }
+
+  // Retrait à gauche plus important pour la dernière note.
+  if ($i == ($nbRep +1)) {$j = (6 * $notOct);} else {$j = 0;}
+
+  imagestring ($im, $police, ($x[$repri[$i]] - $j), ($y[1] - 15), $chaine, $couleur[1]);
+  imageline ($im, $x[$repri[$i]], $y[1], $x[$repri[$i]], $y[$nbtessi], $couleur[1]);
+ }
+
+ // Lignes des tessitures
+ for ($i = 1; $i &lt;= $nbtessi; $i++)
+ {
+  if (((($i - $haut) % 12) == 0 ) || ((($i + 7- $haut) % 12) == 0 ))
+  {
+   expoTessi($im, 10, ($y[$i] - 10), $nomTessi[($haut - $i + 1)], $couleur[1]);
+   imageline ($im, $x[1], $y[$i], $x[$nbNot], $y[$i], $couleur[1]);
+  }
+ }
+
+ imagepng($im); imagedestroy($im);
+
+/*
+ // Cadrillage éventuel (très utile pour la programmation).
+ $gris = imagecolorallocate($im, 191, 191, 191);
+ imagerectangle ($im, $mt, $mr, $l_img, $h_img, $gris);
+ // Lignes verticales
+ for ($i = 1; $i &lt;= $nbNot; $i++) {imageline ($im, $x[$i], $mr, $x[$i], $h_img, $gris);}
+ // Lignes horizontales
+ for ($i = 1; $i &lt;= $nbtessi; $i++) {imageline ($im, $mt, $y[$i], $l_img, $y[$i], $gris);}
+*/
+
+?&gt;   </pre>
+
+   <br /><br />
+
+  </blockquote>
+ 
+  <br /><br />
+
+ </body>
+
+<!-- Mirrored from hydraule.org/bureau/ordi/pleinjeu/src/code.php by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:41:38 GMT -->
+</html>

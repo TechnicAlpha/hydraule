@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODL version="0.1">
+ <KB name="Mixture">
+  <PRESENT_NOTE>
+   1111111111111111111111111111111111111111111111111111111111111
+  </PRESENT_NOTE>
+ </KB>
+ <MIXTURE name="Mixture" def_kb="Mixture">
+  <RANK>
+   <BREAK pos="1" range="56" />
+   <BREAK pos="13" range="49" />
+   <BREAK pos="25" range="44" />
+   <BREAK pos="37" range="37" />
+   <BREAK pos="49" range="32" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="61" />
+   <BREAK pos="13" range="56" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="37" range="44" />
+   <BREAK pos="49" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="68" />
+   <BREAK pos="13" range="61" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="49" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="37" range="56" />
+   <BREAK pos="49" range="49" />
+  </RANK>
+ </MIXTURE>
+</ODL>
+

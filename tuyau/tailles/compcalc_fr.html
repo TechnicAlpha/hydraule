@@ -1,0 +1,562 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<!-- Page composée par S.M.C.J. -->
+<html>
+ 
+<!-- Mirrored from hydraule.org/tuyau/tailles/compcalc_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:44 GMT -->
+<head>
+  <title>Comparaison entre une fonction g&eacute;om&eacute;trique - arithm&eacute;tique</title>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-15">
+  <meta name="author" content="S.M.C.J.">
+  <meta name="keywords" content="Hydraule Orgue Orgao Organo Orgel Organ">
+  <meta name="description" content="Documents et informations sur l'orgue a tuyau">
+
+  <style type="text/css">
+   @keyframes clignotement { to { visibility : hidden; } }
+   .monBlink {animation : clignotement 1s steps(2, start) infinite; }
+  </style>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../images/kraft.gif">
+
+  <table border="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <h2><font color="#ff0000">
+      Comparaison de deux proc&eacute;d&eacute;s<br>de calculs
+      des diam&egrave;tres<br>de tuyaux d'orgues
+     </font></h2>
+    <h3><font color="#008000">l'un g&eacute;om&eacute;trique, le second logarithmique</font></h3>
+    </td>
+    <td align="right" valign="top">
+     <a href="../../index-2.html" target="_top"><img src="../../images/hydraule.gif" border="0" alt="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br><br>
+
+  <center>
+   <table border="0" width="88%" cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <table border="1" cellpadding="2" cellspacing="0" bgcolor="#fff7e7">
+       <tr align="left">
+        <td colspan="2">&nbsp;</td>
+        <td><b>Dom<br>Bedos</th>
+        <td><b>Loga-<br>rithmes</th>
+        <td><b>Diff&eacute;-<br>rence</th>
+       </tr>
+       <tr align="right">
+        <th align="left">C</th>
+        <td align="right">1</td>
+        <td><font color="#FF0000"><b>155,7</b></font></td>
+        <td>155,7</td>
+        <td>0,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C&#9839;</th>
+        <td align="right">2</td>
+        <td>148,4</td>
+        <td>149,4</td>
+        <td>1,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">D</th>
+        <td align="right">3</td>
+        <td>139,8</td>
+        <td>143,3</td>
+        <td>3,6</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E&#9837;</th>
+        <td align="right">4</td>
+        <td>133,3</td>
+        <td>137,5</td>
+        <td>4,2</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E</th>
+        <td align="right">5</td>
+        <td>125,6</td>
+        <td>132,0</td>
+        <td>6,3</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F</th>
+        <td align="right">6</td>
+        <td>119,9</td>
+        <td>126,6</td>
+        <td>6,7</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F&#9839;</th>
+        <td align="right">7</td>
+        <td>114,4</td>
+        <td>121,5</td>
+        <td>7,1</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G</th>
+        <td align="right">8</td>
+        <td>107,9</td>
+        <td>116,6</td>
+        <td>8,6</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G&#9839;</th>
+        <td align="right">9</td>
+        <td>103,1</td>
+        <td>111,9</td>
+        <td>8,8</td>
+       </tr>
+       <tr align="right">
+        <th align="left">A</th>
+        <td align="right">10</td>
+        <td>97,3</td>
+        <td>107,3</td>
+        <td>10,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B&#9837;</th>
+        <td align="right">11</td>
+        <td>93,0</td>
+        <td>103,0</td>
+        <td>9,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B</th>
+        <td align="right">12</td>
+        <td>87,9</td>
+        <td>98,8</td>
+        <td>10,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C</th>
+        <td align="right">13</td>
+        <td>84,1</td>
+        <td>94,8</td>
+        <td>10,7</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C&#9839;</th>
+        <td align="right">14</td>
+        <td>80,4</td>
+        <td>91,0</td>
+        <td>10,5</td>
+       </tr>
+       <tr align="right">
+        <th align="left">D</th>
+        <td align="right">15</td>
+        <td>76,1</td>
+        <td>87,3</td>
+        <td>11,2</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E&#9837;</th>
+        <td align="right">16</td>
+        <td>72,9</td>
+        <td>83,7</td>
+        <td>10,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E</th>
+        <td align="right">17</td>
+        <td>69,0</td>
+        <td>80,4</td>
+        <td><font color="#ff0000" class="monBlink"><b>11,3</b></font></td>
+       </tr>
+       <tr align="right">
+        <th align="left">F</th>
+        <td align="right">18</td>
+        <td>66,2</td>
+        <td>77,1</td>
+        <td>10,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F&#9839;</th>
+        <td align="right">19</td>
+        <td>63,4</td>
+        <td>74,0</td>
+        <td>10,5</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G</th>
+        <td align="right">20</td>
+        <td>60,2</td>
+        <td>71,0</td>
+        <td>10,8</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G&#9839;</th>
+        <td align="right">21</td>
+        <td>57,8</td>
+        <td>68,1</td>
+        <td>10,3</td>
+       </tr>
+       <tr align="right">
+        <th align="left">A</th>
+        <td align="right">22</td>
+        <td>54,9</td>
+        <td>65,3</td>
+        <td>10,5</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B&#9837;</th>
+        <td align="right">23</td>
+        <td>52,7</td>
+        <td>62,7</td>
+        <td>10,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B</th>
+        <td align="right">24</td>
+        <td>50,2</td>
+        <td>60,2</td>
+        <td>10,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C</th>
+        <td align="right">25</td>
+        <td>48,3</td>
+        <td>57,7</td>
+        <td>9,5</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C&#9839;</th>
+        <td align="right">26</td>
+        <td>46,4</td>
+        <td>55,4</td>
+        <td>8,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">D</th>
+        <td align="right">27</td>
+        <td>44,3</td>
+        <td>53,1</td>
+        <td>8,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E&#9837;</th>
+        <td align="right">28</td>
+        <td>42,7</td>
+        <td>51,0</td>
+        <td>8,3</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E</th>
+        <td align="right">29</td>
+        <td>40,7</td>
+        <td>48,9</td>
+        <td>8,2</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F</th>
+        <td align="right">30</td>
+        <td>39,3</td>
+        <td>46,9</td>
+        <td>7,6</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F&#9839;</th>
+        <td align="right">31</td>
+        <td>37,9</td>
+        <td>45,0</td>
+        <td>7,1</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G</th>
+        <td align="right">32</td>
+        <td>36,3</td>
+        <td>43,2</td>
+        <td>6,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G&#9839;</th>
+        <td align="right">33</td>
+        <td>35,1</td>
+        <td>41,5</td>
+        <td>6,4</td>
+       </tr>
+       <tr align="right">
+        <th align="left">A</th>
+        <td align="right">34</td>
+        <td>33,7</td>
+        <td>39,8</td>
+        <td>6,1</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B&#9837;</th>
+        <td align="right">35</td>
+        <td>32,6</td>
+        <td>38,2</td>
+        <td>5,6</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B</th>
+        <td align="right">36</td>
+        <td>31,3</td>
+        <td>36,6</td>
+        <td>5,3</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C</th>
+        <td align="right">37</td>
+        <td>30,4</td>
+        <td>35,1</td>
+        <td>4,8</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C&#9839;</th>
+        <td align="right">38</td>
+        <td>29,4</td>
+        <td>33,7</td>
+        <td>4,3</td>
+       </tr>
+       <tr align="right">
+        <th align="left">D</th>
+        <td align="right">39</td>
+        <td>28,4</td>
+        <td>32,4</td>
+        <td>4,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E&#9837;</th>
+        <td align="right">40</td>
+        <td>27,6</td>
+        <td>31,0</td>
+        <td>3,5</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E</th>
+        <td align="right">41</td>
+        <td>26,6</td>
+        <td>29,8</td>
+        <td>3,2</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F</th>
+        <td align="right">42</td>
+        <td>25,9</td>
+        <td>28,6</td>
+        <td>2,7</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F&#9839;</th>
+        <td align="right">43</td>
+        <td>25,2</td>
+        <td>27,4</td>
+        <td>2,2</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G</th>
+        <td align="right">44</td>
+        <td>24,4</td>
+        <td>26,3</td>
+        <td>1,9</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G&#9839;</th>
+        <td align="right">45</td>
+        <td>23,8</td>
+        <td>25,2</td>
+        <td>1,5</td>
+       </tr>
+       <tr align="right">
+        <th align="left">A</th>
+        <td align="right">46</td>
+        <td>23,1</td>
+        <td>24,2</td>
+        <td>1,2</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B&#9837;</th>
+        <td align="right">47</td>
+        <td>22,5</td>
+        <td>23,2</td>
+        <td>0,7</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B</th>
+        <td align="right">48</td>
+        <td>21,9</td>
+        <td>22,3</td>
+        <td>0,4</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C</th>
+        <td align="right">49</td>
+        <td><font color="#FF0000"><b>21,4</b></font></td>
+        <td>21,4</td>
+        <td>0,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C&#9839;</th>
+        <td align="right">50</td>
+        <td>20,9</td>
+        <td>20,5</td>
+        <td>0,4</td>
+       </tr>
+       <tr align="right">
+        <th align="left">D</th>
+        <td align="right">51</td>
+        <td>20,4</td>
+        <td>19,7</td>
+        <td>0,7</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E&#9837;</th>
+        <td align="right">52</td>
+        <td>20,0</td>
+        <td>18,9</td>
+        <td>1,1</td>
+       </tr>
+       <tr align="right">
+        <th align="left">E</th>
+        <td align="right">53</td>
+        <td>19,5</td>
+        <td>18,1</td>
+        <td>1,4</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F</th>
+        <td align="right">54</td>
+        <td>19,2</td>
+        <td>17,4</td>
+        <td>1,8</td>
+       </tr>
+       <tr align="right">
+        <th align="left">F&#9839;</th>
+        <td align="right">55</td>
+        <td>18,8</td>
+        <td>16,7</td>
+        <td>2,1</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G</th>
+        <td align="right">56</td>
+        <td>18,4</td>
+        <td>16,0</td>
+        <td>2,4</td>
+       </tr>
+       <tr align="right">
+        <th align="left">G&#9839;</th>
+        <td align="right">57</td>
+        <td>18,1</td>
+        <td>15,4</td>
+        <td>2,7</td>
+       </tr>
+       <tr align="right">
+        <th align="left">A</th>
+        <td align="right">58</td>
+        <td>17,8</td>
+        <td>14,8</td>
+        <td>3,0</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B&#9837;</th>
+        <td align="right">59</td>
+        <td>17,5</td>
+        <td>14,2</td>
+        <td>3,3</td>
+       </tr>
+       <tr align="right">
+        <th align="left">B</th>
+        <td align="right">60</td>
+        <td>17,2</td>
+        <td>13,6</td>
+        <td>3,6</td>
+       </tr>
+       <tr align="right">
+        <th align="left">C</th>
+        <td align="right">61</td>
+        <td>16,9</td>
+        <td>13,0</td>
+        <td>3,9</td>
+       </tr>
+      </table>
+     </td>
+
+     <td width="40">&nbsp;</td>
+
+     <td>
+      <br><br>
+
+      <blockquote>
+       <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Il est facile de d&eacute;montrer l'importance
+       du choix du calcul. Pour cela, on peut se baser sur les tailles du <i>8&nbsp;pieds</i> donn&eacute;es
+       par Dom&nbsp;Bedos. Le premier <i>do</i> fait 5&nbsp;pouces 9&nbsp;lignes de diam&egrave;tre, soit
+       155,7&nbsp;mm. Le cinqui&egrave;me <i>do</i> est, quant &agrave; lui, donn&eacute; comme mesurant
+       9&nbsp;lignes et demi, soit 21,4&nbsp;mm. Il est possible de calculer l'ensemble des diam&egrave;tres
+       interm&eacute;diaires en suivant <u><b>rigoureusement</b></u> le proc&eacute;d&eacute; d&eacute;crit
+       par Dom&nbsp;Bedos tout en <i><a href="fonctdbd_fr.html" target="_parent">traduisant</a></i> celui-ci
+       par une fonction graphique afin d'obtenir des donn&eacute;es num&eacute;riques.</p>
+ 
+       <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parall&egrave;lement &agrave; cela, il n'est pas
+       inint&eacute;ressant de calculer au moyen des logarithmes les interm&eacute;diaires de ce m&ecirc;me
+       <i>8&nbsp;pieds</i> et faire, pour chaque diam&egrave;tre, la diff&eacute;rence entre les deux
+       r&eacute;sultats afin d'en &eacute;valuer l'&eacute;cart qui les s&eacute;pare.</p>
+
+       <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Appara&icirc;t alors une diff&eacute;rence de
+       11,3&nbsp;mm. sur le diam&egrave;tre du <i>mi</i> de quatre pieds... &Eacute;videmment ce n'est pas
+       rien... C'est m&ecirc;me beaucoup et les harmonistes d&eacute;cideurs des tailles des tuyaux devraient
+       peut &ecirc;tre s'int&eacute;resser d'avantage au type de calcul qu'ils emploient en fonction de
+       l'&eacute;poque qu'ils veulent recr&eacute;er ou restaurer. S'il est entendu que les facteurs
+       d'orgues anciens, du <font style="font-variant:small-caps;">xv</font><sup>e</sup> au
+       <font style="font-variant:small-caps;">xviii</font><sup>e</sup>&nbsp;si&egrave;cle sont loin d'avoir
+       tous suivis le principe d&eacute;crit par le moine b&eacute;n&eacute;dictin fran&ccedil;ais, il n'en
+       reste pas moins que le proc&eacute;d&eacute; purement num&eacute;rique bas&eacute; sur les logarithmes
+       est une pratique qui ne fut courante qu'&agrave; partir du milieu du
+       <font style="font-variant:small-caps;">xix</font><sup>e</sup>&nbsp;si&egrave;cle. Aussi me semble-t-il
+       capital de ne pas choisir arbitrairement un syst&egrave;me plut&ocirc;t qu'un autre comme c'est encore
+       trop souvent le cas dans nos restaurations contemporaines.</p>
+
+       <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;On peut voir ci-dessous l'illustration graphique de
+       la table ci-contre&nbsp;: les valeurs sont rigoureusement identiques d'un graphique &agrave;
+       l'autre&nbsp;; seul le proc&eacute;d&eacute; de tra&ccedil;age graphique est modifi&eacute;. Les
+       valeurs calcul&eacute;es suivant le proc&eacute;d&eacute; de Dom&nbsp;Bedos sont figur&eacute;es
+       sur la ligne rouge, celles calcul&eacute;es suivant le proc&eacute;d&eacute; logarithmique sont
+       quant &agrave; elles plac&eacute;es sur la ligne noire. On peut appr&eacute;cier sans difficult&eacute;
+       la rectitude des droites selon le type de repr&eacute;sentation.</p>
+      </blockquote>
+
+      <br><br>
+
+      <center>
+       <img src="gracp_01.png" border="0" width="550" height="400" alt="Tra&ccedil;&eacute g&eacute;om&eacute;trique." title="Tra&ccedil;&eacute g&eacute;om&eacute;trique.">
+       <br><br><br>
+       <img src="gracp_02.png" border="0" width="550" height="400" alt="Tra&ccedil;&eacute logarithmique." title="Tra&ccedil;&eacute logarithmique.">
+       <br><br><br>
+      </center>
+     </td>
+    </tr>
+   </table> 
+  </center>
+
+  <br><br>
+
+  <blockquote>
+   <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Il est enfin tr&egrave;s important de comprendre que si
+   l'on veut repr&eacute;senter un graphique de tailles selon le principe de Dom&nbsp;Bedos mais avec des mesures
+   qui auront &eacute;t&eacute; calcul&eacute;es de mani&egrave;re logarithmiques (ou au moyen des progressions,
+   ce qui revient sensiblement au m&ecirc;me), il faut alors que les divisions horizontales suivent exactement
+   les m&ecirc;mes rapports que les diam&egrave;tres eux-m&ecirc;mes, repr&eacute;sent&eacute;s verticalement.</p>
+
+   <br><br>
+
+   <p align="center"><b>Division avec un rapport d'octave de 2 (Dom&nbsp;Bedos).</b><br>
+   <img src="gracp_03.png" border="0" width="612" height="268" alt="Division avec un rapport d'octave de 2 (Dom Bedos)." title="Division avec un rapport d'octave de 2 (Dom Bedos)."></p>
+
+   <br><br>
+
+   <p align="center"><b>Division avec un rapport d'octave diff&eacute;rent de 2.</b><br>
+   <img src="gracp_04.png" border="0" width="612" height="220" alt="Division avec un rapport d'octave diff&eacute;rent de 2." title="Division avec un rapport d'octave diff&eacute;rent de 2."></p>
+   <p align="justify">.</p>
+  </blockquote>
+
+  <br><br>
+
+ </body>
+
+<!-- Mirrored from hydraule.org/tuyau/tailles/compcalc_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:47 GMT -->
+</html>
+

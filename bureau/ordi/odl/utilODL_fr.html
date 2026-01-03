@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Page HTML composée et programmée par S.M.C.J. -->
+<html>
+ 
+<!-- Mirrored from hydraule.org/bureau/ordi/odl/utilODL_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:09:10 GMT -->
+<head>
+  <title>De l'utilit&eacute; du langage ODL (Organ Definition Langage).</title>
+
+  <meta http-equiv="content-language" content="fr" />
+  <meta http-equiv="content-type"     content="text/html; charset=UTF-8" />
+  <meta       name="author"           content="S.M.C.J." />
+  <meta       name="keywords"         content="Hydraule Orgue Orgao Organo Orgel Organ" />
+  <meta       name="description"      content="ODL, Organ Definition Langage." />
+
+  <link rel="shortcut icon" href="../../../images/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="styles.html" />
+
+  <style type="text/css">
+   body
+   {
+    font-family : Arial, Helvetica, sans-serif;
+    font-size : 110%;
+   }
+
+   h1, h2, h3 {font-family : Time, Serif;}
+   p {text-indent : 2em;}
+   li  {text-align : justify;}
+
+   kbd, pre
+   {
+    font-weight : bold;
+          color : #008000;
+      font-size : 115%;
+   }
+
+   .exemple
+   {
+    background-color : #fff7e7;
+    border : 1px solid #000080;
+    padding-left : 10px; padding-right : 10px;
+    padding-top : 3px; padding-bottom : 4px;
+   }
+  </style>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../../images/kraft.gif">
+  <table border="0" width="100%">
+
+   <tr>
+    <td align="center" valign="center">
+     <br /><br /><h1><font color="#ff0000">L'ordinateur</font></h1>
+     <h2><font color="#008000">De l'utilit&eacute; du langage O.D.L. (<i>Organ Definition Langage</i>).</font></h2>
+     <h3><font color="#000080">R&eacute;flexions informatiques d'un facteur d'orgues.</font></h3>
+     <a href="utilODL_en.html"><img src="../../../images/flag_en.gif" border="0" width="40" height="28" alt="English version" title="English version"></a>&nbsp; &nbsp;
+     <a href="utilODL_de.html"><img src="../../../images/flag_de.gif" border="0" width="40" height="28" alt="Deutsche Version" title="Deutsche Version"></a>&nbsp; &nbsp;
+    </td>
+
+    <td align="right">
+     <a href="../../../index.html" target="_top"><img src="../../../images/hydraule.png" border="0" width="216" height="230" alt="L'Hydraule" title="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br /><br /><br />
+
+  <blockquote>
+   <p align="justify">Tout le monde qui s'est peu ou prou un jour frott&eacute; &agrave; la publication sur le Web conna&icirc;t
+   les bases du langage HTML. C'est un langage de balisage, c'est-&agrave;-dire qu'il pars&egrave;me le texte qui sera affich&eacute;
+   dans les navigateurs des internautes de <i>tags</i>, eux-m&ecirc;me non destin&eacute;s &agrave; &ecirc;tre affich&eacute;s mais
+   seulement &agrave; mettre en forme le texte qu'ils encadrent. Il faut, pour ceux qui n'en connaissent pas encore le principe (ou
+   pour rafra&icirc;chir la m&eacute;moire de ceux qui l'aurait oubli&eacute;) donner un exemple pour bien faire entendre ce
+   fondement dans la publication sur le Web.</p>
+
+   <p align="justify">Prenons donc l'exemple d'une phrase tr&egrave;s simple&nbsp;: &laquo;&nbsp;<i>Le nom de la
+   Rose.</i>&nbsp;&raquo;. Donnez ce texte pur &agrave; un navigateur Web, il l'affichera normalement, dans une police de
+   caract&egrave;re standard et sans le moindre enrichissement. Si l'on souhaite que le mot &laquo;&nbsp;<i>nom</i>&nbsp;&raquo;
+   soit affich&eacute; en gras (<i>bold</i> en anglais), il est n&eacute;cessaire de l'encadrer entre deux balises, l'une
+   <i>ouvrante</i>, l'autre <i>fermante</i>, ce qui donne ceci&nbsp;:</p>
+
+   <p align="justify"><kbd>Le &lt;b&gt;nom&lt;/b&gt; de la Rose.</kbd>&nbsp;: &laquo;&nbsp;<span class="exemple">Le
+   <b>nom</b> de la Rose.</span>&nbsp;&raquo;.</p>
+
+   <p align="justify">Eut-on voulu de l'italique ou souligner le mot qu'au lieu de placer la balise <kbd>&lt;b&gt;</kbd> on
+   aurait choisi <kbd>&lt;i&gt;</kbd> pour obtenir de l'italique et <kbd>&lt;u&gt;</kbd> pour du soulign&eacute;
+   (<i><u><b>u</b></u></i><i>nderline</i> en anglais). Bien entendu toute balise normalement <i>ouvrante</i> poss&egrave;de
+   g&eacute;n&eacute;ralement (mais pas toujours) sa r&eacute;ciproque <i>fermante</i> et c'est bien s&ucirc;r le cas de l'italique
+   du soulign&eacute;. Certaines balises permettent de changer la couleur des caract&egrave;res. Elles sont donc de celles qui
+   poss&egrave;dent un (ou plusieurs) <i>attributs</i>. Ainsi, pour que le mot &laquo;&nbsp;<i>Rose</i>&nbsp;&raquo; soit
+   r&eacute;ellement affich&eacute; en rose, il faut &eacute;crire le code HTML&nbsp;:</p>
+
+   <p align="justify"><kbd>Le nom de la &lt;font color=&quot;pink&quot;&gt;Rose&lt;/font&gt;.</kbd>&nbsp;:
+   &laquo;&nbsp;<span class="exemple">Le nom de la <font color="pink">Rose</font>.</span>&nbsp;&raquo;.</p>
+
+   <p align="justify">On notera donc qu'il s'agit d'une balise <kbd>&lt;font&gt;</kbd>, que celle-ci sert
+   &agrave; modifier la police de caract&egrave;re et qu'elle peut poss&eacute;der, entre autres, un attribut
+   &laquo;&nbsp;<kbd>color</kbd>&nbsp;&raquo; suivi d'un signe &laquo;&nbsp;<kbd>=</kbd>&nbsp;&raquo; avec une couleur
+   &eacute;crite en anglais entre guillemets. Je vous laisse donc comprendre ais&eacute;ment qu'il est possible d'&eacute;crire&nbsp;:</p>
+
+   <p align="justify"><kbd>Le nom de la &lt;font color=&quot;green&quot;&gt;Rose&lt;/font&gt;.</kbd>&nbsp;:
+   &laquo;&nbsp;<span class="exemple">Le nom de la <font color="green">Rose</font>.</span>&nbsp;&raquo;.</p>
+
+   <p align="justify">pour passer pour un martien...</p>
+
+   <p align="justify">Le langage HTML poss&egrave;de un nombre cons&eacute;quent de balises et il n'est pas ici le lieu
+   d'en faire l'inventaire des noms pas plus que de la sp&eacute;cificit&eacute; de leur syntaxe. Il est, par contre,
+   n&eacute;cessaire de bien se rappeler que ce langage fut cr&eacute;&eacute; au CERN de Gen&egrave;ve en 1989 par
+   <a href="http://fr.wikipedia.org/wiki/Tim_Berners-Lee" target="_blank">Tim Berner Lee</a>. &Agrave; partir de la fin
+   des ann&eacute;es 90 du <font style="font-variant:small-caps">xx</font><sup>e</sup>&nbsp;si&egrave;cle, on s'est
+   pos&eacute; la question de la <i>structure-m&ecirc;me</i> du langage (en fait, sa syntaxe) et de l'extraordinaire
+   <i>structure arborescente</i> qui en ressortait. De fait, la moindre page Web est d'abord structur&eacute;e comme
+   une entit&eacute; HTML, elle m&ecirc;me se d&eacute;clinant entre un <i>en-t&ecirc;te</i> et un <i>corps de texte</i>, ce
+   dernier structur&eacute; en paragraphes contenant parfois des enrichissements, &amp;c. L'en-t&ecirc;te du document peut
+   lui-m&ecirc;me contenir un titre, des d&eacute;finitions de style, voire des commandes de scripts destin&eacute;es &agrave;
+   agir dynamiquement sur le document pour le modifier par trois clics de souris... Une structure de document HTML peut ainsi
+   prendre la forme&nbsp;:</p>
+
+   <pre>
+    &lt;html&gt;
+     &lt;head&gt;
+      &lt;title&gt;
+       Je suis le titre
+      &lt;/title&gt;
+     &lt;/head&gt;
+     &lt;body&gt;
+      &lt;p&gt;
+       Je suis un paragraphe avec le mot &lt;font color="pink"&gt;Rose&lt;/font&gt; en &lt;font color="pink"&gt;rose&lt;/font&gt;.
+      &lt;/p&gt;
+      &lt;p&gt;
+       Je suis un paragraphe avec le mot &lt;i&gt;italique&lt;/i&gt; en &lt;i&gt;italique&lt;/i&gt;.
+      &lt;/p&gt;
+     &lt;/body&gt;
+    &lt;/html&gt;
+   </pre>
+
+   <p align="justify">On parle de <i>racine</i> (la balise <kbd>&lt;html&gt;</kbd>) qui donne lieu &agrave; des
+   <i>n&oelig;uds</i> et des <i>enfants</i>. Mais le fait que les balises contiennent des mots comme <kbd>html</kbd>,
+   <kbd>head</kbd>, <kbd>body</kbd>, &amp;c, importe finalement moins que la structure arborescente. C'est la raison
+   pour laquelle, l'&eacute;criture informatique s'&eacute;crit souvent en usant d'indentation, c'est-&agrave;-dire de
+   d&eacute;calage vers la droite des mots en fonction de leur imbrication dans l'arbre. Cette indentation n'est pas prise en
+   compte &agrave; la lecture informatique. Par contre, elle permet de mieux lire et comprendre l'imbrication des
+   &eacute;l&eacute;ments du langage entre-eux.</p>
+
+   <p align="justify">Tout les mots des balises font r&eacute;f&eacute;rence &agrave; la mise en forme <i>d'un document texte</i>,
+   contenant &eacute;ventuellement des images, du son ou de la vid&eacute;o, mais dont la destination finale est <i>d'abord</i>
+   celle d'un navigateur Web capable de les interpr&eacute;ter et, surtout (puisque c'est le but principal de toutes pages HTML)
+   permettre d'utiliser l'<a href="http://fr.wikipedia.org/wiki/Hypertexte" target="_blank">hypertexte</a> afin de relier
+   des documents entre-eux, quel que soit la place physique qu'ils occupent sur les ordinateurs de la plan&egrave;te.</p>
+
+   <p align="justify">Mais on peut tout &agrave; fait imaginer se s&eacute;parer <i>totalement</i> du vocabulaire propre
+   &agrave; HTML pour le remplacer par un autre, invent&eacute; de toutes pi&egrave;ces, pour les besoins d'une autre cause
+   que celle d'afficher une page Web <i>mais</i> en conservant la structure arborescente dont tout traitement informatique
+   est si friand. En pratique, cela peut, par exemple, donner ceci&nbsp;:</p>
+
+   <pre>
+    &lt;orgue&gt;
+     Saint-Hippolyte-du-Fort
+     &lt;clavier&gt;
+      Grand Orgue
+      &lt;jeu&gt;Montre 8'&lt;/jeu&gt;
+      &lt;jeu&gt;Prestant 4'&lt;/jeu&gt;
+      &lt;jeu&gt;Fl&ucirc;te 4'&lt;/jeu&gt;
+      &lt;jeu&gt;Fourniture III-V&lt;/jeu&gt;
+      &lt;jeu&gt;Bourdon 8'&lt;/jeu&gt;
+      &lt;jeu&gt;Cornet IV&lt;/jeu&gt;
+      &lt;jeu&gt;Fl&ucirc;te 8'&lt;/jeu&gt;
+      &lt;jeu&gt;Trompette 8'&lt;/jeu&gt;
+     &lt;/clavier&gt;
+     &lt;clavier&gt;
+      Récit
+      &lt;jeu&gt;Flageolet 4'&lt;/jeu&gt;
+      &lt;jeu&gt;Fl&ucirc;te douce 8'&lt;/jeu&gt;
+      &lt;jeu&gt;Haut-bois 8'&lt;/jeu&gt;
+      &lt;jeu&gt;Voix-Humaine 8'&lt;/jeu&gt;
+     &lt;/clavier&gt;
+     &lt;clavier&gt;
+      Pédale
+      &lt;jeu&gt;Bourdon 16'&lt;/jeu&gt;
+      &lt;jeu&gt;Fl&ucirc;te 8'&lt;/jeu&gt;
+     &lt;/clavier&gt;
+    &lt;/orgue&gt;
+   </pre>
+
+   <p align="justify">Parce que la structure de l'orgue est extr&ecirc;mement arborescente, parce qu'on peut tr&egrave;s bien
+   imaginer d&eacute;crire de fa&ccedil;on beaucoup plus pouss&eacute;e les ramifications de l'arbre (un jeu contient des ensembles
+   de tuyaux &mdash;&nbsp;bois, m&eacute;tal, bouch&eacute;, &agrave; chemin&eacute;e, ouvert&nbsp;&mdash;, puis des types de
+   mesures sp&eacute;cifiques &amp;c.), il est possible de d&eacute;crire &agrave;-peu-pr&egrave;s tout et n'importe quoi dans
+   notre instrument en suivant ce principe, pour peu que l'on s'attache &mdash;&nbsp;quand m&ecirc;me&nbsp;&mdash; &agrave;
+   respecter un vocabulaire de balise d&eacute;fini de mani&egrave;re r&eacute;f&eacute;rentielle (et donc, peu &eacute;volutive).
+   On parlera alors de <a href="http://fr.wikipedia.org/wiki/Extensible_Markup_Language" target="_blank"><i>langage XML</i></a>,
+   dont le premier <i>X</i> de l'acronyme qui le nomme est signifiant d'<i>eXtension</i>, puisqu'on se pr&eacute;occupe d'abord
+   de la structure plut&ocirc;t que de la forme. On d&eacute;cline XML en des milliers de fa&ccedil;ons et ce n'est pas un
+   d&eacute;tail de sp&eacute;cifier ici le format ouvert
+   <a href="http://fr.wikipedia.org/wiki/MusicXML" target="_blank"><i>MusicML</i></a> qui permet d'&eacute;crire de
+   la musique de fa&ccedil;on standard.</p>
+
+   <p align="justify">En termes informatiques, les avantages sont &eacute;normes. Le premier qui touchera l'orgue me semble
+   se situer dans la <i>p&eacute;rennit&eacute;</i> puisque les documents &eacute;crits en XML le sont dans de simples fichiers
+   texte. Le format doit &ecirc;tre lisible par l'homme et on doit toujours avoir la possibilit&eacute; d'en modifier le code
+   <i>manuellement</i>. La simple lecture de la composition d'orgue qui pr&eacute;c&egrave;de d&eacute;montre qu'un logiciel
+   est capable de <i>lire</i> <kbd>&lt;clavier&gt;</kbd> et de le comprendre en tant <i>qu'entit&eacute; signifiante</i>,
+   c'est-&agrave;-dire, exploitable dans des conditions sp&eacute;cifiques au sujet qu'il traite.</p>
+
+   <p align="justify">Et c'est tout l'int&eacute;r&ecirc;t d'un langage de balisage puisqu'outre la signifiance de sa syntaxe,
+   les balises sont, pour un logiciel sp&eacute;cifique, infiniment plus porteuses de <i>sens</i> que ne le sont le contenu des
+   cellules d'un tableur. Plus encore, l'extraordinaire souplesse que permet l'arrangement des donn&eacute;es en structure
+   arborescente est infiniment plus performant que les structures tabulaires des bases de donn&eacute;es, nettement plus
+   &eacute;loign&eacute;es de la structure-m&ecirc;me de notre instrument.</p>
+
+   <p align="justify">Savoir qu'un premier <i>Do</i> de Montre fait 145&nbsp;millim&egrave;tres et que le calcul de progression
+   suit la formule de Cavaill&eacute; bas&eacute; sur la racine quarante-huiti&egrave;me de six est une chose&nbsp;; &eacute;changer
+   des relev&eacute;s des plans qui soient, sans le moindre probl&egrave;me traduits en anglais, allemand et japonais en est une
+   autre. Nous avons, en Europe, la chance de poss&eacute;der un patrimoine organologique d'une ampleur que peuvent nous envier les
+   quatre autres continents. Mais nous avons aussi, toujours en Europe, finalement peu de go&ucirc;t pour magnifier nos
+   savoir-faire, pr&eacute;f&eacute;rant souvent laisser s'endormir nos connaissances &agrave; l'ombre des biblioth&egrave;ques,
+   voire perdre nos connaissances acquises puisque l'abondance de notre culture nous permet de briller souvent sans l'ombre d'un
+   effort...</p>
+
+   <p align="justify">Puisque je crois &ecirc;tre le premier (sinon le seul) &agrave; m'&ecirc;tre pench&eacute; sur ce
+   probl&egrave;me, le premier exemple signifiant de l'utilisation d'XML en mati&egrave;re de facture d'orgues n'est,
+   curieusement, pas dans la simple mise en base de donn&eacute;es de compositions d'orgues mais dans celle, beaucoup plus
+   sp&eacute;cifique, des compositions de plein jeux. La raison en est simple&nbsp;: une composition de plein jeu entra&icirc;ne,
+   pour le facteur, une r&eacute;flexion qui <i>peut</i> ne rien avoir d'esth&eacute;tique mais qui peut &ecirc;tre d'ordre
+   purement comptable, donc pratique. Il en va de m&ecirc;me au regard de la taille des tuyaux qui, si elle donne une
+   id&eacute;e musicale de ce vers quoi l'on se dirige, doit pouvoir, pour l'ex&eacute;cutant, &ecirc;tre suivi de sa
+   planification pratique. En cela, je crois m'inscrire dans la droite lign&eacute;e d'un moine b&eacute;n&eacute;dictin de la
+   congr&eacute;gation de Saint-Maur dont l'histoire de la facture d'orgue n'a pas eu qu'&agrave; souffrir...</p>
+
+   <p align="justify">Il y a quelques ann&eacute;es maintenant, j'avais donc programm&eacute; un utilitaire de facture d'orgues
+   (qui n'&eacute;tait pas exactement mon premier...) et celui-ci avait pour t&acirc;che de planifier les tuyaux identiques d'un
+   plein-jeu. La t&acirc;che est d&eacute;j&agrave; assez ardue avec un tableur&nbsp;; elle l'est encore plus avec un navigateur
+   Web dont les formulaires ne sont pas exactement pr&eacute;vus pour traiter des donn&eacute;es de facture d'orgues (et on se
+   demande bien pourquoi d'ailleurs)... Mais j'&eacute;tais quand-m&ecirc;me arriv&eacute; &agrave; produire un programme
+   pr&eacute;f&eacute;r&eacute; de certains tuyautier fran&ccedil;ais pour une raison simple&nbsp;: outre le tableau de
+   d&eacute;bit, il dessinait tr&egrave;s simplement, et &agrave; moindre frais (en
+   <a href="http://fr.wikipedia.org/wiki/Art_ascii" target="_blank">art ASCII</a>), le <i>plan</i> du plein jeu. De plus,
+   parce que tr&egrave;s didactique, il est tr&egrave;s ais&eacute;, pour l'apprenti, de comprendre la probl&eacute;matique des
+   plein jeux une fois apr&egrave;s en avoir visualis&eacute; le plan qui figure chaque tuyau et cet aspect p&eacute;dagogique
+   des choses, s'inscrivant dans le partage et la continuit&eacute; des savoirs-faire, &eacute;tait plut&ocirc;t loin de me
+   d&eacute;plaire. Bien entendu, l&agrave; o&ugrave; l'apprenti d&eacute;couvre une disposition pratique, l'expert peut
+   d&eacute;montrer la pr&eacute;sence de masses sonores, privil&eacute;giant telle ou telle zone du spectre des fr&eacute;quences
+   que le simple &eacute;nonc&eacute; de la composition ne donnait pas forc&eacute;ment &agrave; comprendre.</p>
+
+   <p align="justify">Mon utilitaire poss&eacute;dait quelques d&eacute;fauts qu'il fallait corriger (il en poss&egrave;de
+   toujours qu'il faudra affiner mais ils ne sont pas fondamentaux). Il n'&eacute;tait pas polyglotte et demandait de
+   proc&eacute;der &agrave; la saisie des donn&eacute;es en deux &eacute;tapes distinctes (deux pages Web pour produire une
+   troisi&egrave;me, en terme de programmation <i>PHP</i>, c'est beaucoup trop...). Surtout, il ne permettait pas d'enregistrer
+   les donn&eacute;es saisie <i>en tant que donn&eacute;es structurelle</i> m&ecirc;me s'il &eacute;tait, certes, d&eacute;j&agrave;
+   possible de faire une copie des donn&eacute;es produites dans plusieurs formats. Mais &agrave; aucun moments ceux-ci ne sortaient
+   du sch&eacute;ma de donn&eacute;es &agrave; publier <i>dans la forme</i>, et non, <i>dans le sens</i>...</p>
+
+   <p align="justify">&laquo;&nbsp;<i>Tempus fugit</i>&nbsp;&raquo;. Mais le temps peut, souvent, apporter beaucoup sans le
+   moindre effort. Du strict point de vue de l'&eacute;volution des navigateurs Webs et des langages utilis&eacute;s sur l'Internet,
+   ces dix derni&egrave;res ann&eacute;es n'ont &eacute;videmment pas manqu&eacute;es d'&ecirc;tre on ne peut plus f&eacute;condes.
+   XML, encore tr&egrave;s jeune au d&eacute;but des ann&eacute;es 2000, celles o&ugrave; je programmais mon utilitaire, n'a pas
+   fait beaucoup de progr&egrave;s. De toutes fa&ccedil;on, pour avoir la vocation d'&ecirc;tre <i>verbe</i> (signifiant) avant
+   celle d'&ecirc;tre <i>mot</i>  (ostensible), XML est si trivial que l'on sait qu'il &eacute;voluera peu. Par contre, les
+   langages qui tournent autour et permettent de le traiter ont, eux, &eacute;norm&eacute;ment &eacute;volu&eacute;s ces
+   derni&egrave;res ann&eacute;es. <a href="http://fr.wikipedia.org/wiki/PHP" target="_blank"><i>PHP</i></a> ou
+   <a href="http://fr.wikipedia.org/wiki/JavaScript" target="_blank"><i>JavaScript</i></a> et surtout la
+   sp&eacute;cification <a href="http://fr.wikipedia.org/wiki/Document_Object_Model" target="_blank"><i>D.O.M.</i></a>
+   sont devenus des objets avec lesquels on peut aujourd'hui ais&eacute;ment travailler, m&ecirc;me si l'on ne pratique, comme
+   c'est mon cas, l'informatique qu'en dilettante et de mani&egrave;re autodidacte.</p>
+
+   <p align="justify">Recevant un courriel d'un jeune passionn&eacute; d'orgue me proposant de mettre un lien depuis mon site
+   Web sur le sien, je me rendais compte que la jeune g&eacute;n&eacute;ration (celle &agrave; laquelle je n'appartiens plus
+   vraiment...) se posait la question, elle, d'utiliser nettement plus efficacement l'Internet que celle qui la
+   pr&eacute;c&egrave;de. R&eacute;pondant positivement &agrave; cette requ&ecirc;te, je me replongeais dans mes notes, parfois
+   tr&egrave;s anciennes, mais toujours bien entendu accessibles (l'informatique ma&icirc;tris&eacute;e, cela sert &agrave; cela).
+   Outre le fait que, pour en avoir tr&egrave;s scrupuleusement pris note, j'avais encore en m&eacute;moire les proc&eacute;dures
+   utilis&eacute;es dans mon utilitaire de d&eacute;bit de plein jeu, j'avais aussi, dans toutes ces ann&eacute;es, acquis la
+   certitudes qu'XML pourrait un jour servir &agrave; la facture d'orgues, particuli&egrave;rement dans le stockage des
+   donn&eacute;es de restaurations qu'il nous arrive, ici en Europe, et en tant que facteurs d'orgues restaurateurs dignes de ce
+   nom, de publier.</p>
+
+   <p align="justify">Le courriel de mon jeune passionn&eacute; d'orgue aura eu l'avantage de me donner envie de remettre mon
+   ouvrage sur le m&eacute;tier. Et je fis, cette fois, aboutir cette programmation-l&agrave;. Mes trois pages originelles
+   &eacute;crites en PHP se r&eacute;duisirent &agrave; une seule, il fut possible d'envisager leur traduction en japonais mais
+   surtout, enfin, un prototype d'O.D.L. se faisait jour avec cette puissance de la d&eacute;monstration de ses capacit&eacute;s
+   pour peu que l'on se donne la peine d'en r&eacute;fl&eacute;chir au <i>sens</i>. Je choisissais &eacute;videmment l'anglais
+   comme langue pivot de mes balises mais cela n'a finalement que tr&egrave;s peu d'importance de faire une
+   <i>sp&eacute;cification</i> avec la balise <kbd>&lt;kb&gt;</kbd> (<i>keyboard</i>) plut&ocirc;t qu'avec
+   <kbd>&lt;clavier&gt;</kbd> ou <kbd>&lt;werk&gt;</kbd> puisque les logiciels sont et seront &eacute;videmment l&agrave; pour
+   traduire de mani&egrave;re transparente ces instructions d&eacute;finies dans le langage et pr&eacute;senter les donn&eacute;es
+   de fa&ccedil;on beaucoup agr&eacute;able que la lecture d'un code. Dans les faits, il est ind&eacute;niable que la langue
+   anglaise est particuli&egrave;rement adapt&eacute;e pour &ecirc;tre r&eacute;cup&eacute;r&eacute;e sous forme de code&nbsp;;
+   mais c'est l&agrave; un autre d&eacute;bat.</p>
+
+   <p align="justify">Comme toute mise en place de programme informatique, les choses se sont d&eacute;roul&eacute;es par
+   &eacute;tapes. J'ai d'abord presque totalement r&eacute;&eacute;cris mon formulaire pour le rendre nettement plus dynamique,
+   puis permis l'<i>exportation</i> O.D.L. qui n'&eacute;tait pas primitivement programm&eacute;e. Enfin son <i>importation</i>,
+   celle-l&agrave; m&ecirc;me qui ouvre des portes que j'avais entrevues.</p>
+
+   <p align="justify">Car une fois r&eacute;alis&eacute;e la production logicielle de fichier au format O.D.L., les choses
+   s'acc&eacute;l&egrave;rent pour le moins en puissance dans la combinatoire puisqu'il devient possible de&nbsp;:</p>
+
+   <ul>
+    <li>Saisir un plein-jeu avec le formulaire et en afficher son d&eacute;bit en HTML dans un navigateur.</li>
+    <li>Saisir un plein-jeu avec le formulaire et en exporter les donn&eacute;es au format O.D.L.</li>
+    <li>Importer les donn&eacute;es &agrave; partir d'un fichier <u><b>local</b></u> au format O.D.L. avec le formulaire pour traitement ult&eacute;rieur.</li>
+    <li>Importer les donn&eacute;es &agrave; partir d'un fichier <u><b>en ligne</b></u> au format O.D.L. <u><b>en modifiant l'URL</b></u> pour traitement ult&eacute;rieur.</li>
+    <li>Importer les donn&eacute;es &agrave; partir d'un fichier <u><b>en ligne</b></u> au format O.D.L. <u><b>en modifiant l'URL</b></u> pour en afficher <i>directement</i> son d&eacute;bit en HTML dans un navigateur.</li>
+   </ul>
+
+   <p align="justify">Sur le site de <i>l'Hydraule</i>, l'adresse
+   <a href="http://fr.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank">URL</a>
+   de mon utilitaire de traitement de plein jeux est&nbsp;:<br />
+   &laquo;&nbsp;<a href="../pleinjeu/pleinjeu.html" target="_blank">http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php</a>&nbsp;&raquo;.</p>
+
+   <p align="justify">On t&eacute;l&eacute;charge donc le fichier &laquo;&nbsp;<i>pleinjeu.php</i>&nbsp;&raquo; dans son
+   navigateur. Si l'adresse est donn&eacute;e telle-quelle, la page s'affiche en fran&ccedil;ais. Il faut sp&eacute;cifier la langue
+   dans l'adresse pour un affichage dans un autre idiome. Pour l'anglais par exemple, l'adresse est&nbsp;:<br />
+   &laquo;&nbsp;<a href="../pleinjeu/pleinjeud8cc.html?l=en" target="_blank">http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en</a>&nbsp;&raquo;.</p>
+
+   <p align="justify">Suivant ce principe et en se servant du s&eacute;parateur additionnel &laquo;&nbsp;&amp;&nbsp;&raquo;,
+   il est possible d'&eacute;crire l'URL sous la forme&nbsp;:<br />
+   &laquo;&nbsp;<a href="../pleinjeu/pleinjeu7491.html?l=en&amp;f=0&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/PJ_STH.odl" target="_blank">http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en&amp;f=0&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/PJ_STH.odl</a>&nbsp;&raquo;</p>
+
+   <p align="justify">Il y a trois variables qui sont pass&eacute;es dans cette URL au fichier
+   &laquo;&nbsp;<i>pleinjeu.php</i>&nbsp;&raquo;&nbsp;:</p>
+
+   <ul>
+    <li>La variable &laquo;&nbsp;<i>l</i>&nbsp;&raquo; qui contient &laquo;&nbsp;<i>en</i>&nbsp;&raquo;, ce qui provoquera un
+    affichage en anglais. Bien s&ucirc;r, on peut choisir &laquo;&nbsp;<i>de</i>&nbsp;&raquo; pour l'allemand et on pourrait
+    choisir, &agrave; terme &laquo;&nbsp;<i>jp</i>&nbsp;&raquo; pour le japonais si j'en avais une traduction de disponible...</li>
+    <li>La variable &laquo;&nbsp;<i>f</i>&nbsp;&raquo; qui contient &laquo;&nbsp;<i>0</i>&nbsp;&raquo;.</li>
+    <li>La variable &laquo;&nbsp;<i>url</i>&nbsp;&raquo; qui contient<br />
+    &laquo;&nbsp;<a href="../pleinjeu/src/exemples/PJ_STH.odl" target="_blank"><i>http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/PJ_STH.odl</i></a>&nbsp;&raquo;.</li>
+   </ul>
+
+   <p align="justify">Il faut comprendre que &laquo;&nbsp;<i>pleinjeu.php</i>&nbsp;&raquo; <i>va chercher</i> le fichier
+   &laquo;&nbsp;<i>PJ_STH.odl</i>&nbsp;&raquo; qui peut se trouver n'importe o&ugrave; dans le monde et va l'afficher selon
+   un format &laquo;&nbsp;<i>f</i>&nbsp;&raquo; o&ugrave;&nbsp;:</p>
+
+   <ul>
+    <li>f&nbsp;=&nbsp;0&nbsp;: le formulaire sera rempli des valeurs contenues dans &laquo;&nbsp;<i>PJ_STH.odl</i>&nbsp;&raquo;
+    mais il sera possible de les modifier pour un traitement ult&eacute;rieur.</li>
+    <li>f&nbsp;=&nbsp;1&nbsp;: le d&eacute;bit du plein jeu dont la d&eacute;finition est contenue dans
+    &laquo;&nbsp;<i>PJ_STH.odl</i>&nbsp;&raquo; s'affichera directement dans un fichier HTML.</li>
+    <li>f&nbsp;=&nbsp;2&nbsp;: le d&eacute;bit du plein jeu dont la d&eacute;finition est contenue dans
+    &laquo;&nbsp;<i>PJ_STH.odl</i>&nbsp;&raquo; se transformera en un fichier RTF t&eacute;l&eacute;chargeable.</li>
+    <li>f&nbsp;=&nbsp;3&nbsp;: le d&eacute;bit du plein jeu dont la d&eacute;finition est contenue dans
+    &laquo;&nbsp;<i>PJ_STH.odl</i>&nbsp;&raquo; se transformera en un fichier texte (TXT) t&eacute;l&eacute;chargeable.</li>
+    <li>f&nbsp;=&nbsp;4&nbsp;: le d&eacute;bit du plein jeu dont la d&eacute;finition est contenue dans
+    &laquo;&nbsp;<i>PJ_STH.odl</i>&nbsp;&raquo; se transformera en un fichier O.D.L. t&eacute;l&eacute;chargeable&nbsp;;
+    ce n'est ni plus ni moins qu'une copie...</li>
+   </ul>
+
+   <p align="justify">On imagine la puissance... De touts petits fichiers contenant des donn&eacute;es extr&ecirc;mement
+   calibr&eacute;es, dans un format lisible par l'homme dans deux cents ans mais lisibles par des logiciels ou des pages Web
+   capables d'en retirer un sens, d'en exploiter les donn&eacute;es pour en d&eacute;duire d'autres, voire m&ecirc;me de
+   les croiser...</p>
+
+   <p align="justify">Car ce n'est pas termin&eacute;&nbsp;; cela ne fait m&ecirc;me que commencer...</p>
+
+   <p align="justify">La lecture du contenu de r&eacute;pertoire de
+   <a href="../pleinjeu/src/exemples/index.html" target="_blank">ce serveur</a> permet de se rendre
+   compte que j'ai mis l&agrave; des exemples de compositions de plein jeu. Un plein jeu ascendant de type germanique, un plein
+   jeu plafonnant de type fran&ccedil;ais, le plein jeu de
+   <a href="../../biblio/smcj/temp_sth/tuyaux/index.html" target="_blank">l'orgue historique de
+   Saint-Hippolyte-du-Fort</a> ainsi que les trois plein-jeu de
+   <a href="http://lplet.org/orgues/auxonne/tuyaux" target="_blank">l'orgue historique d'Auxonne</a>.</p>
+
+   <p align="justify">Ce dernier est int&eacute;ressant parce qu'il se r&eacute;partit sur trois registres distincts, chacun
+   avec sa composition propre. Dans <a href="../pleinjeu/src/exemples/index.html" target="_blank">le
+   r&eacute;pertoire</a> du serveur, les fichiers sont naturellement
+   nomm&eacute;s &laquo;&nbsp;<a href="../pleinjeu/src/exemples/Aux_PJ_GO.odl" target="_blank"><i>Aux_PJ_GO.odl</i></a>&nbsp;&raquo;
+   pour le plein jeu de <i>Grand-Orgue</i>, &laquo;&nbsp;<a href="../pleinjeu/src/exemples/Aux_FourIII_Pos.odl" target="_blank"><i>Aux_FourIII_Pos.odl</i></a>&nbsp;&raquo;
+   pour la <i>Fourniture</i> du <i>Positif</i> et &laquo;&nbsp;<a href="../pleinjeu/src/exemples/Aux_CymIII_Pos.odl" target="_blank"><i>Aux_CymIII_Pos.odl</i></a>&nbsp;&raquo;
+   pour la <i>Cymbale</i> de ce dernier clavier. Pour chacun d'entre-eux, il est ais&eacute; de lire que le code O.D.L.
+   contient bien autant de balises &laquo;&nbsp;<kbd>&lt;RANK&gt;&lt;/RANK&gt;</kbd>&nbsp;&raquo; que chaque registres contient
+   de rangs soit trois pour les deux registres du <i>Positif</i> et huit pour celui de <i>Grand-Orgue</i>.</p>
+
+   <p align="justify">L'observation du code O.D.L. du fichier
+   &laquo;&nbsp;<a href="../pleinjeu/src/exemples/Aux_Plenum.odl" target="_blank"><i>Aux_Plenum.odl</i></a>&nbsp;&raquo;
+   d&eacute;montre qu'il ne s'agit <b>que</b> d'une concat&eacute;nation des donn&eacute;es des <u><b>trois</b></u> fichiers 
+   contenues entre les balises &laquo;&nbsp;<kbd>&lt;MIXTURE&gt;&lt;/MIXTURE&gt;</kbd>&nbsp;&raquo; et les commentaires
+   ajout&eacute;s (dans les balises &laquo;&nbsp;<kbd>&lt;!--&nbsp;&nbsp;--&gt;</kbd>&nbsp;&raquo;&nbsp;) permettent,
+   &eacute;videmment, d'en faciliter la lecture. Ce n'est donc l'affaire que d'un <i>copier/coller</i> dans un fichier
+   texte&nbsp;! Et cela permet, &agrave; partir d'un fichier de moins de 4&nbsp;kilos octets de produire
+   <a href="../pleinjeu/pleinjeuf05c.html?l=fr&amp;f=1&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/Aux_Plenum.odl" target="_blank">ceci</a>
+   ou <a href="../pleinjeu/Plenum%20XIV63bb.rtf?l=fr&amp;f=2&amp;url=http://hydraule.org/bureau/ordi/pleinjeu/src/exemples/Aux_Plenum.odl" target="_blank">cela</a>
+   avec une simple combinatoire URL...</p>
+
+   <p align="justify">La <i>fusion des compositions</i> est donc d&eacute;j&agrave; en partie possible avec un simple
+   &eacute;diteur de texte dans la mesure o&ugrave; les reprises d&eacute;clar&eacute;es sont identiques d'une composition de
+   plein jeu &agrave; l'autre et o&ugrave; la disposition des notes, d'une composition &agrave; l'autre, est exactement identique
+   tant dans leur nombres que dans leur &laquo;&nbsp;<i>trous</i>&nbsp;&raquo; (absence de premier <i>Do</i><sup>#</sup>,
+   octave courte, &amp;c.)</p>
+
+   <p align="justify">La fusion de la composition consiste donc en&nbsp;:</p>
+
+   <ul>
+    <li>S'assurer que le nombre de la totalit&eacute; des rangs n'exc&egrave;de pas seize.</li>
+    <li>S'assurer que les reprises sont sur la m&ecirc;me note et si ce n'est pas le cas, cr&eacute;er des reprises
+    interm&eacute;diaires et les remplir des valeurs de celles qui pr&eacute;c&egrave;dent afin de ne pas cr&eacute;er de
+    <i>trous</i> dans le rang.</li>
+    <li>S'assurer que le nombre de la totalit&eacute; des reprises n'exc&egrave;de pas seize.</li>
+    <li>S'assurer que les d&eacute;finitions de clavier sont identiques.</li>
+    <li>Une fois cela fait, il suffit de mettre tous les n&oelig;uds  RANK.BREAK les uns &agrave; la suite des autres et
+    recr&eacute;er un fichier unique.</li>
+   </ul>
+
+   <p align="justify">Je n'ai, pour l'instant, pas programm&eacute; d'utilitaire capable d'aller chercher plusieurs
+   fichiers distincts sur les disques durs pour les fusionner sans manipulation de code, mais je sais que c'est tr&egrave;s
+   simple &agrave; faire parce que la lecture d'O.D.L., qui est du pur XML, est extr&ecirc;mement facile &agrave; programmer
+   en PHP. De par sa simplicit&eacute;, la puissance de ce langage est foudroyante et permettrait aux gens de l'orgue du
+   monde entier d'&eacute;changer des donn&eacute;es sp&eacute;cifiques sans consid&eacute;ration de langue. Il deviendrait
+   possible de cr&eacute;er <i>de mani&egrave;re standard</i> des bases de donn&eacute;es de compositions d'orgues dans
+   tous les lieux et toutes les &eacute;poques, ce qui serait &eacute;minemment profitable &agrave; tout le monde. Il ne
+   se poserait plus la probl&eacute;matique &eacute;norme de l'&eacute;volution des standards de tableurs, de base de
+   donn&eacute;es ou simplement de logiciels parce que, justement, XML a &eacute;t&eacute; con&ccedil;u pour traverser
+   les si&egrave;cles.</p>
+
+   <p align="justify">Cela n'emp&ecirc;cherait en aucune mani&egrave;re de saisir les donn&eacute;es sur des logiciels
+   comme <i>M$-Word</i>, <i>M$-Excel</i> ou <a href="http://fr.openoffice.org/" target="_blank"><i>OpenOffice.org</i></a>
+   puisque ce genre de logiciel permettent d'en &eacute;tendre leur capacit&eacute; par le truchement des <i>macros</i>.
+   Pour les utilisateurs de cette derni&egrave;re suite bureautique, j'ai d&eacute;j&agrave; prouv&eacute;
+   <a href="http://user.services.openoffice.org/fr/forum/viewtopic.php?f=15&amp;t=10095" target="_blank">ici</a>
+   &agrave; quel point il est ais&eacute; de ce servir de la puissance qu'apporte ces logiciels pour produire des donn&eacute;es
+   standards et partageables m&ecirc;me si je reste convaincu que les formulaires Web  pr&eacute;sentent l'ind&eacute;niable
+   avantage de la l&eacute;g&egrave;ret&eacute; dans leur modularit&eacute;.</p>
+
+   <p align="justify">Dans tous les cas, il ne ferait aucun probl&egrave;me de r&eacute;cup&eacute;rer et de
+   f&eacute;d&eacute;rer les donn&eacute;es d&eacute;j&agrave; &eacute;tablies tant textuelles, iconographiques, sonores
+   ou videos. Les plans d'instruments, pourraient se d&eacute;cliner en
+   <a href="http://fr.wikipedia.org/wiki/Scalable_Vector_Graphics" target="_blank">SVG</a> qui est un standard
+   d&eacute;j&agrave; &eacute;tabli de graphiques vectoriels, &eacute;videmment compatible avec O.D.L. pour &ecirc;tre,
+   lui m&ecirc;me, du pur XML... Parce que signifiants, les diam&egrave;tres des tuyaux d'orgues not&eacute;s dans des
+   fichiers &eacute;crits en O.D.L. pourraient induire assez rapidement des grilles de sommier, donc des abr&eacute;g&eacute;s.
+   Les fichiers de tailles de tuyaux pourraient se d&eacute;cliner eux-m&ecirc;me en fichiers graphiques, telles les abaques
+   de tailles que Dom Bedos gravait sur plaques de cuivre en 1766 par la simple traduction d'O.D.L. au format PDF. Pour avoir
+   &eacute;t&eacute; utilis&eacute; dans quelques <a href="../../../tuyau/tailles/index.html" target="_blank">articles
+   sur la l'&eacute;tablissement des tailles de tuyaux</a>, l'utilitaire existe d'ailleurs d&eacute;j&agrave;&nbsp;;
+   c'est une simple question d'&eacute;tablissement de standards et de l'adaptation de quelques lignes de code...</p>
+
+   <br />
+
+   <p align="justify">Mon Dieu, j'ai fais un r&ecirc;ve&nbsp;; en &eacute;tiez-vous&nbsp;?</p>
+
+   <br /><br />
+   <blockquote><table border="0" cellpadding="0"><tr><td><font size="3"><b><pre style="color:#800000; font-weight:normal;">----------------------------------------------------
+                          _
+                         | | _
+         <a href="../../../index-2.html" target="_top">S</a>&eacute;bastien       | || | _
+         <a href="../../../index-2.html" target="_top">M</a>atthieu        | || || | _
+         <a href="../../../index-2.html" target="_top">C</a>osson          | || || || | _
+         <a href="../../../index-2.html" target="_top">J</a>acquet         | || || || || | _
+                         | || || || || || | _
+                         | || || || || || || |
+                         | || || || || || || |
+          ,-~~-.___.     | || || || || || || |___
+         /  | .     \    |_||_||_||_||_||_||_|  /|
+        (   )        O   |_||_||_||_||_||_||_| / |
+         \_/-. ,----'   / V  V  V  V  V  V  V /  |
+            ====      _/____________________ /  /
+           /  \-'~;  /|  The Organbuilder   |  /
+          /  __/~|  /_|   and his organ     | /
+       o=(_______|  |_|_____________________|/
+  
+  ----------------------------------------------------
+           Web: <a href="../../../index-2.html" target="_blank">http://www.hydraule.org</a>
+        E-mail: <a href="mailto:smcj@hydraule.org">smcj@hydraule.org</a>
+  ----------------------------------------------------</pre></b></font></td></tr></table></blockquote>
+  </blockquote>
+
+  <br /><br /><br />
+
+ </body>
+
+<!-- Mirrored from hydraule.org/bureau/ordi/odl/utilODL_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:09:28 GMT -->
+</html>
+

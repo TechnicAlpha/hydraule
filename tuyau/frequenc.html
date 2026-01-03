@@ -1,0 +1,635 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<!--
+ *****************************************************************************************
+ *  Page composée et programmée par S.M.C.J. Ce script est entièrement libre de droits.  *
+ *     Si vous lisez ce code, c'est que vous êtes un petit curieux (très bon défaut)     *
+ *    Comme je ne suis pas chien, je vous ai laissé des explications complémentaires     *
+ *                              dans la page ./explicod.htm                              *
+ *****************************************************************************************
+-->
+<html>
+ 
+<!-- Mirrored from hydraule.org/tuyau/frequenc.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:07:27 GMT -->
+<head>
+  <title>Tables des fr&eacute;quences et des longueurs d'ondes.</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF8">
+  <meta name="author" content="S.M.C.J.">
+  <meta name="keywords" content="Hydraule Orgue Orgao Organo Orgel Organ">
+  <meta name="description" content="Documents et informations sur l'orgue a tuyau">
+
+  <style type="text/css">
+         .saisie {background-color:#fff7e7; color:#000080; padding-right:10px; text-align:right}
+          .creme {background-color:#fff7e7; color:#000080; text-align:left}
+        .cellule {font-family:sans-serif; font-size:0.8em; padding-right:7px}
+         .bouton {background-color:#edba9d; color:#000080}
+           label {cursor:pointer;}
+  </style>
+
+  <script language="JavaScript">
+   <!--
+    // Définition des tempéraments historiques en 1/10 cent.
+    // D'après le manuel de l'accordeur électronique TLA CTS-32-L (page 35).
+    // Cf. : http://tuning-set.de/Beda32F.pdf
+    var defTemp = new Array(26);
+    //                     +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+----------------------------+
+    //                     |  C  |  C# |  D  |  Eb |  E  |  F  |  F# |  G  |  G# |  A  |  Bb |  B  |     Noms des tempéraments. |
+    //                     +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+----------------------------+
+     defTemp[0] = new Array(   0 ,   0 ,   0 ,   0 ,   0 ,   0 ,   0 ,   0 ,   0 ,   0 ,   0 ,   0 ); // Égal.                  |
+     defTemp[1] = new Array(  60 ,   0 ,  20 ,  40 , -20 ,  80 , -20 ,  40 ,  20 ,   0 ,  60 ,   0 ); // Bach / Barnes.         |
+     defTemp[2] = new Array(  80 , -15 ,  25 ,  25 , -25 ,  60 , -35 ,  55 ,   5 ,   0 ,  40 , -10 ); // Bach / Kellner.        |
+     defTemp[3] = new Array(  49 , -29 ,  49 ,  10 , -49 ,  49 , -49 ,  49 , -10 ,   0 ,  29 , -49 ); // Bach / Schubiger.      |
+     defTemp[4] = new Array(  30 , -20 ,  50 ,   0 , -60 ,  20 , -35 ,  45 , -10 ,   0 ,  10 , -50 ); // Bruder / P. Vier.      |
+     defTemp[5] = new Array( 156 ,  59 , 196 ,  98 ,  20 , 137 ,  59 , 176 ,  78 ,   0 , 117 ,  39 ); // Kirnberger I.          |
+     defTemp[6] = new Array(  49 , -49 ,  88 , -10 , -88 ,  29 , -49 ,  69 , -29 ,   0 ,  10 , -68 ); // Kirnberger II.         |
+     defTemp[7] = new Array( 103 ,   5 ,  34 ,  44 , -34 ,  83 , -15 ,  69 ,  24 ,   0 ,  64 , -14 ); // Kirnberger III.        |
+     defTemp[8] = new Array(  42 , -23 ,  14 ,  17 , -14 ,  56 , -42 ,  28 ,  -3 ,   0 ,  36 , -28 ); // Lambert / Schugk.      |
+     defTemp[9] = new Array( 117 ,-156 ,  39 ,   0 , -39 , 156 ,-117 ,  78 ,-196 ,   0 ,  78 , -78 ); // Lambert Chaumont.      |
+    defTemp[10] = new Array( 103 ,-137 ,  35 , 206 , -34 , 137 ,-102 ,  69 ,-171 ,   0 , 171 , -68 ); // Mésotonique.           |
+    defTemp[11] = new Array(  60 ,  20 ,  20 ,  40 ,   0 ,  60 ,  20 ,  40 ,  20 ,   0 ,  60 ,  20 ); // Neidhard (1724).       |
+    defTemp[12] = new Array(  59 ,  20 ,  20 ,  39 ,   0 ,  39 ,  20 ,  39 ,  20 ,   0 ,  39 ,  20 ); // Neidhard (1729).       |
+    defTemp[13] = new Array( -59 ,  78 , -20 ,-117 ,  20 , -78 ,  59 , -39 ,  98 ,   0 , -98 ,  39 ); // Pythagoricien.         |
+    defTemp[14] = new Array( 115 , -40 ,  40 ,   0 , -40 , 155 , -60 , -80 , -20 ,   0 ,  80 , -80 ); // Rameau / Schugk.       |
+    defTemp[15] = new Array( 117 , -39 ,  39 ,  78 , -39 , 156 , -59 ,  78 , -20 ,   0 , 196 , -78 ); // Rameau / Schubiger.    |
+    defTemp[16] = new Array(  59 , -39 ,  20 ,  78 , -20 ,  78 , -39 ,  39 ,  20 ,   0 ,  78 , -39 ); // Schlick I.             |
+    defTemp[17] = new Array(  81 , -62 ,  30 , 102 , -19 ,  99 , -48 ,  61 ,  60 ,   0 , 101 , -40 ); // Schlick / Billeter.    |
+    defTemp[18] = new Array(  80 , -65 ,  25 ,  25 , -30 , 110 , -80 ,  55 , -45 ,   0 ,  90 , -55 ); // Schlick / Vogel.       |
+    defTemp[19] = new Array(  60 , -40 ,  20 ,   0 , -20 ,  80 , -60 ,  40 , -20 ,   0 ,  60 , -40 ); // Silbermann / P. Vier.  |
+    defTemp[20] = new Array(  68 , -78 ,  29 , 127 , -20 ,  88 , -59 ,  49 , -98 ,   0 , 108 , -39 ); // Silbermann I.          |
+    defTemp[21] = new Array(  49 , -62 ,  19 , 102 ,  -9 ,  71 , -48 ,  30 , -79 ,   0 ,  81 , -29 ); // Silbermann II.         |
+    defTemp[22] = new Array(  49 , -79 ,  50 , 130 , -50 ,  82 , -48 ,  51 ,-110 ,   0 , 108 , -47 ); // Silbermann / Billeter. |
+    defTemp[23] = new Array(  58 ,  -2 ,  20 ,  39 , -19 ,  78 , -19 ,  39 ,  19 ,   0 ,  58 , -39 ); // Valotti.               |
+    defTemp[24] = new Array( 120 ,  20 ,  40 ,  60 ,  20 , 100 ,   0 ,  80 ,  40 ,   0 ,  80 ,  40 ); // Werckmeister III.      |
+    defTemp[25] = new Array(  97 , -78 ,  58 ,  38 ,  20 ,  77 , -19 ,  38 , -59 ,   0 , 136 , -39 ); // Werckmeister IV.       |
+    defTemp[26] = new Array(  -1 , -38 ,  39 ,  -1 , -39 ,  39 ,   1 ,  19 , -78 ,   0 ,  19 , -19 ); // Werckmeister V.        |
+    //                     +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+----------------------------+
+
+    // Empêche la saisie d'autre chose que des neuf chiffres et du point.
+    // Fonctions écrites par Bertrand Wattel (http://bertrand.wattel.free.fr/)
+    // et trouvé sur le site SELFHTML (http://actuel.fr.selfhtml.org/articles/javascript/entrees_formulaire/index.htm).
+    function codeTouche(evenement)
+    {
+     for (prop in evenement) {if (prop == 'which') return (evenement.which); };
+     return(evenement.keyCode);
+    };
+
+    function scanTouche(evenement)
+    {
+     var reCarSpeciaux = /[\x00\x08\x0D]/;
+     var reCarValides = /[0-9.]/;
+
+     var codeDecimal  = codeTouche(evenement);
+     var car = String.fromCharCode(codeDecimal);
+     var autorisation = reCarValides.test(car) || reCarSpeciaux.test(car);
+
+     return autorisation;
+    };
+
+    // Arrondi une valeur à un nombre variable de décimales.
+    // Fonction écrite par Mathias Bynens (http://mathiasbynens.be/archive/2006/01/js-number-format).
+    function number_format(a, b, c, d)
+    {
+     a = Math.round(a * Math.pow(10, b)) / Math.pow(10, b);
+     e = a + ""; f = e.split("."); if (!f[0]) { f[0] = "0"; }; if (!f[1]) { f[1] = ""; };
+     if (f[1].length < b) { g = f[1]; for (i1 = f[1].length + 1; i1 <= b; i1++) {g += "0";} f[1] = g; };
+     if (d != "" && f[0].length > 3)
+     {
+      h = f[0]; f[0] = "";
+      for(j1 = 3; j1 < h.length; j1 += 3) {i1 = h.slice(h.length - j1, h.length - j1 + 3); f[0] = d + i1 +  f[0] + "";};
+      j1 = h.substr(0, (h.length % 3 == 0) ? 3 : (h.length % 3)); f[0] = j1 + f[0];
+     };
+     c = (b <= 0) ? "" : c; return f[0] + c + f[1];
+    };
+
+    // Vérifie la saisie avant de lancer la procédure de calcul.
+    function verifSaisie(champ, memo)
+    {
+     accord = true; message = "Désolé mais le calcul n'est envisageable\nqu'avec une valeur de ";
+     with (document.formulaire)
+     {
+      if ((diap.value == "") || (temp.value == "")) {alert("Une valeur manque dans un champ."); accord = false;};
+      // Vive l'absence quasi totale de typage en JavaScript...
+      diapason = parseFloat(diap.value); temperature = parseFloat(degres.value);
+      if ((diapason < 200)  || (diapason > 600))   {alert(message + "diapason\ncomprise entre 200 et 600 Hertz."); accord = false;};
+      if ((temperature < 0) || (temperature > 50)) {alert(message + "température\ncomprise entre 0 et 50 degrés Celcius."); accord = false;};
+     };
+
+     // Format d'affichage des valeurs saisies.
+     if   (!accord) {champ.value = memo;                                  }  // Replace l'ancienne valeur dans le champ.
+     else           {champ.value = number_format(champ.value, 3, '.', '');}; // Formate la nouvelle valeur pour une meilleure présentation.
+
+     return accord;
+    };
+
+    // Calcule et affiche les fréquences et les longueurs d'ondes.
+    function calcule()
+    {
+     // Célérité du son dans l'air : traduction litterale de la formule donnée par Pierre Veerkamp dans son ouvrage
+     // « L'orgue à tuyaux », page 113, La Flûte Harmonique, Publication de l'Association A. CAVAILLÉ-COLL.
+     var v = (330.7 * (Math.sqrt(1 + (0.003665 * parseFloat(document.formulaire.degres.value))))) * 1000; // Convertie en millimètres.
+
+     // Définition de toutes les fréquences en tempérament égal.
+     var defFreqEgal = new Array(120); var rac12 = Math.pow(2, (1 / 12)); var shift = parseInt(document.formulaire.noteDiap.value);
+     defFreqEgal[58 + shift] = parseFloat(document.formulaire.diap.value);                  // Diapason de l'octave de deux pieds.
+     for (i = (57 + shift); i >= 1;   i--) {defFreqEgal[i] = defFreqEgal[i + 1] / rac12; }; // Basses.
+     for (i = (59 + shift); i <= 120; i++) {defFreqEgal[i] = defFreqEgal[i - 1] * rac12; }; // Dessus.
+
+      // Définition de toutes les fréquences dans le tempérament choisi.
+     var defFreqTemp = new Array(120);
+
+     for (i = 1;  i <= 120; i++)
+     {
+      // Applique la formule décrite dans le paragraphe 3.2 (page 30) du manuel de l'accordeur électronique TLA CTS-32-L. Cf. : http://tuning-set.de/Beda32F.pdf
+      var ecart = defTemp[parseInt(document.formulaire.temp.value)] [(i - 1) % 12] / 10;  // On évite la division par 0.
+      if (ecart != 0) {defFreqTemp[i] = defFreqEgal[i] * Math.pow(2, (1 / (1200 / ecart)));}
+      else {defFreqTemp[i] = defFreqEgal[i]; };
+     };
+
+     // Rétablissement de la fréquence du diapason si celle-ci est modifiée par le tempérament.
+     var rapTranspo = defFreqEgal[58 + shift] / defFreqTemp[58 + shift]; // Établissement du rapport d'écart entre la ligne du diapason et la fréquence égale.
+     // Si une différence existe entre defFreqEgal et defFreqTemp sur le diapason, on applique cette différence sur tout la liste des fréquences tempérées.
+     if (rapTranspo != 1) {for (i = 1; i <= 120; i++) {defFreqTemp[i] = defFreqTemp[i] * rapTranspo; }; };
+
+     // Définition de toutes les longueurs théoriques (demi longueurs d'onde).
+     var defLong = new Array(120); for (i = 1;  i <= 120; i++) {defLong[i] = ((v / defFreqTemp[i]) / 2); };
+
+     // Affiche les valeurs des fréquences et des longueurs d'ondes.
+     for (i = 1; i <= 120; i++)
+     {
+      eval("with(document.getElementById('freq_" + i + "').firstChild) replaceData(0, length, number_format(defFreqTemp[i], 2, ',', ' '));");
+      eval("with(document.getElementById('onde_" + i + "').firstChild) replaceData(0, length, number_format(defLong[i],     1, ',', ' '));");
+     };
+     // Célérité du son dans l'air (V).
+     eval("with(document.getElementById('idV').firstChild) replaceData(0, length, 'V = ' + number_format((v / 1000), 3, ',', ' ') + ' mètres / seconde.') ;");
+    };
+
+    function graphique()
+    {
+     alert("ATTENTION !!!\n\nC'est ici que vous devez noter que la programmation\nde ce fichier PDF N'EST PAS TERMINÉE et que seul\nle récapitulatif texte de la première page\npeut être considéré comme valide.\n\nMerci de votre compréhension !");
+     calcule();
+     with(document.formulaire)
+     {
+      var fichier = "reglePDF38f5.html?noteDiap=" + noteDiap.value + "&diap=" + diap.value + "&degres=" + degres.value + "&temp=" + temp.value + "&tessi=" + tessi.value;
+     };
+     var para = 'toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=1,scrollbars=1'
+     fenCom = window.open(fichier, "reglePDF", para);
+    };
+
+    function initRaz()
+    {
+     for (i = 1; i <= 120; i++)
+     {
+      eval("with(document.getElementById('idV').firstChild)            replaceData(0, length, '-');");
+      eval("with(document.getElementById('freq_" + i + "').firstChild) replaceData(0, length, '-');");
+      eval("with(document.getElementById('onde_" + i + "').firstChild) replaceData(0, length, '-');");
+     };
+    };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../images/kraft.gif" onLoad="JavaScript:calcule();">
+  <table border="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <h1><font color="#ff0000"><b>Tables des <i>fr&eacute;quences</i><br>et des <i>longueurs th&eacute;oriques</i><br>de tuyaux d'orgues</b></font></h1>
+     <h3><font color="#008000"><i>selon un diapason, une temp&eacute;rature et un temp&eacute;rament d&eacute;termin&eacute;s</i>.</font></h3>
+    </td>
+    <td align="right" valign="top">
+     <a href="../index-2.html" target="_top"><img src="../images/hydraule.gif" border="0" width="216" height="230" alt="L'Hydraule"></a>
+    </td>
+   </tr>
+
+  </table>
+
+  <br /><br />
+
+  <center>  
+   <form name="formulaire" action="JavaScript:void(0);">
+    <table border="1" width="80%" cellpadding="7" cellspacing="0" bgcolor="#f5e9cf" background="../images/ingres.jpg">
+     <tr align="center">
+     </tr>
+     <tr align="center">
+      <td width="33%" nowrap>
+       <p><label title="Diapason." for="idDiap"><font color="#000080"><b><u>D</u>iapason&nbsp;:</b></font></label></p>
+       <select name="noteDiap" onChange="JavaScript:calcule()" id="idNoteDiap" tabindex="1" accesskey="N" class="creme" title="Note du diapason.">
+        <option value="-9">&nbsp;C </option> <option value="-8">&nbsp;C♯         </option>
+        <option value="-7">&nbsp;D </option> <option value="-6">&nbsp;E♭         </option>
+        <option value="-5">&nbsp;E </option> <option value="-4">&nbsp;F          </option>
+        <option value="-3">&nbsp;F♯</option> <option value="-2">&nbsp;G          </option>
+        <option value="-1">&nbsp;G♯</option> <option value="0" selected>&nbsp;A </option>
+        <option value="1">&nbsp;B♭ </option> <option value="2">&nbsp;B           </option>
+       </select>
+       2'&nbsp;: &nbsp;
+       <input type="text" onFocus="JavaScript:memo = this.value; this.select();" onChange="JavaScript:if (verifSaisie(this, memo)) {calcule();};" size=5" maxlength="7" tabindex="2" onKeyPress="return scanTouche(event)" accesskey="D" class="saisie" value="440.000" name="diap" id="idDiap" title="Diapason.">
+       Hz.
+      </td>
+      <td nowrap>
+       <p><label title="Temp&eacute;rature." for="idDegres"><font color="#000080"><b>Tem<u>p</u>&eacute;rature&nbsp;:</b></font></label></p>
+       <input type="text" onFocus="JavaScript:memo = this.value; this.select();" onChange="JavaScript:if (verifSaisie(this, memo)) {calcule();};" size=5" maxlength="6" tabindex="3" onKeyPress="return scanTouche(event)" accesskey="P" class="saisie"  value="15.562" name="degres" id="idDegres" title="Temp&eacute;rature.">
+       &deg; C.
+      </td>
+      <td width="33%" nowrap>
+       <p><label title="Temp&eacute;rament." for="idTemp"><font color="#000080"><b><u>T</u>emp&eacute;rament&nbsp;:</b></font></label></p>
+       <select name="temp" onChange="JavaScript:calcule()" id="idTemp" tabindex="4" accesskey="T" class="creme" title="Temp&eacute;rament.">
+        <option value= "0">&nbsp;&Eacute;gal           </option> <option value= "1">&nbsp;Bach / Barnes        </option>
+        <option value= "2">&nbsp;Bach / Kellner        </option> <option value= "3">&nbsp;Bach / Schubiger     </option>
+        <option value= "4">&nbsp;Bruder / P. Vier      </option> <option value= "5">&nbsp;Kirnberger I         </option>
+        <option value= "6">&nbsp;Kirnberger II         </option> <option value= "7">&nbsp;Kirnberger III       </option>
+        <option value= "8">&nbsp;Lambert / Schugk      </option> <option value= "9">&nbsp;Lambert Chaumont     </option>
+        <option value="10">&nbsp;M&eacute;sotonique    </option> <option value="11">&nbsp;Neidhard (1724)      </option>
+        <option value="12">&nbsp;Neidhard (1729)       </option> <option value="13">&nbsp;Pythagoricien        </option>
+        <option value="14">&nbsp;Rameau / Schugk       </option> <option value="15">&nbsp;Rameau / Schubiger   </option>
+        <option value="16">&nbsp;Schlick I             </option> <option value="17">&nbsp;Schlick / Billeter   </option>
+        <option value="18">&nbsp;Schlick / Vogel       </option> <option value="19">&nbsp;Silbermann / P. Vier </option>
+        <option value="20">&nbsp;Silbermann I          </option> <option value="21">&nbsp;Silbermann II        </option>
+        <option value="22">&nbsp;Silbermann / Billeter </option> <option value="23">&nbsp;Valotti              </option>
+        <option value="24">&nbsp;Werckmeister III      </option> <option value="25">&nbsp;Werckmeister IV      </option>
+        <option value="26">&nbsp;Werckmeister V        </option>
+       </select>
+      </td>
+     </tr>
+     <tr align="center">
+      <td colspan="3">
+       <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr align="center">
+         <td width="50%">
+          <br>
+          <input accesskey="G" tabindex="6" class="bouton" onClick="JavaScript:graphique();" type="button" value=" Règle de longueurs (PDF) " title="Produire une r&egrave;gle des longueurs d'ondes dans un fichier au format PDF.">
+          <select name="tessi" id="idTessi" accesskey="s" class="creme" title="Tessiture de la r&egrave;gle de longueur.">
+           <option value="1">&nbsp;32'</option> <option value="2">&nbsp;16'</option>
+           <option value="3">&nbsp;8'</option>  <option value="4" selected>&nbsp;4'</option>
+           <option value="5">&nbsp;2'</option>  <option value="6">&nbsp;1'</option>
+           <option value="7">&nbsp;1/2'</option>
+          </select>
+          <br><br>
+         </td>
+         <td width="50%">
+          <br>
+          <input accesskey="C" tabindex="7" class="bouton" onClick="JavaScript:calcule();" type="submit" value="   Calculer   " title="Provoquer le calcul des valeurs."> &nbsp; &nbsp;
+          <input accesskey="I" tabindex="7" class="bouton" onClick="JavaScript:initRaz();" type="reset" value="   Initialiser   " title="R&eacute;initialiser les valeurs de d&eacute;part.">
+          <br><br>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </form>
+
+   <br><br>
+
+   <h4><font color="#000080">Table des fr&eacute;quences - Hertz.</font></h4>
+   <table border="1" width="80%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../images/ingres.jpg">
+    <tr>
+     <td width="5%">&nbsp;</td>
+     <th width="9.5%"><font color="#000080">  32'</font></th>
+     <th width="9.5%"><font color="#000080">  16'</font></th>
+     <th width="9.5%"><font color="#000080">   8'</font></th>
+     <th width="9.5%"><font color="#000080">   4'</font></th>
+     <th width="9.5%"><font color="#000080">   2'</font></th>
+     <th width="9.5%"><font color="#000080">   1'</font></th>
+     <th width="9.5%"><font color="#000080"> 1/2'</font></th>
+     <th width="9.5%"><font color="#000080"> 1/4'</font></th>
+     <th width="9.5%"><font color="#000080"> 1/8'</font></th>
+     <th width="9.5%"><font color="#000080">1/16'</font></th>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">C</font></th>
+     <td class="cellule" nowrap><div id = "freq_1">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_13">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_25">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_37">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_49">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_61">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_73">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_85">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_97">-</div></td>
+     <td class="cellule" nowrap><div id="freq_109">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">C♯</font></th>
+     <td class="cellule" nowrap><div id = "freq_2">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_14">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_26">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_38">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_50">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_62">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_74">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_86">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_98">-</div></td>
+     <td class="cellule" nowrap><div id="freq_110">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">D</font></th>
+     <td class="cellule" nowrap><div id = "freq_3">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_15">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_27">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_39">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_51">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_63">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_75">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_87">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_99">-</div></td>
+     <td class="cellule" nowrap><div id="freq_111">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">E♭</font></th>
+     <td class="cellule" nowrap><div id = "freq_4">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_16">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_28">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_40">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_52">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_64">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_76">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_88">-</div></td>
+     <td class="cellule" nowrap><div id="freq_100">-</div></td>
+     <td class="cellule" nowrap><div id="freq_112">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">E</font></th>
+     <td class="cellule" nowrap><div id = "freq_5">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_17">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_29">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_41">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_53">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_65">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_77">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_89">-</div></td>
+     <td class="cellule" nowrap><div id="freq_101">-</div></td>
+     <td class="cellule" nowrap><div id="freq_113">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">F</font></th>
+     <td class="cellule" nowrap><div id = "freq_6">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_18">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_30">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_42">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_54">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_66">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_78">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_90">-</div></td>
+     <td class="cellule" nowrap><div id="freq_102">-</div></td>
+     <td class="cellule" nowrap><div id="freq_114">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">F♯</font></th>
+     <td class="cellule" nowrap><div id = "freq_7">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_19">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_31">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_43">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_55">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_67">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_79">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_91">-</div></td>
+     <td class="cellule" nowrap><div id="freq_103">-</div></td>
+     <td class="cellule" nowrap><div id="freq_115">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">G</font></th>
+     <td class="cellule" nowrap><div id = "freq_8">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_20">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_32">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_44">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_56">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_68">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_80">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_92">-</div></td>
+     <td class="cellule" nowrap><div id="freq_104">-</div></td>
+     <td class="cellule" nowrap><div id="freq_116">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">G♯</font></th>
+     <td class="cellule" nowrap><div id = "freq_9">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_21">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_33">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_45">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_57">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_69">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_81">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_93">-</div></td>
+     <td class="cellule" nowrap><div id="freq_105">-</div></td>
+     <td class="cellule" nowrap><div id="freq_117">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">A</font></th>
+     <td class="cellule" nowrap><div id ="freq_10">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_22">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_34">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_46">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_58">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_70">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_82">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_94">-</div></td>
+     <td class="cellule" nowrap><div id="freq_106">-</div></td>
+     <td class="cellule" nowrap><div id="freq_118">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">B♭</font></th>
+     <td class="cellule" nowrap><div id ="freq_11">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_23">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_35">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_47">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_59">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_71">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_83">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_95">-</div></td>
+     <td class="cellule" nowrap><div id="freq_107">-</div></td>
+     <td class="cellule" nowrap><div id="freq_119">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">B</font></th>
+     <td class="cellule" nowrap><div id ="freq_12">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_24">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_36">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_48">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_60">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_72">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_84">-</div></td>
+     <td class="cellule" nowrap><div id ="freq_96">-</div></td>
+     <td class="cellule" nowrap><div id="freq_108">-</div></td>
+     <td class="cellule" nowrap><div id="freq_120">-</div></td>
+    </tr>
+   </table>
+
+   <br><br>
+
+   <h4><font color="#000080">Table des longueurs th&eacute;oriques de tuyaux (demi-longueurs d'ondes) - Millim&egrave;tres.<div id="idV">-</div></font></h4>
+   <table border="1" width="80%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../images/ingres.jpg">
+    <tr>
+     <td width="5%">&nbsp;</td>
+     <th width="9.5%"><font color="#000080">  32'</font></th>
+     <th width="9.5%"><font color="#000080">  16'</font></th>
+     <th width="9.5%"><font color="#000080">   8'</font></th>
+     <th width="9.5%"><font color="#000080">   4'</font></th>
+     <th width="9.5%"><font color="#000080">   2'</font></th>
+     <th width="9.5%"><font color="#000080">   1'</font></th>
+     <th width="9.5%"><font color="#000080"> 1/2'</font></th>
+     <th width="9.5%"><font color="#000080"> 1/4'</font></th>
+     <th width="9.5%"><font color="#000080"> 1/8'</font></th>
+     <th width="9.5%"><font color="#000080">1/16'</font></th>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">C</font></th>
+     <td class="cellule" nowrap><div id = "onde_1">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_13">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_25">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_37">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_49">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_61">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_73">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_85">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_97">-</div></td>
+     <td class="cellule" nowrap><div id="onde_109">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">C♯</font></th>
+     <td class="cellule" nowrap><div id = "onde_2">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_14">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_26">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_38">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_50">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_62">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_74">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_86">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_98">-</div></td>
+     <td class="cellule" nowrap><div id="onde_110">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">D</font></th>
+     <td class="cellule" nowrap><div id = "onde_3">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_15">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_27">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_39">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_51">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_63">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_75">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_87">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_99">-</div></td>
+     <td class="cellule" nowrap><div id="onde_111">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">E♭</font></th>
+     <td class="cellule" nowrap><div id = "onde_4">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_16">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_28">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_40">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_52">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_64">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_76">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_88">-</div></td>
+     <td class="cellule" nowrap><div id="onde_100">-</div></td>
+     <td class="cellule" nowrap><div id="onde_112">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">E</font></th>
+     <td class="cellule" nowrap><div id = "onde_5">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_17">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_29">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_41">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_53">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_65">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_77">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_89">-</div></td>
+     <td class="cellule" nowrap><div id="onde_101">-</div></td>
+     <td class="cellule" nowrap><div id="onde_113">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">F</font></th>
+     <td class="cellule" nowrap><div id = "onde_6">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_18">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_30">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_42">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_54">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_66">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_78">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_90">-</div></td>
+     <td class="cellule" nowrap><div id="onde_102">-</div></td>
+     <td class="cellule" nowrap><div id="onde_114">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">F♯</font></th>
+     <td class="cellule" nowrap><div id = "onde_7">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_19">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_31">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_43">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_55">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_67">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_79">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_91">-</div></td>
+     <td class="cellule" nowrap><div id="onde_103">-</div></td>
+     <td class="cellule" nowrap><div id="onde_115">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">G</font></th>
+     <td class="cellule" nowrap><div id = "onde_8">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_20">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_32">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_44">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_56">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_68">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_80">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_92">-</div></td>
+     <td class="cellule" nowrap><div id="onde_104">-</div></td>
+     <td class="cellule" nowrap><div id="onde_116">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">G♯</font></th>
+     <td class="cellule" nowrap><div id = "onde_9">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_21">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_33">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_45">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_57">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_69">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_81">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_93">-</div></td>
+     <td class="cellule" nowrap><div id="onde_105">-</div></td>
+     <td class="cellule" nowrap><div id="onde_117">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">A</font></th>
+     <td class="cellule" nowrap><div id ="onde_10">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_22">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_34">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_46">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_58">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_70">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_82">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_94">-</div></td>
+     <td class="cellule" nowrap><div id="onde_106">-</div></td>
+     <td class="cellule" nowrap><div id="onde_118">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">B♭</font></th>
+     <td class="cellule" nowrap><div id ="onde_11">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_23">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_35">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_47">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_59">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_71">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_83">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_95">-</div></td>
+     <td class="cellule" nowrap><div id="onde_107">-</div></td>
+     <td class="cellule" nowrap><div id="onde_119">-</div></td>
+    </tr>
+    <tr align="right">
+     <th align="left" nowrap>&nbsp; <font color="#000080">B</font></th>
+     <td class="cellule" nowrap><div id ="onde_12">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_24">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_36">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_48">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_60">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_72">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_84">-</div></td>
+     <td class="cellule" nowrap><div id ="onde_96">-</div></td>
+     <td class="cellule" nowrap><div id="onde_108">-</div></td>
+     <td class="cellule" nowrap><div id="onde_120">-</div></td>
+    </tr>
+   </table>
+  </center>
+
+  <br><br><br>
+
+ </body>
+
+<!-- Mirrored from hydraule.org/tuyau/frequenc.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:07:29 GMT -->
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODL version="0.1">
+ <KB name="St-Sulpice-Réc Fourniture">
+  <PRESENT_NOTE>
+   1111111111111111111111111111111111111111111111111111111100000
+  </PRESENT_NOTE>
+ </KB>
+ <MIXTURE name="St-Sulpice-Rec Fourniture" def_kb="St-Sulpice-Réc Fourniture">
+  <RANK>
+   <BREAK pos="1" range="56" />
+   <BREAK pos="8" range="49" />
+   <BREAK pos="13" range="44" />
+   <BREAK pos="25" range="37" />
+   <BREAK pos="30" range="32" />
+   <BREAK pos="37" range="25" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="61" />
+   <BREAK pos="8" range="56" />
+   <BREAK pos="13" range="49" />
+   <BREAK pos="25" range="44" />
+   <BREAK pos="30" range="37" />
+   <BREAK pos="37" range="32" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="68" />
+   <BREAK pos="8" range="61" />
+   <BREAK pos="13" range="56" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="30" range="44" />
+   <BREAK pos="37" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="8" range="68" />
+   <BREAK pos="13" range="61" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="80" />
+   <BREAK pos="8" range="73" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="30" range="56" />
+   <BREAK pos="37" range="49" />
+  </RANK>
+ </MIXTURE>
+</ODL>
+

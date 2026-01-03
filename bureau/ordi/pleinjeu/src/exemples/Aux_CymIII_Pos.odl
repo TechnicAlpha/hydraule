@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODL version="0.1">
+ <KB name="Cymbale">
+  <PRESENT_NOTE>
+   1011111111111111111111111111111111111111111111111111110000000
+  </PRESENT_NOTE>
+ </KB>
+ <MIXTURE name="Cymbale" def_kb="Cymbale">
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="18" range="61" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="42" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="80" />
+   <BREAK pos="13" range="73" />
+   <BREAK pos="18" range="68" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="30" range="56" />
+   <BREAK pos="37" range="56" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="85" />
+   <BREAK pos="13" range="80" />
+   <BREAK pos="18" range="73" />
+   <BREAK pos="25" range="68" />
+   <BREAK pos="30" range="61" />
+   <BREAK pos="37" range="56" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+ </MIXTURE>
+</ODL>
+

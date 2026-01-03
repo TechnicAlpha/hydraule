@@ -1,0 +1,364 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<!--
+ *****************************************************************************************
+ *  Page composée et programmée par S.M.C.J. Ce script est entièrement libre de droits.  *
+ *     Si vous lisez ce code, c'est que vous êtes un petit curieux (très bon défaut)     *
+ *    Comme je ne suis pas chien, je vous ai laissé des explications complémentaires     *
+ *                              dans la page ./explicod.htm                              *
+ *****************************************************************************************
+-->
+<html>
+ 
+<!-- Mirrored from hydraule.org/tuyau/tailles/calc_pro_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:32 GMT -->
+<head>
+  <title>Calculs de tailles de tuyaux d'orgues par le moyen des progressions.</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF8">
+  <meta name="author" content="S.M.C.J.">
+  <meta name="keywords" content="Hydraule Orgue Orgao Organo Orgel Organ">
+  <meta name="description" content="Documents et informations sur l'orgue a tuyau">
+
+  <style type="text/css">
+         .saisie {background-color:#fff7e7; color:#000080; padding-right:10px; text-align:right}
+     .cellTabRed {color:#ff0000}
+   .cellTabBlack {color:#000000}
+         .bouton {background-color:#edba9d; color:#000080}
+              hr {height:1px; background-color:#000080; border:0;}
+           label {cursor:pointer;} /*  Double définition pour IE cursor:hand; */
+  </style>
+
+  <script language="JavaScript">
+   <!--
+    // Empêche la saisie d'autre chose que des neuf chiffres et du point.
+    // Fonctions écrites par Bertrand Wattel (http://bertrand.wattel.free.fr/)
+    // et trouvé sur le site SELFHTML (http://actuel.fr.selfhtml.org/articles/javascript/entrees_formulaire/index.htm).
+    function codeTouche(evenement)
+    {
+     for (prop in evenement) {if (prop == 'which') return (evenement.which); };
+     return(evenement.keyCode);
+    };
+
+    function scanTouche(evenement)
+    {
+     var reCarSpeciaux = /[\x00\x08\x0D]/;
+     var reCarValides = /[0-9.]/;
+
+     var codeDecimal  = codeTouche(evenement);
+     var car = String.fromCharCode(codeDecimal);
+     var autorisation = reCarValides.test(car) || reCarSpeciaux.test(car);
+
+     return autorisation;
+    };
+
+    // Arrondi une valeur à un nombre variable de décimales.
+    // Fonction écrite par Mathias Bynens (http://mathiasbynens.be/archive/2006/01/js-number-format).
+    function number_format(a, b, c, d)
+    {
+     a = Math.round(a * Math.pow(10, b)) / Math.pow(10, b);
+     e = a + ""; f = e.split("."); if (!f[0]) { f[0] = "0"; }; if (!f[1]) { f[1] = ""; };
+     if (f[1].length < b) { g = f[1]; for (i1 = f[1].length + 1; i1 <= b; i1++) {g += "0";} f[1] = g; };
+     if (d != "" && f[0].length > 3)
+     {
+      h = f[0]; f[0] = "";
+      for(j1 = 3; j1 < h.length; j1 += 3) {i1 = h.slice(h.length - j1, h.length - j1 + 3); f[0] = d + i1 +  f[0] + "";};
+      j1 = h.substr(0, (h.length % 3 == 0) ? 3 : (h.length % 3)); f[0] = j1 + f[0];
+     };
+     c = (b <= 0) ? "" : c; return f[0] + c + f[1];
+    };
+
+    // Vérifie la saisie avant de lancer la procédure de calcul.
+    function verifSaisie()
+    {
+     accord = true;
+     with (document.formulaire)
+     {
+      if ((premDiam.value == "") || (progDiam.value == "")) {alert("Une valeur doit être entrée dans chaque champ."); accord = false;};
+      // Vive l'absence quasi totale de typage en JavaScript...
+          premier = parseFloat(premDiam.value); progress = parseFloat(progDiam.value);
+      if ((premier < 1) || (progress < 1)) {alert("Désolé mais le calcul ou le graphique ne sont envisageables\nqu'avec des valeurs de diamètres ou de progressions supérieures ou égales à 1."); accord = false;};
+     };
+     return accord;
+    };
+
+    // Calcule les diamètres sur 61 notes.
+    function calcule()
+    {
+     // Affiche et calcule les valeurs des notes.
+     // Fuck "innerHTML" of Cro$oft and welcome to the DOM... of BEDOS...
+     noteCalc = document.formulaire.premDiam.value;
+     for (i = 1; i <= 61; i++)
+     {
+      eval("with(document.getElementById('note_" + i + "').firstChild) replaceData(0, length, number_format(noteCalc, 1, ',', ' '));");
+      eval("document.getElementById('note_" + i + "').className = 'cellTabRed';");
+      noteCalc /= Math.pow(document.formulaire.progDiam.value, (1 / 48));
+     };
+    };
+
+    function graphique()
+    {
+     calcule();
+     with(document.formulaire)
+     {
+      var fichier = "graphPDFcd93.html?calcul=pro&amp;objImp=1111&amp;premDiam=" + premDiam.value + "&progDiam=" + progDiam.value;
+     };
+     var para = 'toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=1,scrollbars=1'
+     fenCom = window.open(fichier, "graphPDF", para);
+    };
+
+    function initRaz()
+    {
+     for (i = 1; i <= 61; i++)
+     {
+      eval("with(document.getElementById('note_" + i + "').firstChild) replaceData(0, length, '-');");
+      eval("document.getElementById('note_" + i + "').className = 'cellTabBlack';");
+     };
+    };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../images/kraft.gif">
+  <table border="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <h1><font color="#ff0000"><b>Calculs de<br><i>tailles de tuyaux d'orgues</i><br>par le moyen des<br><i>progressions</i>.</b></font></h1>
+    </td>
+    <td align="right" valign="top">
+     <a href="../../index-2.html" target="_top"><img src="../../images/hydraule.gif" border="0" width="216" height="230" alt="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br><br>
+
+  <center>
+   <form name="formulaire" action="JavaScript:void(0);">
+    <table border="0" width="90%" cellpadding="0" cellspacing="0">
+     <tr valign="top">
+      <td>
+       <blockquote>
+        <p align="justify">La m&eacute;thode des progressions ne diff&egrave;re quasiment pas de la
+        m&eacute;thode des <a href="calc_log_fr.html">logarithmes</a><a href="calc_log.html"></a> si ce n'est
+        qu'elle impose le premier diam&egrave;tre comme &eacute;tant le premier <i>do</i>, le second
+        diam&egrave;tre comme le cinqui&egrave;me <i>do</i> et que le rapport entre ceux-ci est fix&eacute;
+        par un nombre variable, souvent entier, et qui fait r&eacute;f&eacute;rence comme &eacute;tant
+        la valeur qui fait <i>progresser</i> les diam&egrave;tres.</p>
+
+        <p align="justify">&Agrave; partir du milieu du <font style="font-variant:small-caps;">xix</font><sup>e</sup>
+        si&egrave;cle, le th&eacute;oricien allemand Johann Gottlob T&ouml;pfer a particuli&egrave;rement
+        insist&eacute;<a name="appel_01" href="#note_01"><sup>1</sup></a> sur le fait que, pour lui, l'id&eacute;al
+        de progression des diam&egrave;tres devait se trouver &agrave; 8 (rapport entre <i>do</i> 1 et <i>do</i> 5).
+        Avec plus de subtilit&eacute;s, Cavaill&eacute;-Coll<a name="appel_02" href="#note_02"><sup>2</sup></a> fera
+        varier <a href="../../bureau/biblio/cavaille/tailles/tailles.html" target="_parent">ses progressions</a> dans
+        une bien plus large mesure. Enfin, c'est &eacute;videmment dans le
+        <i><a href="../../bureau/biblio/hamel/hamel.html" target="_parent">compl&eacute;ment &agrave; l'ouvrage de
+        Dom&nbsp;B&eacute;dos</a></i> publi&eacute; en 1849 par Marie-Pierre
+        Hamel<a name="appel_03" href="#note_03"><sup>3</sup></a> que l'on trouvera le plus de d&eacute;tails
+        &eacute;crits en langue fran&ccedil;aise sur la construction des diapasons suivant le principe des progressions.</p>
+
+        <p align="justify">Pour r&eacute;sumer, le processus pour calculer une s&eacute;rie de tailles &agrave;
+        partir d'un diam&egrave;tre et d'une progression choisis est le suivant&nbsp;:</p>
+
+        <center>
+         <table border="0" cellpadding="0" cellspacing="0" title="taille(x) = taille(x-1) / Racine 48i&egrave;me de prog">
+          <tr valign="center">
+           <td align="right"><i>taille</i>(x)&nbsp;=&nbsp;</td>
+           <td align="left">
+            <table border="0" cellpadding="0" cellspacing="0">
+             <tr align="center"><td><u><i>taille</i> (x&nbsp;-&nbsp;1)</u></td></tr>
+             <tr align="center"><td><sup><font size="1">48</font></sup><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;"><i>prog</i></span></td></tr>
+            </table>
+           </td>
+          </tr>
+         </table>
+        </center>
+        <p align="justify">On utilise la racine quarante huiti&egrave;me car le rapport de
+	<span title="Racine de prog"><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;"><i>prog</i></span></span>
+	est valable &laquo;&nbsp;<i>dans une &eacute;tendue de deux
+        octaves</i>&nbsp;&raquo;<a name="appel_04" href="#note_04"><sup>4</sup></a>.
+        Il s'en suit que le rapport &agrave; l'octave est &eacute;gal
+        &agrave; <span title="Racine 4i&egrave;me de prog"><sup><font size="1">4</font></sup><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;"><i>prog</i></span></span>
+	et que le rapport au demi-ton se retrouve &agrave;
+        <span title="Racine (4 &times; 12)i&egrave;me de prog"><sup><font size="1">4&nbsp;&times;&nbsp;12</font></sup><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;"><i>prog</i></span></span>,
+	soit <span title="Racine 48i&egrave;me de prog"><sup><font size="1">48</font></sup><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;"><i>prog</i></span></span>.</p>
+
+        <p align="justify">Ce proc&eacute;d&eacute; est rigoureusement arithm&eacute;tique&nbsp;; il est toutefois
+        possible de le figurer graphiquement &agrave; la mani&egrave;re de
+        <a href="../../bureau/biblio/dombedos/index.html" target="_parent">Dom Bedos</a> si l'on prend la
+        pr&eacute;caution de respecter le m&ecirc;me rapport entre les diam&egrave;tres (figur&eacute;s verticalement)
+        et leur &eacute;loignement deux &agrave; deux (horizontalement). Pour illustrer ceci, on a la chance de pouvoir
+        se r&eacute;f&eacute;rer &agrave; l'ouvrage d'Aristide Cavaill&eacute;-Coll,
+        &laquo;&nbsp;<a href="../../bureau/biblio/cavaille/org_arc/org_arc.html" target="_parent"><i>De l'orgue et de son
+        architecture</i></a> &nbsp;&raquo;<a name="appel_05" href="#note_05"><sup>5</sup></a>, qui, dans son &eacute;dition
+        de 1872, publie la <a href="../../bureau/biblio/cavaille/org_arc/pl_25.html" target="_parent">planche&nbsp;XXV</a>
+        o&ugrave; figure le graphique d'un diapason et o&ugrave; il est tr&egrave;s facile de constater, double
+        d&eacute;cim&egrave;tre en main, que le rapport de l'octave, figur&eacute; horizontalement, est lui-m&ecirc;me
+        &eacute;gal au rapport de l'octave de la progression des diam&egrave;tres, savoir&nbsp;:
+        <span title="Racine 4i&egrave;me de 10"><sup><font size="1">4</font></sup><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;">10</span></span>
+	(1,7782794). On notera au passage que <a href="../../bureau/biblio/cavaille/org_arc/table_b.html" target="_parent">le
+        tableau de transcription num&eacute;rique</a> correspondant &agrave; ce diapason sp&eacute;cifie tr&egrave;s
+        explicitement que le calcul est bas&eacute; sur la progression de dix&nbsp;: &laquo;&nbsp;<i>Nous avons
+        pris pour base de notre calcul le diam&egrave;tre du premier C de 32 pieds &eacute;gal &agrave; 0m,45, et
+        celui de la cinqui&egrave;me octave au dessus, C ou C 3 &eacute;gal &agrave;
+        0m,445</i>&nbsp;<font size="-1" color="#008000">[sic]</font> <i>, c'est-&agrave;-dire au dixi&egrave;me du premier
+        C&nbsp;</i>&raquo;. Except&eacute; la coquille (volontaire..?), corrig&eacute;e par la valeur correcte dans
+        le tableau, on sait aujourd'hui qu'il existe des <i>Montres</i> de Cavaill&eacute;-Coll dont le diam&egrave;tre
+        du 8&nbsp;pieds s'approche bien de 144&nbsp;millim&egrave;tres. Par contre, &agrave; ma connaissance (et
+         &agrave; celle des personnes averties que j'ai pu interroger sur le sujet...), il n'en est aucune qui suive
+        cette progression... Aussi, la mention &laquo;&nbsp;<i>Ces tuyaux sont, suivant nous, d'une bonne proportion
+        pour la tonalit&eacute; moderne</i>&nbsp;&raquo; est d'une &eacute;l&eacute;gance toute relative puisque elle
+        suit l'adage &laquo;&nbsp;<i>faites comme je vous dis, pas comme je fais</i>&nbsp;&raquo;...</p>
+
+        <br><p align="justify">Pour illustrer ce qui pr&eacute;c&egrave;de, on pourra avantageusement consulter le
+        fichier tableur au <a href="prog.ods" target="_blank">format ODS</a>
+        (<a href="http://fr.openoffice.org/" target="_blank">OpenOffice.org</a>) ou au
+        <a href="prog.xls" target="_blank">format XLS</a> (Micro$oft Excel), ou, plus simplement, remplir le formulaire
+        de l'illustration <i>JavaScript</i> ci-dessous qui calcule 61 notes selon ce proc&eacute;d&eacute;.</p><br>
+       </blockquote>
+
+       <center>
+        <table border="1" width="87%" cellpadding="10" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+         <tr align="center">
+          <td>
+           <label for="idPremDiam" title="Premier diam&egrave;tre."><b><u>P</u>remDiam&nbsp;:</b></label>
+           <input type="text" size=5" maxlength="6" tabindex="1" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="P" class="saisie" value="145.0" name="premDiam" id="idPremDiam" title="Premier diam&egrave;tre.">
+          </td>
+          <td>
+           <label for="idProgDiam" title="Progression."><b>Pr<u>o</u>gression&nbsp;:</b></label>
+           <input type="text" size=5" maxlength="6" tabindex="2" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="O" class="saisie" value="6.0"   name="progDiam" id="idProgDiam" title="Progression.">
+          </td>
+         </tr>
+         <tr align="center">
+          <td colspan="2">
+           <table border="0" width="90%" cellpadding="0" cellspacing="0">
+            <tr align="center">
+             <td><input accesskey="C" tabindex="3" class="bouton" onClick="JavaScript:if (verifSaisie()) {calcule();};"   type="submit" value="   Calculer   "    title="Afficher les r&eacute;sultats dans le tableau de droite."></td>
+             <td><input accesskey="G" tabindex="4" class="bouton" onClick="JavaScript:if (verifSaisie()) {graphique();};" type="button" value=" Graphique "       title="Voir le graphique de ce calcul dans un fichier au format PDF."></td>
+             <td><input accesskey="I" tabindex="5" class="bouton" onClick="JavaScript:initRaz();"                         type="reset"  value="   Initialiser   " title="R&eacute;initialiser les valeurs de d&eacute;part."></td>
+            </tr>
+           </table>
+          </td>
+         </tr>
+        </table>
+
+        <br><br><br><br><br><hr width="85%"><br><br><b>Notes&nbsp;:</b><br><br>
+       </center>
+
+       <blockquote>
+        <font size="-1">
+         <p align="justify"><a name="note_01" href="#appel_01">1</a> <b>Johann Gottlob T&ouml;pfer</b>,<br>
+         <i>Die Theorie und Praxis des Orgelbaues</i>, Weimar, 1855, 1888.<br>
+         R&eacute;impression en fac-simil&eacute; de l'&eacute;dition de 1888 avec une introduction par W.&nbsp;L.&nbsp;Sumner.<br>
+         Amsterdam, 1972, Knuf, Bibliotheca organologica&nbsp;;<br>
+         953&nbsp;pages + Atlas<br>
+         ISBN&nbsp;: 90-6027-156-4 geb.</p>
+
+         <p align="justify"><a name="note_02" href="#appel_02">2</a> <b>Laurent Plet</b>,<br>
+         <a href="http://lplet.org/textes/conf.htm" target="_blank"><i>&Eacute;tude de la tuyauterie
+         d'Aristide Cavaill&eacute;-Coll</i></a>, chapitre consacr&eacute; aux
+         <a href="http://lplet.org/textes/conf.htm#tailles" target="_blank">tailles</a>, texte d'une
+         conf&eacute;rence demand&eacute;e par l'Association<i> pour la Sauvegarde de B&acirc;timents et de Sites</i>
+         (texte uniquement disponible en ligne).</p>
+
+         <p align="justify"><a name="note_03" href="#appel_03">3</a> <b>Marie-Pierre Hamel</b>,<br>
+         <i><a href="../../bureau/biblio/hamel/hamel.html" target="_parent">Nouveau manuel complet du facteur d'orgues</a>
+         ou Trait&eacute; th&eacute;orique et pratique de l'art de construire les orgues&nbsp;: contenant l'orgue
+         de D.&nbsp;B&eacute;dos et tous les progr&egrave;s et perfectionnements de la facture jusqu'a ce jour,
+         pr&eacute;c&eacute;d&eacute; d'une notice historique sur l'orgue, et suivi d'une biographie des pricipaux
+         facteurs d'orgues français et &eacute;trangers.<br>
+         Ouvrage orn&eacute; d'un Atlas renfermant un grand nombre de Planches.</i><br>
+         Paris, Librairie encyclop&eacute;dique de Roret, 1849.</p>
+
+         <p align="justify"><a name="note_04" href="#appel_04">4</a> <b>Pierre Veerkamp</b>,<br>
+         <i>L'orgue &agrave; tuyaux</i>,<br>
+         Premi&egrave;re &eacute;dition int&eacute;grale avec une notice biographique et technique par
+         Ton&nbsp;Van&nbsp;Eck et Victor Timmer<br>
+         La Fl&ucirc;te Harmonique, publication de
+         l'<a href="http://www.cavaille-coll.com/" target="_blank">Association A.&nbsp;Cavaill&eacute;-Coll</a>,
+         Paris, 1986, pages 108 et suivantes.</p>
+
+         <p align="justify"><a name="note_05" href="#appel_05">5</a> <b>Aristide Cavaill&eacute;-Coll</b>,<br>
+         <a href="../../bureau/biblio/cavaille/org_arc/org_arc.html" target="_parent"><i>De l'orgue et de son
+         architecture</i></a>, extrait de la revue g&eacute;n&eacute;rale de l'architecture et des travaux publics.
+         Deuxi&egrave;me tirage, revu et augment&eacute;, Paris, Ducher et Cie, libraires-&eacute;diteurs, 1856 -
+         2<sup>e</sup> &eacute;dition 1872.</p>
+        </font>
+       </blockquote>
+
+       <center><br><br><br><br><br><img src="sinn_02.png" border="0" width="198" height="138"></center>
+      </td>
+      <td align="right">
+       <table border="1" width="1%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+        <tr align="right"> <th>1</th><th align="left">C</th>            <td nowrap><div  id="note_1">-</div></td></tr>
+        <tr align="right"> <th>2</th><th align="left">C&#9839;</th><td nowrap><div  id="note_2">-</div></td></tr>
+        <tr align="right"> <th>3</th><th align="left">D</th>            <td nowrap><div  id="note_3">-</div></td></tr>
+        <tr align="right"> <th>4</th><th align="left">D&#9839;</th><td nowrap><div  id="note_4">-</div></td></tr>
+        <tr align="right"> <th>5</th><th align="left">E</th>            <td nowrap><div  id="note_5">-</div></td></tr>
+        <tr align="right"> <th>6</th><th align="left">F</th>            <td nowrap><div  id="note_6">-</div></td></tr>
+        <tr align="right"> <th>7</th><th align="left">F&#9839;</th><td nowrap><div  id="note_7">-</div></td></tr>
+        <tr align="right"> <th>8</th><th align="left">G</th>            <td nowrap><div  id="note_8">-</div></td></tr>
+        <tr align="right"> <th>9</th><th align="left">G&#9839;</th><td nowrap><div  id="note_9">-</div></td></tr>
+        <tr align="right"><th>10</th><th align="left">A</th>            <td nowrap><div id="note_10">-</div></td></tr>
+        <tr align="right"><th>11</th><th align="left">A&#9839;</th><td nowrap><div id="note_11">-</div></td></tr>
+        <tr align="right"><th>12</th><th align="left">B</th>            <td nowrap><div id="note_12">-</div></td></tr>
+        <tr align="right"><th>13</th><th align="left">C</th>            <td nowrap><div id="note_13">-</div></td></tr>
+        <tr align="right"><th>14</th><th align="left">C&#9839;</th><td nowrap><div id="note_14">-</div></td></tr>
+        <tr align="right"><th>15</th><th align="left">D</th>            <td nowrap><div id="note_15">-</div></td></tr>
+        <tr align="right"><th>16</th><th align="left">D&#9839;</th><td nowrap><div id="note_16">-</div></td></tr>
+        <tr align="right"><th>17</th><th align="left">E</th>            <td nowrap><div id="note_17">-</div></td></tr>
+        <tr align="right"><th>18</th><th align="left">F</th>            <td nowrap><div id="note_18">-</div></td></tr>
+        <tr align="right"><th>19</th><th align="left">F&#9839;</th><td nowrap><div id="note_19">-</div></td></tr>
+        <tr align="right"><th>20</th><th align="left">G</th>            <td nowrap><div id="note_20">-</div></td></tr>
+        <tr align="right"><th>21</th><th align="left">G&#9839;</th><td nowrap><div id="note_21">-</div></td></tr>
+        <tr align="right"><th>22</th><th align="left">A</th>            <td nowrap><div id="note_22">-</div></td></tr>
+        <tr align="right"><th>23</th><th align="left">A&#9839;</th><td nowrap><div id="note_23">-</div></td></tr>
+        <tr align="right"><th>24</th><th align="left">B</th>            <td nowrap><div id="note_24">-</div></td></tr>
+        <tr align="right"><th>25</th><th align="left">C</th>            <td nowrap><div id="note_25">-</div></td></tr>
+        <tr align="right"><th>26</th><th align="left">C&#9839;</th><td nowrap><div id="note_26">-</div></td></tr>
+        <tr align="right"><th>27</th><th align="left">D</th>            <td nowrap><div id="note_27">-</div></td></tr>
+        <tr align="right"><th>28</th><th align="left">D&#9839;</th><td nowrap><div id="note_28">-</div></td></tr>
+        <tr align="right"><th>29</th><th align="left">E</th>            <td nowrap><div id="note_29">-</div></td></tr>
+        <tr align="right"><th>30</th><th align="left">F</th>            <td nowrap><div id="note_30">-</div></td></tr>
+        <tr align="right"><th>31</th><th align="left">F&#9839;</th><td nowrap><div id="note_31">-</div></td></tr>
+        <tr align="right"><th>32</th><th align="left">G</th>            <td nowrap><div id="note_32">-</div></td></tr>
+        <tr align="right"><th>33</th><th align="left">G&#9839;</th><td nowrap><div id="note_33">-</div></td></tr>
+        <tr align="right"><th>34</th><th align="left">A</th>            <td nowrap><div id="note_34">-</div></td></tr>
+        <tr align="right"><th>35</th><th align="left">A&#9839;</th><td nowrap><div id="note_35">-</div></td></tr>
+        <tr align="right"><th>36</th><th align="left">B</th>            <td nowrap><div id="note_36">-</div></td></tr>
+        <tr align="right"><th>37</th><th align="left">C</th>            <td nowrap><div id="note_37">-</div></td></tr>
+        <tr align="right"><th>38</th><th align="left">C&#9839;</th><td nowrap><div id="note_38">-</div></td></tr>
+        <tr align="right"><th>39</th><th align="left">D</th>            <td nowrap><div id="note_39">-</div></td></tr>
+        <tr align="right"><th>40</th><th align="left">D&#9839;</th><td nowrap><div id="note_40">-</div></td></tr>
+        <tr align="right"><th>41</th><th align="left">E</th>            <td nowrap><div id="note_41">-</div></td></tr>
+        <tr align="right"><th>42</th><th align="left">F</th>            <td nowrap><div id="note_42">-</div></td></tr>
+        <tr align="right"><th>43</th><th align="left">F&#9839;</th><td nowrap><div id="note_43">-</div></td></tr>
+        <tr align="right"><th>44</th><th align="left">G</th>            <td nowrap><div id="note_44">-</div></td></tr>
+        <tr align="right"><th>45</th><th align="left">G&#9839;</th><td nowrap><div id="note_45">-</div></td></tr>
+        <tr align="right"><th>46</th><th align="left">A</th>            <td nowrap><div id="note_46">-</div></td></tr>
+        <tr align="right"><th>47</th><th align="left">A&#9839;</th><td nowrap><div id="note_47">-</div></td></tr>
+        <tr align="right"><th>48</th><th align="left">B</th>            <td nowrap><div id="note_48">-</div></td></tr>
+        <tr align="right"><th>49</th><th align="left">C</th>            <td nowrap><div id="note_49">-</div></td></tr>
+        <tr align="right"><th>50</th><th align="left">C&#9839;</th><td nowrap><div id="note_50">-</div></td></tr>
+        <tr align="right"><th>51</th><th align="left">D</th>            <td nowrap><div id="note_51">-</div></td></tr>
+        <tr align="right"><th>52</th><th align="left">D&#9839;</th><td nowrap><div id="note_52">-</div></td></tr>
+        <tr align="right"><th>53</th><th align="left">E</th>            <td nowrap><div id="note_53">-</div></td></tr>
+        <tr align="right"><th>54</th><th align="left">F</th>            <td nowrap><div id="note_54">-</div></td></tr>
+        <tr align="right"><th>55</th><th align="left">F&#9839;</th><td nowrap><div id="note_55">-</div></td></tr>
+        <tr align="right"><th>56</th><th align="left">G</th>            <td nowrap><div id="note_56">-</div></td></tr>
+        <tr align="right"><th>57</th><th align="left">G&#9839;</th><td nowrap><div id="note_57">-</div></td></tr>
+        <tr align="right"><th>58</th><th align="left">A</th>            <td nowrap><div id="note_58">-</div></td></tr>
+        <tr align="right"><th>59</th><th align="left">A&#9839;</th><td nowrap><div id="note_59">-</div></td></tr>
+        <tr align="right"><th>60</th><th align="left">B</th>            <td nowrap><div id="note_60">-</div></td></tr>
+        <tr align="right"><th>61</th><th align="left">C</th>            <td nowrap><div id="note_61">-</div></td></tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </form>
+
+   <br><br>
+
+  </center>
+ </body>
+
+<!-- Mirrored from hydraule.org/tuyau/tailles/calc_pro_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:40 GMT -->
+</html>

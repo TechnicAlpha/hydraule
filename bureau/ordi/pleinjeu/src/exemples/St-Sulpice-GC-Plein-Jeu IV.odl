@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODL version="0.1">
+ <KB name="St-Sulpice-GC Plein-Jeu">
+  <PRESENT_NOTE>
+   1111111111111111111111111111111111111111111111111111111100000
+  </PRESENT_NOTE>
+ </KB>
+ <MIXTURE name="St-Sulpice-GC Plein-Jeu" def_kb="St-Sulpice-GC Plein-Jeu">
+  <RANK>
+   <BREAK pos="1" range="61" />
+   <BREAK pos="8" range="56" />
+   <BREAK pos="18" range="49" />
+   <BREAK pos="25" range="44" />
+   <BREAK pos="31" range="37" />
+   <BREAK pos="36" range="32" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="68" />
+   <BREAK pos="8" range="61" />
+   <BREAK pos="18" range="56" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="31" range="44" />
+   <BREAK pos="36" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="8" range="68" />
+   <BREAK pos="18" range="61" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="31" range="49" />
+   <BREAK pos="36" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="80" />
+   <BREAK pos="8" range="73" />
+   <BREAK pos="18" range="68" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="31" range="56" />
+   <BREAK pos="36" range="49" />
+  </RANK>
+ </MIXTURE>
+</ODL>
+

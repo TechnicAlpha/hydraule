@@ -1,0 +1,178 @@
+ /*
+                                                ----------------------------------------------------
+                                                                        _
+                 ORGANUM                                               | | _
+                                                       Sébastien       | || | _
+              Logiciel libre                           Matthieu        | || || | _
+          de gestion de données                        Cosson          | || || || | _
+           de facture d'orgues                         Jacquet         | || || || || | _
+                                                                       | || || || || || | _
+                                                                       | || || || || || || |
+                    M                                                  | || || || || || || |
+                  *   *                                ,-~~-.___.      | || || || || || || |___
+                S A T O R                             /  | .     \     |_||_||_||_||_||_||_|  /|
+              * A R E P O *                          (   )        O    |_||_||_||_||_||_||_| / |
+            S   T E N E T   C                         \_/-. ,----'    / V  V  V  V  V  V  V /  |
+              * O P E R A *                               ====      _/____________________ /  /
+                R O T A S                                /  \-'~;  /|  The Organbuilder   |  /
+                  *   *                                 /  __/~|  /_|   and his organ     | /
+                    J                                o=(_______|  |_|_____________________|/
+
+                                                ----------------------------------------------------
+                                                   Site web : http://www.hydraule.org/
+                                                     E-mail : smcj@hydraule.org
+                                                ----------------------------------------------------
+
+*/
+
+ /* ----------------------------------------------------------------------*/
+ /*                               Organum                                 */
+ /*                      Styles de l'application Web                      */
+ /*                                                                       */
+ /*                     ATTRIBUTS GÉNÉRAUX DE LA PAGE                     */
+ /* ----------------------------------------------------------------------*/
+
+ body
+ {
+     background-image:url("img/kraft.png");
+     background-color:#fff7e7;
+          font-family:Sans-Serif;
+ }
+
+ body.roses
+ {
+     background-image:url("img/kraft_r.png");
+          margin-left:150px;
+         margin-right:2em;
+ }
+
+ hr
+ {
+     background-color:#000080;
+               height:2px;
+                width:95%
+ }
+
+ .pointsDeSuite
+ {
+                width:100%;
+               height:0px;
+		border-bottom:2px dotted #000080
+ }
+
+ h1, h2, h3
+ {
+          font-family:Serif;
+ }
+
+ .fondSaisie
+ {
+     background-color:#fff7e7;
+         padding-left:0.3em;
+          font-family:Verdana, Helvetica, Arial, sans-serif;
+           text-align:left;
+            font-size:80%;
+                color:#000080
+ }
+
+ .fondSaisieDisabled
+ {
+     background-color:#ffe8e8;
+         padding-left:0.3em;
+          font-family:Verdana, Helvetica, Arial, sans-serif;
+           text-align:left;
+            font-size:80%;
+                color:#505050
+ }
+
+ .cellFocus
+ {
+     background-color:#ffff00;
+         padding-left:0.3em;
+          font-family:Verdana, Helvetica, Arial, sans-serif;
+           text-align:left;
+            font-size:80%;
+                color:#0000ff
+ }
+
+ .bouton
+ {
+     background-color:#edba9d;
+                color:#000080
+ }
+
+ .affiTable
+ {
+             display : table !important;
+             display : inline; /* --- pour IE ---*/
+ }
+
+ .affiLigne
+ {
+             display : table-row !important;
+             display : inline; /* --- pour IE ---*/
+ }
+
+ .affiCell
+ {
+             display : table-cell !important;
+             display : inline; /* --- pour IE ---*/
+ }
+
+ .affiBloc
+ {
+             display : inline;
+ }
+
+ .disparait
+ {
+             display : none;
+ }
+
+ /* ---------------------------------------------------------------------------*/
+ /*                LIEN DE BAS DE PAGE #bdp ('L'eft ou 'R'ight)                */
+ /* ---------------------------------------------------------------------------*/
+
+ #bdpL, #bdpR
+ {
+          font-family:Verdana, Helvetica, Arial, sans-serif;
+          padding-top:0px;
+            font-size:80%;
+             position:fixed;
+               bottom:0px;
+               height:20px;
+                width:100%;
+                color:#ffffff;
+ }
+
+ #bdpL
+ {
+         padding-left:1.5%;
+           background:url("img/bdp_left.html") no-repeat top left;
+           text-align:left;
+                 left:2px;
+ }
+
+ #bdpR
+ {
+        padding-right:1.5%;
+           background:url("img/bdp_right.png") no-repeat top right;
+           text-align:right;
+                right:0px;
+ }
+
+ #bdpL a:link, #bdpL a:visited, #bdpR a:link, #bdpR a:visited
+ {
+      text-decoration:none;
+          font-weight:bold;
+           background:transparent;
+                color:#ffffff;
+ }
+
+ #bdpL a:hover, #bdpR a:hover
+ {
+      text-decoration:underline;
+                color:#ffff00;
+ }
+
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODL version="0.1">
+ <KB name="St-Sulpice-Pos-PJ_Harm III-">
+  <PRESENT_NOTE>
+   1111111111111111111111111111111111111111111111111111111100000
+  </PRESENT_NOTE>
+ </KB>
+ <MIXTURE name="St-Sulpice-Pos-PJ_Harm III-" def_kb="St-Sulpice-Pos-PJ_Harm III-">
+  <RANK>
+   <BREAK pos="1" range="56" />
+   <BREAK pos="13" range="56" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="37" range="56" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="49" />
+   <BREAK pos="13" range="49" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="37" range="49" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="44" />
+   <BREAK pos="13" range="44" />
+   <BREAK pos="25" range="44" />
+   <BREAK pos="37" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="0" />
+   <BREAK pos="13" range="37" />
+   <BREAK pos="25" range="37" />
+   <BREAK pos="37" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="0" />
+   <BREAK pos="13" range="0" />
+   <BREAK pos="25" range="32" />
+   <BREAK pos="37" range="32" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="0" />
+   <BREAK pos="13" range="0" />
+   <BREAK pos="25" range="0" />
+   <BREAK pos="37" range="25" />
+  </RANK>
+ </MIXTURE>
+</ODL>
+

@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Page HTML composée et programmée par S.M.C.J. -->
+<!-- Sources PHP ./src/code.php -->
+<html>
+ 
+<!-- Mirrored from hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=fr&f=1&url=./src/exemples/PJ_STH.odl by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:30:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+  <title>D&eacute;bit et graphiques de plein-jeux.</title>
+
+  <meta http-equiv="content-language" content="fr" />
+  <meta http-equiv="content-type"     content="text/html; charset=UTF-8" />
+  <meta       name="author"           content="S.M.C.J." />
+  <meta       name="keywords"         content="Hydraule Orgue Orgao Organo Orgel Organ" />
+  <meta       name="description"      content="Calcul du nombre de tuyaux identiques d'un plein-jeu." />
+
+  <link rel="shortcut icon" href="img/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+
+  <script language="javaScript">
+   <!--
+    // Cache une partie du résultat pour l'impression.
+    function cacheBlock(objet) {objet.className = "disparait"; };
+
+    // Affiche tous les tableaux de résultat pour l'impression.
+    function affiBlock()
+    {
+     var affiId = new Array("Compo", "ASCII", "Debit", "Graphique");
+     for (i = 0; i < affiId.length; i++) {document.getElementById("tableau" + affiId[i]).className = "affiBloc"; };
+    };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <br /><br /><h1><font color="#ff0000">L'ordinateur</font></h1>
+     <h2><font color="#008000">D&eacute;bit et graphiques<br />de plein-jeux.</font></h2>
+     <h3><font color="#000080"><span onClick="javaScript:affiBlock();" style="cursor:pointer;" title="Cliquez ici pour afficher tous les tableaux.">Fourniture III - V</span></font></h3>
+    </td>
+    <td align="right">
+     <a href="../../../index.html" target="_top"><img src="img/hydraule.png" border="0" width="216" height="230" alt="L'Hydraule" title="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br /><br /><br /><br />
+
+  <center>
+
+  <!-- Début du code du tableau de composition -->
+  <div id="tableauCompo" onClick="cacheBlock(this);" style="cursor:pointer;" title="Cliquez ici pour cacher ce tableau.">
+   <table border="5" width="75%" cellpadding="0" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg">
+    <caption><p><b>Composition&nbsp;:</b></p><br /></caption>
+    <tr valign="bottom">
+     <th>&nbsp;C1&nbsp;</th>
+     <th>&nbsp;C2&nbsp;</th>
+     <th>&nbsp;C3&nbsp;</th>
+     <th>&nbsp;G3&nbsp;</th>
+     <th>&nbsp;C4&nbsp;</th>
+     <th>&nbsp;G4&nbsp;</th>
+     <th>&nbsp;C5&nbsp;</th>
+    </tr>
+    <tr align="center" valign="bottom">
+     <td>&nbsp;<font color="#000000"> - </font></td>
+     <td>&nbsp;<font color="#000000"> - </font></td>
+     <td>&nbsp;<font color="#000000">4'</font></td>
+     <td>&nbsp;<font color="#000000">4'</font></td>
+     <td>&nbsp;<font color="#000000">5'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#000000">5'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#000000">8'</font></td>
+    </tr>
+    <tr align="center" valign="bottom">
+     <td>&nbsp;<font color="#ff0000"> - </font></td>
+     <td>&nbsp;<font color="#ff0000">2'<sup>2/3</sup></font></td>
+     <td>&nbsp;<font color="#ff0000">2'<sup>2/3</sup></font></td>
+     <td>&nbsp;<font color="#ff0000">2'<sup>2/3</sup></font></td>
+     <td>&nbsp;<font color="#ff0000">4'</font></td>
+     <td>&nbsp;<font color="#ff0000">4'</font></td>
+     <td>&nbsp;<font color="#ff0000">5'<sup>1/3</sup></font></td>
+    </tr>
+    <tr align="center" valign="bottom">
+     <td>&nbsp;<font color="#008000">2'</font></td>
+     <td>&nbsp;<font color="#008000">2'</font></td>
+     <td>&nbsp;<font color="#008000">2'</font></td>
+     <td>&nbsp;<font color="#008000">2'</font></td>
+     <td>&nbsp;<font color="#008000">2'<sup>2/3</sup></font></td>
+     <td>&nbsp;<font color="#008000">2'<sup>2/3</sup></font></td>
+     <td>&nbsp;<font color="#008000">4'</font></td>
+    </tr>
+    <tr align="center" valign="bottom">
+     <td>&nbsp;<font color="#0000ff">1'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#0000ff">1'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#0000ff">1'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#0000ff">1'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#0000ff">2'</font></td>
+     <td>&nbsp;<font color="#0000ff">2'</font></td>
+     <td>&nbsp;<font color="#0000ff">2'<sup>2/3</sup></font></td>
+    </tr>
+    <tr align="center" valign="bottom">
+     <td>&nbsp;<font color="#ff00ff">1'</font></td>
+     <td>&nbsp;<font color="#ff00ff">1'</font></td>
+     <td>&nbsp;<font color="#ff00ff">1'</font></td>
+     <td>&nbsp;<font color="#ff00ff"> - </font></td>
+     <td>&nbsp;<font color="#ff00ff">1'<sup>1/3</sup></font></td>
+     <td>&nbsp;<font color="#ff00ff"> - </font></td>
+     <td>&nbsp;<font color="#ff00ff">2'</font></td>
+    </tr>
+    <tr valign="bottom">
+     <th>&nbsp;C1&nbsp;</th>
+     <th>&nbsp;C2&nbsp;</th>
+     <th>&nbsp;C3&nbsp;</th>
+     <th>&nbsp;G3&nbsp;</th>
+     <th>&nbsp;C4&nbsp;</th>
+     <th>&nbsp;G4&nbsp;</th>
+     <th>&nbsp;C5&nbsp;</th>
+    </tr>
+   </table>
+   <br /><br />
+  </div>
+  <!-- Fin du code du tableau de composition -->
+
+  <!-- Début du code du pseudo-graphique -->
+  <div id="tableauASCII" onClick="cacheBlock(this);" style="cursor:pointer;" title="Cliquez ici pour cacher ce tableau.">
+   <table border="5" width="75%" cellpadding="15" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg">
+    <caption><p><b>Graphiques ASCII&nbsp;:</b></p><br /></caption><tr><td align="center">
+    <table border="0" cellpadding="0" cellspacing="0">
+     <tr><td><font size="2"><b><pre>
+              C           C           C      G    C      G    C    F                    
+              1           2           3      3    4      4    5    5                    
+ F           |------------+-----------+------+----+------+----+----<font color="#ff00ff">/</font>|  <font color="#ff0000">1</font> - F            
+ E     1/10' |            |           |      |    |      |    |   <font color="#ff00ff">/</font> |  <font color="#ff0000">1</font> - E     1/10'  
+ D#          |            |           |      |    |      |    |  <font color="#ff00ff">/</font>  |  <font color="#ff0000">1</font> - D#           
+ D           |            |           |      |    |      |    | <font color="#ff00ff">/</font>   |  <font color="#ff0000">1</font> - D            
+ C#          |            |           |      |    |     <font color="#ff00ff">/</font>|    |<font color="#ff00ff">/</font>    |  <font color="#ff0000">2</font> - C#           
+ C     1/8'  |------------+-----------+------+----+----<font color="#ff00ff">/</font>-+----<font color="#ff00ff">/</font>----<font color="#0000ff">/</font>|  <font color="#ff0000">3</font> - C     1/8'   
+ B           |            |           |      |    |   <font color="#ff00ff">/</font>  |   <font color="#0000ff">/</font>|   <font color="#0000ff">/</font> |  <font color="#ff0000">3</font> - B            
+ A#          |            |           |      |    |  <font color="#ff00ff">/</font>   |  <font color="#0000ff">/</font> |  <font color="#0000ff">/</font>  |  <font color="#ff0000">3</font> - A#           
+ A           |            |           |      |    | <font color="#ff00ff">/</font>    | <font color="#0000ff">/</font>  | <font color="#0000ff">/</font>   |  <font color="#ff0000">3</font> - A            
+ G#          |            |           |      |    |<font color="#ff00ff">/</font>     |<font color="#0000ff">/</font>   |<font color="#0000ff">/</font>    |  <font color="#ff0000">3</font> - G#           
+ G     1/6'  |------------+-----------+------+----<font color="#ff00ff">/</font>------<font color="#0000ff">/</font>----<font color="#0000ff">/</font>-----|  <font color="#ff0000">3</font> - G     1/6'   
+ F#          |            |           |     <font color="#ff00ff">/</font>|   <font color="#0000ff">/</font>|     <font color="#0000ff">/</font>|   <font color="#008000">/</font>|     |  <font color="#ff0000">4</font> - F#           
+ F           |            |           |    <font color="#ff00ff">/</font> |  <font color="#0000ff">/</font> |    <font color="#0000ff">/</font> |  <font color="#008000">/</font> |    <font color="#008000">/</font>|  <font color="#ff0000">5</font> - F            
+ E     1/5'  |            |           |   <font color="#ff00ff">/</font>  | <font color="#0000ff">/</font>  |   <font color="#0000ff">/</font>  | <font color="#008000">/</font>  |   <font color="#008000">/</font> |  <font color="#ff0000">5</font> - E     1/5'   
+ D#          |            |           |  <font color="#ff00ff">/</font>   |<font color="#0000ff">/</font>   |  <font color="#0000ff">/</font>   |<font color="#008000">/</font>   |  <font color="#008000">/</font>  |  <font color="#ff0000">5</font> - D#           
+ D           |            |           | <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>    | <font color="#0000ff">/</font>    <font color="#008000">/</font>    | <font color="#008000">/</font>   |  <font color="#ff0000">5</font> - D            
+ C#          |            |           |<font color="#ff00ff">/</font>    <font color="#0000ff">/</font>|    |<font color="#0000ff">/</font>    <font color="#008000">/</font>|    |<font color="#008000">/</font>    |  <font color="#ff0000">5</font> - C#           
+ C     1/4'  |------------+-----------<font color="#ff00ff">/</font>----<font color="#0000ff">/</font>-+----<font color="#0000ff">/</font>----<font color="#008000">/</font>-+----<font color="#008000">/</font>----<font color="#ff0000">/</font>|  <font color="#ff0000">6</font> - C     1/4'   
+ B           |            |          <font color="#ff00ff">/</font>|   <font color="#0000ff">/</font>  |   <font color="#008000">/</font>|   <font color="#008000">/</font>  |   <font color="#ff0000">/</font>|   <font color="#ff0000">/</font> |  <font color="#ff0000">6</font> - B            
+ A#          |            |         <font color="#ff00ff">/</font> |  <font color="#0000ff">/</font>   |  <font color="#008000">/</font> |  <font color="#008000">/</font>   |  <font color="#ff0000">/</font> |  <font color="#ff0000">/</font>  |  <font color="#ff0000">6</font> - A#           
+ A           |            |        <font color="#ff00ff">/</font>  | <font color="#0000ff">/</font>    | <font color="#008000">/</font>  | <font color="#008000">/</font>    | <font color="#ff0000">/</font>  | <font color="#ff0000">/</font>   |  <font color="#ff0000">6</font> - A            
+ G#          |            |       <font color="#ff00ff">/</font>   |<font color="#0000ff">/</font>     |<font color="#008000">/</font>   |<font color="#008000">/</font>     |<font color="#ff0000">/</font>   |<font color="#ff0000">/</font>    |  <font color="#ff0000">6</font> - G#           
+ G     1/3'  |------------+------<font color="#ff00ff">/</font>----<font color="#0000ff">/</font>------<font color="#008000">/</font>----<font color="#008000">/</font>------<font color="#ff0000">/</font>----<font color="#ff0000">/</font>-----|  <font color="#ff0000">6</font> - G     1/3'   
+ F#          |            |     <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>|     <font color="#008000">/</font>|   <font color="#ff0000">/</font>|     <font color="#ff0000">/</font>|   <font color="#000000">/</font>|     |  <font color="#ff0000">6</font> - F#           
+ F           |            |    <font color="#ff00ff">/</font>    <font color="#0000ff">/</font> |    <font color="#008000">/</font> |  <font color="#ff0000">/</font> |    <font color="#ff0000">/</font> |  <font color="#000000">/</font> |    <font color="#000000">/</font>|  <font color="#ff0000">7</font> - F            
+ E     2/5'  |            |   <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>  |   <font color="#008000">/</font>  | <font color="#ff0000">/</font>  |   <font color="#ff0000">/</font>  | <font color="#000000">/</font>  |   <font color="#000000">/</font> |  <font color="#ff0000">7</font> - E     2/5'   
+ D#          |            |  <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>   |  <font color="#008000">/</font>   |<font color="#ff0000">/</font>   |  <font color="#ff0000">/</font>   |<font color="#000000">/</font>   |  <font color="#000000">/</font>  |  <font color="#ff0000">7</font> - D#           
+ D           |            | <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>    | <font color="#008000">/</font>    <font color="#ff0000">/</font>    | <font color="#ff0000">/</font>    <font color="#000000">/</font>    | <font color="#000000">/</font>   |  <font color="#ff0000">7</font> - D            
+ C#          |            |<font color="#ff00ff">/</font>    <font color="#0000ff">/</font>     |<font color="#008000">/</font>    <font color="#ff0000">/</font>|    |<font color="#ff0000">/</font>    <font color="#000000">/</font>|    |<font color="#000000">/</font>    |  <font color="#ff0000">7</font> - C#           
+ C     1/2'  |------------<font color="#ff00ff">/</font>----<font color="#0000ff">/</font>------<font color="#008000">/</font>----<font color="#ff0000">/</font>-+----<font color="#ff0000">/</font>----<font color="#000000">/</font>-+----<font color="#000000">/</font>-----|  <font color="#ff0000">7</font> - C     1/2'   
+ B           |           <font color="#ff00ff">/</font>|   <font color="#0000ff">/</font>      <font color="#008000">/</font>|   <font color="#ff0000">/</font>  |   <font color="#000000">/</font>|   <font color="#000000">/</font>  |    |     |  <font color="#ff0000">6</font> - B            
+ A#          |          <font color="#ff00ff">/</font> |  <font color="#0000ff">/</font>      <font color="#008000">/</font> |  <font color="#ff0000">/</font>   |  <font color="#000000">/</font> |  <font color="#000000">/</font>   |    |     |  <font color="#ff0000">6</font> - A#           
+ A           |         <font color="#ff00ff">/</font>  | <font color="#0000ff">/</font>      <font color="#008000">/</font>  | <font color="#ff0000">/</font>    | <font color="#000000">/</font>  | <font color="#000000">/</font>    |    |     |  <font color="#ff0000">6</font> - A            
+ G#          |        <font color="#ff00ff">/</font>   |<font color="#0000ff">/</font>      <font color="#008000">/</font>   |<font color="#ff0000">/</font>     |<font color="#000000">/</font>   |<font color="#000000">/</font>     |    |     |  <font color="#ff0000">6</font> - G#           
+ G     2/3'  |-------<font color="#ff00ff">/</font>----<font color="#0000ff">/</font>------<font color="#008000">/</font>----<font color="#ff0000">/</font>------<font color="#000000">/</font>----<font color="#000000">/</font>------+----+-----|  <font color="#ff0000">6</font> - G     2/3'   
+ F#          |      <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>|     <font color="#008000">/</font>    <font color="#ff0000">/</font>|     <font color="#000000">/</font>|    |      |    |     |  <font color="#ff0000">5</font> - F#           
+ F           |     <font color="#ff00ff">/</font>    <font color="#0000ff">/</font> |    <font color="#008000">/</font>    <font color="#ff0000">/</font> |    <font color="#000000">/</font> |    |      |    |     |  <font color="#ff0000">5</font> - F            
+ E     4/5'  |    <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>  |   <font color="#008000">/</font>    <font color="#ff0000">/</font>  |   <font color="#000000">/</font>  |    |      |    |     |  <font color="#ff0000">5</font> - E     4/5'   
+ D#          |   <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>   |  <font color="#008000">/</font>    <font color="#ff0000">/</font>   |  <font color="#000000">/</font>   |    |      |    |     |  <font color="#ff0000">5</font> - D#           
+ D           |  <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>    | <font color="#008000">/</font>    <font color="#ff0000">/</font>    | <font color="#000000">/</font>    |    |      |    |     |  <font color="#ff0000">5</font> - D            
+ C#          | <font color="#ff00ff">/</font>    <font color="#0000ff">/</font>     |<font color="#008000">/</font>    <font color="#ff0000">/</font>     |<font color="#000000">/</font>     |    |      |    |     |  <font color="#ff0000">5</font> - C#           
+ C     1'    |<font color="#ff00ff">/</font>----<font color="#0000ff">/</font>------<font color="#008000">/</font>----<font color="#ff0000">/</font>------<font color="#000000">/</font>------+----+------+----+-----|  <font color="#ff0000">5</font> - C     1'     
+ B           |    <font color="#0000ff">/</font>      <font color="#008000">/</font>|   <font color="#ff0000">/</font>       |      |    |      |    |     |  <font color="#ff0000">3</font> - B            
+ A#          |   <font color="#0000ff">/</font>      <font color="#008000">/</font> |  <font color="#ff0000">/</font>        |      |    |      |    |     |  <font color="#ff0000">3</font> - A#           
+ A           |  <font color="#0000ff">/</font>      <font color="#008000">/</font>  | <font color="#ff0000">/</font>         |      |    |      |    |     |  <font color="#ff0000">3</font> - A            
+ G#          | <font color="#0000ff">/</font>      <font color="#008000">/</font>   |<font color="#ff0000">/</font>          |      |    |      |    |     |  <font color="#ff0000">3</font> - G#           
+ G     1'1/3 |<font color="#0000ff">/</font>------<font color="#008000">/</font>----<font color="#ff0000">/</font>-----------+------+----+------+----+-----|  <font color="#ff0000">3</font> - G     1'1/3  
+ F#          |      <font color="#008000">/</font>     |           |      |    |      |    |     |  <font color="#ff0000">1</font> - F#           
+ F           |     <font color="#008000">/</font>      |           |      |    |      |    |     |  <font color="#ff0000">1</font> - F            
+ E     1'3/5 |    <font color="#008000">/</font>       |           |      |    |      |    |     |  <font color="#ff0000">1</font> - E     1'3/5  
+ D#          |   <font color="#008000">/</font>        |           |      |    |      |    |     |  <font color="#ff0000">1</font> - D#           
+ D           |  <font color="#008000">/</font>         |           |      |    |      |    |     |  <font color="#ff0000">1</font> - D            
+ C#          | <font color="#008000">/</font>          |           |      |    |      |    |     |  <font color="#ff0000">1</font> - C#           
+ C     2'    |<font color="#008000">/</font>-----------+-----------+------+----+------+----+-----|  <font color="#ff0000">1</font> - C     2'     
+              C           C           C      G    C      G    C    F                    
+              1           2           3      3    4      4    5    5                    
+     </pre></b></font></td></tr>
+    </table>
+   </td></tr></table>
+   <br /><br />
+  </div>
+  <!-- Fin du code du pseudo-graphique -->
+  
+  <!-- Début du code du tableau de débit -->
+  <div id="tableauDebit" onClick="cacheBlock(this);" style="cursor:pointer;" title="Cliquez ici pour cacher ce tableau.">
+   <table border="5" width="75%" cellpadding="0" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg">
+    <caption><p><b>D&eacute;bit&nbsp;:</b></p><br /></caption>
+    <tr>
+     <td>&nbsp;</td><th>&nbsp;2'&nbsp;</th><th>&nbsp;1'&nbsp;</th><th>&nbsp;1/2'&nbsp;</th><th>&nbsp;1/4'&nbsp;</th><th>&nbsp;1/8'&nbsp;</th>    </tr>
+    <tr align="center"><th align="left">&nbsp;C&nbsp;</th><td>1</td><td>5</td><td>7</td><td>6</td><td>3</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;C<sup>#</sup>&nbsp;</th><td>1</td><td>5</td><td>7</td><td>5</td><td>2</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;D&nbsp;</th><td>1</td><td>5</td><td>7</td><td>5</td><td>1</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;D<sup>#</sup>&nbsp;</th><td>1</td><td>5</td><td>7</td><td>5</td><td>1</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;E&nbsp;</th><td>1</td><td>5</td><td>7</td><td>5</td><td>1</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;F&nbsp;</th><td>1</td><td>5</td><td>7</td><td>5</td><td>1</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;F<sup>#</sup>&nbsp;</th><td>1</td><td>5</td><td>6</td><td>4</td><td>&nbsp;</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;G&nbsp;</th><td>3</td><td>6</td><td>6</td><td>3</td><td>&nbsp;</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;G<sup>#</sup>&nbsp;</th><td>3</td><td>6</td><td>6</td><td>3</td><td>&nbsp;</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;A&nbsp;</th><td>3</td><td>6</td><td>6</td><td>3</td><td>&nbsp;</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;A<sup>#</sup>&nbsp;</th><td>3</td><td>6</td><td>6</td><td>3</td><td>&nbsp;</td>    </tr>
+    <tr align="center"><th align="left">&nbsp;B&nbsp;</th><td>3</td><td>6</td><td>6</td><td>3</td><td>&nbsp;</td>    </tr>
+   </table>
+   <br /><br />
+  </div>
+  <!-- Fin du code du tableau de débit -->
+
+  <!-- Début du tableau de l'image graphique -->
+  <div id="tableauGraphique" onClick="cacheBlock(this);" style="cursor:pointer;" title="Cliquez ici pour cacher ce tableau.">
+   <br />
+   <table border="5" cellpadding="0" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg">
+    <tr>
+     <td><img width="450" height="278" border="0" alt="Fourniture III - V" title="Fourniture III - V" src="Fourniture%20III%20-%20V839a.png?haut=102&amp;bas=49&amp;t1=/////////AAABQAHAAEAAQHCARYAAUZvdXJuaXR1cmUgSUlJIC0=&amp;t2=AQ0ZICUsMQAAAAAAAAAAAA==&amp;t3=AAAlJSAgGQAAAAAAAAAAAAAsLCwlJSAAAAAAAAAAAAAxMTExLCwlAAAAAAAAAAAAODg4ODExLAAAAAAAAAAAAD09PQA4ADEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="></td>
+    </tr>
+   </table>
+   <br /><br />
+  </div>
+  <!-- Fin du tableau de l'image graphique -->
+
+  <p align="center"><b>Nombre total de tuyaux&nbsp;: <font color="#ff0000">224</font>.</b></p>
+  <br /><br />
+  </center>
+
+  <br /><br />
+
+ </body>
+
+<!-- Mirrored from hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=fr&f=1&url=./src/exemples/PJ_STH.odl by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:30:16 GMT -->
+</html>
+

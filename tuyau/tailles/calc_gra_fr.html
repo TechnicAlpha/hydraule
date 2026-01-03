@@ -1,0 +1,841 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<!--
+ *****************************************************************************************
+ *  Page composée et programmée par S.M.C.J. Ce script est entièrement libre de droits.  *
+ *     Si vous lisez ce code, c'est que vous êtes un petit curieux (très bon défaut)     *
+ *    Comme je ne suis pas chien, je vous ai laissé des explications complémentaires     *
+ *                              dans la page ./explicod.htm                              *
+ *****************************************************************************************
+-->
+<html>
+ 
+<!-- Mirrored from hydraule.org/tuyau/tailles/calc_gra_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:25 GMT -->
+<head>
+  <title>Calculs de tailles de tuyaux d'orgues par le moyen d'un graphique.</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF8">
+  <meta name="author" content="S.M.C.J.">
+  <meta name="keywords" content="Hydraule Orgue Orgao Organo Orgel Organ">
+  <meta name="description" content="Documents et informations sur l'orgue a tuyau">
+
+  <style type="text/css">
+         .saisie {background-color:#fff7e7; color:#000080; padding-right:10px; text-align:right}
+     .cellTabRed {color:#ff0000}
+   .cellTabBlack {color:#000000}
+         .bouton {background-color:#edba9d; color:#000080}
+          select {background-color:#fff7e7; color:#000080; text-align:left}
+              hr {height:1px; background-color:#000080; border:0;}
+           label {cursor:pointer;} /*  Double définition pour IE cursor:hand; */
+  </style>
+
+  <script language="JavaScript">
+   <!--
+    // Empêche la saisie d'autre chose que des neuf chiffres et du point.
+    // Fonctions écrites par Bertrand Wattel (http://bertrand.wattel.free.fr/)
+    // et trouvé sur le site SELFHTML (http://actuel.fr.selfhtml.org/articles/javascript/entrees_formulaire/index.htm).
+    function codeTouche(evenement)
+    {
+     for (prop in evenement) {if (prop == 'which') return (evenement.which); };
+     return(evenement.keyCode);
+    };
+
+    function scanTouche(evenement)
+    {
+     var reCarSpeciaux = /[\x00\x08\x0D]/;
+     var reCarValides = /[0-9.]/;
+
+     var codeDecimal  = codeTouche(evenement);
+     var car = String.fromCharCode(codeDecimal);
+     var autorisation = reCarValides.test(car) || reCarSpeciaux.test(car);
+
+     return autorisation;
+    };
+
+    // Arrondi une valeur à un nombre variable de décimales.
+    // Fonction écrite par Mathias Bynens (http://mathiasbynens.be/archive/2006/01/js-number-format).
+    function number_format(a, b, c, d)
+    {
+     a = Math.round(a * Math.pow(10, b)) / Math.pow(10, b);
+     e = a + ""; f = e.split("."); if (!f[0]) { f[0] = "0"; }; if (!f[1]) { f[1] = ""; };
+     if (f[1].length < b) { g = f[1]; for (i1 = f[1].length + 1; i1 <= b; i1++) {g += "0";} f[1] = g; };
+     if (d != "" && f[0].length > 3)
+     {
+      h = f[0]; f[0] = "";
+      for(j1 = 3; j1 < h.length; j1 += 3) {i1 = h.slice(h.length - j1, h.length - j1 + 3); f[0] = d + i1 +  f[0] + "";};
+      j1 = h.substr(0, (h.length % 3 == 0) ? 3 : (h.length % 3)); f[0] = j1 + f[0];
+     };
+     c = (b <= 0) ? "" : c; return f[0] + c + f[1];
+    };
+
+    // Vérifie la saisie avant de lancer la procédure de calcul.
+    function verifSaisie()
+    {
+     accord = true; message = "Désolé mais le calcul ou le graphique ne sont envisageables\nqu'avec "
+     with (document.formulaire)
+     {
+      if ((premDiam.value == "") || (dernDiam.value == "") || (NbN.value == "")) {alert("Une valeur doit être entrée dans chaque champ."); accord = false;};
+      // Vive l'absence quasi totale de typage en JavaScript...
+      premier = parseFloat(premDiam.value); dernier = parseFloat(dernDiam.value);
+      if ((NbN.value < 3) || (NbN.value > 61)) {alert(message + "une valeur de NbN comprise entre 3 et 61."); accord = false;};
+      if ((premier < 1) || (dernier < 1))      {alert(message + "des valeurs de diamètres supérieures à 1."); accord = false;};
+      if (premier < dernier)                   {alert(message + "une valeur de PremDiam au moins égale à DernDiam."); accord = false;};
+     };
+     return accord;
+    };
+
+    // Calcule les diamètres sur 61 notes.
+    function calcule()
+    {
+     var div = new Array(61);
+
+     // Détermine les rapports et les valeurs en fonction des choix du type de calcul.
+     switch (document.formulaire.divHor.options.selectedIndex)
+     {
+      case 0 : // Division géometrique égale.
+       div[1] = 100; for (i = 2; i <= 61; i++) { div[i] = div[i - 1] / Math.pow(2, (1 / 12)); };
+       break;
+
+      case 1 : // Division géometrique Dom Bedos.
+       // Traduction littérale de la division graphique de l'octave telle qu'elle est
+       // décrite dans l'article 215 page 61 du traité de Dom Bedos (édition de 1766).
+       div[1]  = 100;             div[6] = div[1]  / 4 * 3;  div[8] = div[1] / 3 * 2;  div[3] = div[8] / 3 * 4;
+       div[10] = div[3]  / 3 * 2; div[5] = div[10] / 3 * 4; div[12] = div[5] / 3 * 2; div[11] = div[6] / 4 * 3;
+       div[4]  = div[11] / 2 * 3; div[9] = div[4]  / 4 * 3;  div[2] = div[9] / 2 * 3;  div[7] = div[2] / 4 * 3;
+
+       // Reproduit la division pour les octaves suivantes.
+       for (i = 13; i <= 61; i++) { div[i] = div[i - 12] / 2; };
+       break;
+     };
+
+     // Affiche et calcule les valeurs des notes.
+     with (document.formulaire) // Valeurs de base.
+     {
+       noteCalc = parseFloat(premDiam.value); petitDiam = parseFloat(dernDiam.value);
+             L1 = div[1] - div[parseInt(NbN.value)]; L3 = div[1] - L1;
+        rapport = L1 / (noteCalc - petitDiam);
+     };
+
+     for (i = 1; i <= 61; i++)
+     {
+      // Fuck "innerHTML" of Cro$oft and welcome to the DOM... of BEDOS...
+      eval("with(document.getElementById('note_" + i + "').firstChild) replaceData(0, length, number_format(noteCalc, 1, ',', ' '));");
+      eval("document.getElementById('note_" + i + "').className = 'cellTabRed';");
+
+      // Fonction géométrique (cf. : ./fonctdbd_fr.htm)
+      noteCalc = ((div[i + 1] - L3) / rapport) + petitDiam;
+     };
+    };
+
+    function graphique()
+    {
+     calcule();
+     with(document.formulaire)
+     {
+      var fichier = "graphPDF2e33.html?calcul=gra&amp;objimp=1111&amp;premDiam=" + premDiam.value + "&dernDiam=" + dernDiam.value + "&NbN=" + NbN.value + "&divHor=" + divHor.options.selectedIndex;
+     };
+     var para = 'toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=1,scrollbars=1'
+     fenCom = window.open(fichier, "graphPDF", para);
+    };
+
+    function initRaz()
+    {
+     for (i = 1; i <= 61; i++)
+     {
+      eval("with(document.getElementById('note_" + i + "').firstChild) replaceData(0, length, '-');");
+      eval("document.getElementById('note_" + i + "').className = 'cellTabBlack';");
+     };
+    };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../images/kraft.gif">
+  <table border="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <h1><font color="#ff0000"><b>Calculs de<br><i>tailles de tuyaux d'orgues</i><br>par le moyen d'un<br><i>graphique</i>.</b></font></h1>
+    </td>
+    <td align="right" valign="top">
+     <a href="../../index-2.html" target="_top"><img src="../../images/hydraule.gif" border="0" width="216" height="230" alt="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br><br>
+
+  <center>
+   <form name="formulaire" action="JavaScript:void(0);">
+    <table border="0" width="90%" cellpadding="0" cellspacing="0">
+     <tr valign="top">
+      <td>
+       <blockquote>
+        <p align="justify">Le principe demande de conna&icirc;tre au d&eacute;part trois nombres, savoir&nbsp;:</p>
+
+        <ol>
+         <li>le diam&egrave;tre du tuyau le plus gros.</li>
+         <li>le diam&egrave;tre du tuyau le plus petit.</li>
+         <li>le nombre de notes qu'il faut &eacute;tablir.</li>
+        </ol>
+
+        <p align="justify">Dom Bedos<a href="#note_01" name="appel_01"><sup>1</sup></a> appelle <i>diapason</i> le
+        diagramme de base servant &agrave; d&eacute;terminer les diam&egrave;tres ou longueurs des tuyaux. Il
+        pr&eacute;conise une fa&ccedil;on de faire tr&egrave;s pr&eacute;cise pour la conception de ce diapason.
+        En partant d'une segment de droite de longueur &eacute;gale au premier tuyau du jeu d&eacute;sir&eacute;,
+        et en suivant un <a href="http://fr.wikipedia.org/wiki/Algorithme" target="_blank">algorithme</a>
+        d&eacute;crit dans la table de
+        <a href="../../bureau/biblio/dombedos/index/idx_0215.html" target="_blank">l'article&nbsp;215</a>
+        page&nbsp;61, on arrive &agrave; diviser l'octave d'une fa&ccedil;on &agrave; peu pr&egrave;s progressive.</p>
+
+        <p>Reprenons le calcul en fixant la plus grande longueur, C, &agrave; 100&nbsp;mm.</p>
+       </blockquote>
+
+       <center>
+        <img src="gracp_03.png" border="0" width="612" height="268" alt="Abaque type de Dom Bedos" title="Abaque type de Dom Bedos">
+        <br><br>
+
+        <table border="1" cellpadding="2" cellspacing="0" width="80%" bgcolor="#fff7e7">
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;<b>C</b> est connu,</td>
+          <td nowrap><b>C</b> =</td>
+          <td>100,0000&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>3/4</b> de <b>C</b>, donnent la quarte, qui est</td>
+          <td nowrap><b>F</b> =</td>
+          <td>75,0000&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>2/3</b> de <b>C</b>, donnent la quinte, qui est</td>
+          <td nowrap><b>G</b> =</td>
+          <td>66,6666&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>4/3</b> de <b>G</b>, donnent la quarte, en descendant</td>
+          <td nowrap><b>D</b> =</td>
+          <td>88,8888&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>2/3</b> de <b>D</b>, donnent la quinte,</td>
+          <td nowrap><b>A</b> =</td>
+          <td>59,2592&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>4/3</b> de <b>A</b>, donnent la quarte, en descendant</td>
+          <td nowrap><b>E</b> =</td>
+          <td>79,0123&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>2/3</b> de <b>E</b>, donnent la quinte,</td>
+          <td nowrap><b>B</b> =</td>
+          <td>52,6748&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>3/4</b> de <b>F</b>, donnent la quarte,</td>
+          <td nowrap><b>B&#9837;</b> =</td>
+          <td>56,2500&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>3/2</b> de <b>B&#9837;</b>, donnent la quinte, en descendant</td>
+          <td nowrap><b>E&#9837;</b> =</td>
+          <td>84,3750&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>3/4</b> de <b>E&#9837;</b>, donnent la quarte,</td>
+          <td nowrap><b>G&#9839;</b> =</td>
+          <td>63,2812&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>3/2</b> de <b>G&#9839;</b>, donnent la quinte, en descendant</td>
+          <td nowrap><b>C&#9839;</b> =</td>
+          <td>94,9218&nbsp;</td>
+         </tr>
+         <tr align="right">
+          <td align="left" nowrap>&nbsp;Les <b>3/4</b> de <b>C&#9839;</b>, donnent la quarte,</td>
+          <td nowrap><b>F&#9839;</b> =</td>
+          <td>71,1914&nbsp;</td>
+         </tr>
+        </table>
+       </center>
+
+       <br>
+
+       <blockquote>
+        <p align="justify">R&eacute;tablissons les notes dans l'ordre et calculons leurs rapports entre-elles. Pour
+        cela, on sait que les longueurs trait&eacute;es ne sont pas celles des intervalles entre les notes mais
+        la distance entre la position de la note et celle de l'extr&eacute;mit&eacute; du graphique (de la droite).
+        Il faut donc soustraire &agrave; toutes ces longueurs la moiti&eacute; de celle de d&eacute;part (50),
+        puis, mesurer les longueurs des intervalles entre les notes avant de pouvoir en calculer leurs rapports
+        deux &agrave; deux.</p>
+       </blockquote>
+
+       <br>
+
+       <center>
+        <table border="1" cellpadding="4" cellspacing="0" width="80%" bgcolor="#fff7e7">
+         <tr>
+          <td colspan="4">&nbsp;</td>
+          <th><font size="-1">Octave<br>seule</font></td>
+          <th colspan="2"><font size="-1">Longueurs<br>des intervalles<br>= note(x) - note(x + 1)</font></td>
+          <th colspan="3"><font size="-1">Rapports des intervalles<br>= longueur(x) / longueur(x + 1)</font></td>
+         </tr>
+         <tr align="right">
+          <th>1</font></th>
+          <th align="left"><font size="-1">C</font></th>
+          <td><font size="-1">100,0000</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">50,0000</font></td>
+          <td nowrap><font size="-1">- 44,9219 =</font></td>
+          <td><font size="-1">5,078125</font></td>
+          <td nowrap><font size="-1">/ 6,032986 =</font></td>
+          <td><font size="-1">0,8417266187</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 117 / 139</font></td>
+         </tr>
+         <tr align="right">
+          <th>2</font></th>
+          <th align="left"><font size="-1">C&#9839;</font></th>
+          <td><font size="-1">94,9219</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">44,9219</font></td>
+          <td nowrap><font size="-1">- 38,8889 =</font></td>
+          <td><font size="-1">6,032986</font></td>
+          <td nowrap><font size="-1">/ 4,513889 =</font></td>
+          <td><font size="-1">1,3365384615</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 139 / 104</font></td>
+         </tr>
+         <tr align="right">
+          <th>3</font></th>
+          <th align="left"><font size="-1">D</font></th>
+          <td><font size="-1">88,8889</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">38,8889</font></td>
+          <td nowrap><font size="-1">- 34,3750 =</font></td>
+          <td><font size="-1">4,513889</font></td>
+          <td nowrap><font size="-1">/ 5,362654 =</font></td>
+          <td><font size="-1">0,8417266187</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 117 / 139</font></td>
+         </tr>
+         <tr align="right">
+          <th>4</font></th>
+          <th align="left"><font size="-1">E&#9837;</font></th>
+          <td><font size="-1">84,3750</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">34,3750</font></td>
+          <td nowrap><font size="-1">- 29,0123 =</font></td>
+          <td><font size="-1">5,362654</font></td>
+          <td nowrap><font size="-1">/ 4,012346 =</font></td>
+          <td><font size="-1">1,3365384615</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 139 / 104</font></td>
+         </tr>
+         <tr align="right">
+          <th>5</font></th>
+          <th align="left"><font size="-1">E</font></th>
+          <td><font size="-1">79,0123</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">29,0123</font></td>
+          <td nowrap><font size="-1">- 25,0000 =</font></td>
+          <td><font size="-1">4,012346</font></td>
+          <td nowrap><font size="-1">/ 3,808594 =</font></td>
+          <td><font size="-1">1,0534979424</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 256 / 243</font></td>
+         </tr>
+         <tr align="right">
+          <th>6</font></th>
+          <th align="left"><font size="-1">F</font></th>
+          <td><font size="-1">75,0000</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">25,0000</font></td>
+          <td nowrap><font size="-1">- 21,1914 =</font></td>
+          <td><font size="-1">3,808594</font></td>
+          <td nowrap><font size="-1">/ 4,524740 =</font></td>
+          <td><font size="-1">0,8417266187</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 117 / 139</font></td>
+         </tr>
+         <tr align="right">
+          <th>7</font></th>
+          <th align="left"><font size="-1">F&#9839;</font></th>
+          <td><font size="-1">71,1914</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">21,1914</font></td>
+          <td nowrap><font size="-1">- 16,6667 =</font></td>
+          <td><font size="-1">4,524740</font></td>
+          <td nowrap><font size="-1">/ 3,385417 =</font></td>
+          <td><font size="-1">1,3365384615</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 139 / 104</font></td>
+         </tr>
+         <tr align="right">
+          <th>8</font></th>
+          <th align="left"><font size="-1">G</font></th>
+          <td><font size="-1">66,6667</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">16,6667</font></td>
+          <td nowrap><font size="-1">- 13,2813 =</font></td>
+          <td><font size="-1">3,385417</font></td>
+          <td nowrap><font size="-1">/ 4,021991 =</font></td>
+          <td><font size="-1">0,8417266187</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 117 / 139</font></td>
+         </tr>
+         <tr align="right">
+          <th>9</font></th>
+          <th align="left"><font size="-1">G&#9839;</font></th>
+          <td><font size="-1">63,2813</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">13,2813</font></td>
+          <td nowrap><font size="-1">- 9,2593 =</font></td>
+          <td><font size="-1">4,021991</font></td>
+          <td nowrap><font size="-1">/ 3,009259 =</font></td>
+          <td><font size="-1">1,3365384615</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 139 / 104</font></td>
+         </tr>
+         <tr align="right">
+          <th>10</font></th>
+          <th align="left"><font size="-1">A</font></th>
+          <td><font size="-1">59,2593</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">9,2593</font></td>
+          <td nowrap><font size="-1">- 6,2500 =</font></td>
+          <td><font size="-1">3,009259</font></td>
+          <td nowrap><font size="-1">/ 3,575103 =</font></td>
+          <td><font size="-1">0,8417266187</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 117 / 139</font></td>
+         </tr>
+         <tr align="right">
+          <th>11</font></th>
+          <th align="left"><font size="-1">B&#9837;</font></th>
+          <td><font size="-1">56,2500</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">6,2500</font></td>
+          <td nowrap><font size="-1">- 2,6749 =</font></td>
+          <td><font size="-1">3,575103</font></td>
+          <td nowrap><font size="-1">/ 2,674897 =</font></td>
+          <td><font size="-1">1,3365384615</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 139 / 104</font></td>
+         </tr>
+         <tr align="right">
+          <th>12</font></th>
+          <th align="left"><font size="-1">B</font></th>
+          <td><font size="-1">52,6749</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">2,6749</font></td>
+          <td nowrap><font size="-1">- 0,0000 =</font></td>
+          <td><font size="-1">2,674897</font></td>
+          <td nowrap><font size="-1">/ 2,539063 =</font></td>
+          <td><font size="-1">1,0534979424</font></td>
+          <td nowrap><font size="-1"><i>soit</i>&nbsp;: 256 / 243</font></td>
+         </tr>
+         <tr align="right">
+          <th>13</font></th>
+          <th align="left"><font size="-1">C</font></th>
+          <td><font size="-1">50,0000</font></td>
+          <td nowrap><font size="-1">- 50 =</font></td>
+          <td><font size="-1">0,0000</font></td>
+          <td nowrap><font size="-1">5,078125 / 2 =</font></td>
+          <td><font size="-1">2,539063</font></td>
+          <td colspan="3">&nbsp;</td>
+         </tr>
+        </table>
+       </center>
+
+       <br>
+
+       <blockquote>
+        <p align="justify">D'o&ugrave; il ressort qu'il y a donc, dans la division graphique de Dom Bedos,
+        <b>trois rapports</b> distincts entre les intervalles de notes&nbsp;:</p>
+
+        <ol>
+         <li>0,8417266187, <i>soit</i> 117&nbsp;/&nbsp;139, rapport utilis&eacute; pour passer
+         d'une <i>naturelle</i> &agrave; une <i>feinte</i> du clavier.</li>
+         <li>1,3365384615, <i>soit</i> 139&nbsp;/&nbsp;104, rapport utilis&eacute; pour passer
+         d'une <i>feinte</i> &agrave; une <i>naturelle</i> du clavier.</li>
+         <li>1,0534979424, <i>soit</i> 256&nbsp;/&nbsp;243, rapport utilis&eacute; pour passer
+         d'une <i>naturelle</i> &agrave; une <i>naturelle</i> du clavier.</li>
+        </ol>
+
+        <p align="justify">Il s'en suit que le rapport de (117&nbsp;/&nbsp;139) &times; (139&nbsp;/&nbsp;104)
+        pr&eacute;sent dans les intervalles <u>de tons</u> <i>Do-R&eacute;</i>, <i>R&eacute;-Mi</i>, <i>Fa-Sol</i>,
+        <i>Sol-La</i> et <i>La-Si</i> est &eacute;gal &agrave; 16263 / 14456 et peut se r&eacute;duire &agrave;
+        9&nbsp;/&nbsp;8. Quelle merveilleuse d&eacute;monstration d'une division purement pythagoricienne&nbsp;!
+        Mais il faut rappeler qu'en proc&eacute;dant par quinte et quarte successives, il eut &eacute;t&eacute;
+        surprenant que les chiffres se trouvent en opposition avec l'&eacute;vidence... Cela d&eacute;montre surtout
+        qu'il n'y a quasiment aucune diff&eacute;rence de r&eacute;sultat entre ce proc&eacute;d&eacute; d&eacute;crit
+        &agrave; la fin du <font style="font-variant:small-caps;">xviii</font><sup>e</sup>&nbsp;si&egrave;cle et celui
+        expos&eacute; dans le trait&eacute; d'Henri-Arnault de Zwolle<a href="#note_02" name="appel_02"><sup>2</sup></a>
+        dans la premi&egrave;re moiti&eacute; du <font style="font-variant:small-caps;">xv</font><sup>e</sup>.
+        Ce n'est pas la premi&egrave;re fois que l'on rencontre un tel archa&iuml;sme dans ce domaine chez le
+        b&eacute;n&eacute;dictin mauriste&nbsp;; on peut le souligner aussi quand il d&eacute;crit le
+        temp&eacute;rament de l'orgue.</p>
+
+        <p align="justify">Cette façon de proc&eacute;der a par ailleurs &eacute;t&eacute; d&eacute;crite avec quelques
+        variantes. D&egrave;s 1636, <a href="http://fr.wikipedia.org/wiki/Marin_Mersenne" target="_blank">Mersenne</a>
+        donne toutes les divisions qui lui semblent possibles (onze tout de m&ecirc;me...) et commence, pour la
+        premi&egrave;re, par une division &eacute;tonnamment temp&eacute;r&eacute;e&nbsp;:</p>
+
+        <blockquote>
+         <p align="justify">&laquo;&nbsp;<i>Or cette table contient vnze colomnes, qui monstrent la longueur &amp;
+         la largeur des tuyaux, dont la premiere fait voir les treize degrez du Diapason temper&eacute;&nbsp;; qui a
+         ses douze demy-tons esgaux, ou quasi esgaux.</i> [...] <i>Cette premiere colomne est diuis&eacute;e en douze
+         interualles ou en treize degrez, dont chacun a son nombre particulier, de sorte que les vnze nombres qui
+         sont entre 1000, &amp; 500 representent les vnze moyennes proportionnelles dont i'ay parl&eacute; dans
+         le trait&eacute; du Luth, &amp; ailleurs.</i>&nbsp;&raquo;<a href="#note_03" name="appel_03"><sup>3</sup></a></p>
+       </blockquote>
+
+        <p align="justify">En 1717, Christophoro Alberto Sinn<a href="#note_04" name="appel_04"><sup>4</sup></a> publie
+        en Allemagne des tables logarithmiques et une m&eacute;thodologie pour &eacute;tablir une division horizontale
+        &agrave; progression &eacute;gale. En France, dans la seconde moiti&eacute; du
+        <font style="font-variant:small-caps;">xviii</font><sup>e</sup>&nbsp;si&egrave;cle,
+        l'<i>Encyclop&eacute;die</i> publie un
+        <a href="../../bureau/biblio/diderot/diapason.html" target="_parent">article <i>diapason</i></a> o&ugrave
+        il est une fois encore &ecirc;tre tr&egrave;s clairement stipul&eacute; la n&eacute;cessit&eacute; de
+        <i>math&eacute;matiser</i> le trac&eacute;&nbsp;:</p>
+
+        <blockquote>
+         <p align="justify"> &laquo;&nbsp;<i>Quoique nous tol&eacute;rions la pratique des facteurs, il faut
+         cependant observer qu'il est beaucoup mieux de ne s'en point servir&nbsp;; car, quoique les tuyaux soient
+         amen&eacute;s &agrave; leur longueur en les coupant, lorsqu'on les accorde, il n'est pas moins vrai
+         qu'ils ne sont plus des corps semblables, puisqu'on ne peut r&eacute;former le diapason vicieux des
+         grosseurs&nbsp;: il est pourtant requis que les tuyaux aient leurs grosseurs, suivant le diapason,
+         c'est-&agrave;-dire, qu'ils soient semblables, pour qu'ils rendent la plus parfaite harmonie qu'il
+         est possible.</i>&nbsp;&raquo;<a href="#note_05" name="appel_05"><sup>5</sup></a></p>
+        </blockquote>
+       </blockquote>
+
+       <br>
+
+       <center>
+        <table border="0" width="85%" cellpadding="0" cellspacing="0">
+         <tr valign="top">
+          <td>
+           <p align="justify">On remarquera toutefois avec amusement que la table des nombres publi&eacute;e dans
+           l'article de l'<i>Encyclop&eacute;die</i>, et destin&eacute;e &agrave; &eacute;tablir une division
+           <i>&eacute;gale</i>, est loin d'avoir la pr&eacute;cision des valeurs publi&eacute;es par Mersenne
+           presque cent cinquante ans plus t&ocirc;t, puisqu'elles approchent, elles, de tr&egrave;s
+           pr&egrave;s la racine douzi&egrave;me de deux (1,0594630943593)...</p>
+          </td>
+          <td width="40">&nbsp;</td>
+          <td>
+           <table border="1" cellpadding="3" cellspacing="0" bgcolor="#fff7e7">
+            <tr>
+             <td rowspan="2">&nbsp;</font></td>
+             <th colspan="2" nowrap><font size="-1">L'<i>Encyclop&eacute;die</i></font></th>
+             <th colspan="2" nowrap><font size="-1">L'<i>Harmonie Universelle</i></font></th>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">Valeurs<br>publi&eacute;es.</font></th>
+             <th><font size="-1">Rapports<br>inter-notes.</font></th>
+             <th><font size="-1">Valeurs<br>publi&eacute;es.</font></th>
+             <th><font size="-1">Rapports<br>inter-notes.</font></th>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">C</font></th>
+             <td><font size="-1">100.000</font></td>
+             <td><font size="-1">1,06666666667</font></td>
+             <td><font size="-1">1000</font></td>
+             <td><font size="-1">1,05932203390</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">C&#9839;</font></th>
+             <td><font size="-1">93.750</font></td>
+             <td><font size="-1">1,05468618164</font></td>
+             <td><font size="-1">944</font></td>
+             <td><font size="-1">1,05829596413</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">D</font></th>
+             <td><font size="-1">88.889</font></td>
+             <td><font size="-1">1,06667226669</font></td>
+             <td><font size="-1">892</font></td>
+             <td><font size="-1">1,05938242280</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">E&#9837;</font></th>
+             <td><font size="-1">83.333</font></td>
+             <td><font size="-1">1,04166250000</font></td>
+             <td><font size="-1">842</font></td>
+             <td><font size="-1">1,06045340050</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">E</font></th>
+             <td><font size="-1">80.000</font></td>
+             <td><font size="-1">1,06666666667</font></td>
+             <td><font size="-1">794</font></td>
+             <td><font size="-1">1,05866666667</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">F</font></th>
+             <td><font size="-1">75.000</font></td>
+             <td><font size="-1">1,05468914795</font></td>
+             <td><font size="-1">750</font></td>
+             <td><font size="-1">1,05932203390</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">F&#9839;</font></th>
+             <td><font size="-1">71.111</font></td>
+             <td><font size="-1">1,06665966670</font></td>
+             <td><font size="-1">708</font></td>
+             <td><font size="-1">1,05988023952</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">G</font></th>
+             <td><font size="-1">66.667</font></td>
+             <td><font size="-1">1,06667200000</font></td>
+             <td><font size="-1">668</font></td>
+             <td><font size="-1">1,06031746032</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">G&#9839;</font></th>
+             <td><font size="-1">62.500</font></td>
+             <td><font size="-1">1,04166666667</font></td>
+             <td><font size="-1">630</font></td>
+             <td><font size="-1">1,05175292154</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">A</font></th>
+             <td><font size="-1">60.000</font></td>
+             <td><font size="-1">1,06666666667</font></td>
+             <td><font size="-1">599</font></td>
+             <td><font size="-1">1,06583629893</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">B&#9837;</font></th>
+             <td><font size="-1">56.250</font></td>
+             <td><font size="-1">1,05469409184</font></td>
+             <td><font size="-1">562</font></td>
+             <td><font size="-1">1,05838041431</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">B</font></th>
+             <td><font size="-1">53.333</font></td>
+             <td><font size="-1">1,06666000000</font></td>
+             <td><font size="-1">531</font></td>
+             <td><font size="-1">1,06200000000</font></td>
+            </tr>
+            <tr align="center">
+             <th><font size="-1">C</font></th>
+             <td><font size="-1">50.000</font></td>
+             <td><font size="-1">&nbsp;</font></td>
+             <td><font size="-1">500</font></td>
+             <td><font size="-1">&nbsp;</font></td>
+            </tr>
+           </table>
+          </td>
+         </tr>
+        </table>
+       </center>
+
+       <br><br><br><hr width="50%"><br><br>
+
+       <blockquote>
+        <p align="justify">La traduction math&eacute;matique de ce proc&eacute;d&eacute; graphique, tant dans le cas
+        d'une division horizontale in&eacute;gale qu'&eacute;gale, requiert une
+        <a href="fonctdbd_fr.html" target="_parent">fonction sp&eacute;cifique</a> qu'il est tr&egrave;s simple de
+        mettre en &oelig;uvre dans un tableur. Pour illustrer ce qui pr&eacute;c&egrave;de, on pourra avantageusement
+        consulter le fichier tableur au <a href="graph.ods" target="_blank">format ODS</a>
+        (<a href="http://fr.openoffice.org/" target="_blank">OpenOffice.org</a>) ou au
+        <a href="graph.xls" target="_blank">format XLS</a> (Micro$oft Excel), ou, plus simplement, remplir le formulaire
+        de l'illustration <i>JavaScript</i> ci-dessous qui calcule 61 notes selon ce proc&eacute;d&eacute;.</p><br>
+       </blockquote>
+
+       <center>
+        <table border="1" width="87%" cellpadding="10" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+         <tr align="center">
+          <td>
+           <label title="Premier diam&egrave;tre." for="idPremDiam"><b><u>P</u>remDiam&nbsp;:</b></label>
+           <input type="text" size=5" maxlength="6" tabindex="1" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="P" class="saisie" value="155.7" name="premDiam" id="idPremDiam" title="Premier diam&egrave;tre.">
+          </td>
+          <td>
+           <label title="Division horizontale." for="idDivHor"><b>Division <u>h</u>orizontale&nbsp;:</b></label>
+           <select accesskey="H" name="divHor" tabindex="3" id="idDivHor" title="Division horizontale.">
+            <option>&Eacute;gale</option>
+            <option selected>Dom Bedos</option>
+           </select>
+          </td>
+         </tr>
+         <tr align="center">
+          <td>
+           <label title="Dernier diam&egrave;tre." for="idDernDiam"><b><u>D</u>ernDiam&nbsp;:</b></label>
+           <input type="text" size=5" maxlength="6" tabindex="2" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="D" class="saisie" value="21.4" name="dernDiam" id="idDernDiam" title="Dernier diam&egrave;tre.">
+          </td>
+          <td>
+           <label title="Nombre de notes entre le premier et le dernier diam&egrave;tre compris."for="idNbN"><b><u>N</u>bN&nbsp;:</b></label>
+           <input type="text" size=2" maxlength="2" tabindex="4" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="N" class="saisie" value="49"   name="NbN"      id="idNbN"      title="Nombre de notes entre le premier et le dernier diam&egrave;tre compris.">
+          </td>
+         </tr>
+         <tr align="center">
+          <td colspan="2">
+           <table border="0" width="90%" cellpadding="0" cellspacing="0">
+            <tr align="center">
+             <td><input accesskey="C" tabindex="5" class="bouton" onClick="JavaScript:if (verifSaisie()) {calcule();};"   type="submit" value="   Calculer   "    title="Afficher les r&eacute;sultats dans le tableau de droite."></td>
+             <td><input accesskey="G" tabindex="6" class="bouton" onClick="JavaScript:if (verifSaisie()) {graphique();};" type="button" value=" Graphique "       title="Voir le graphique de ce calcul dans un fichier au format PDF."></td>
+             <td><input accesskey="I" tabindex="7" class="bouton" onClick="JavaScript:initRaz();"                         type="reset"  value="   Initialiser   " title="R&eacute;initialiser les valeurs de d&eacute;part."></td>
+            </tr>
+           </table>
+          </td>
+         </tr>
+        </table>
+       </center>
+
+       <br>
+
+       <blockquote>
+        <p align="justify">Enfin, par cette illustration, on remarquera &agrave; quel point il ne se trouve que
+        tr&egrave;s peu de diff&eacute;rence dans les valeurs finales selon que l'on choisisse une division
+        horizontale &eacute;gale ou suivant le mod&egrave;le de Dom Bedos puisque, dans le cas du 8&nbsp;pieds du
+        b&eacute;n&eacute;dictin (premier <i>do</i>&nbsp;: 157,5&nbsp;mm., cinqui&egrave;me <i>do</i>&nbsp;:
+        21,4&nbsp;mm.), la diff&eacute;rence maximale n'est que de 76&nbsp;centi&egrave;mes de millim&egrave;tre
+        pour le premier <i>do&nbsp;di&egrave;ze</i>. Cette diff&eacute;rence s'estompe &eacute;videmment &agrave;
+        proportion dans l'aigu. Cela d&eacute;montre bien que la r&eacute;gularit&eacute; de la division horizontale
+        importe en fait assez peu dans la mesure entendue o&ugrave; elle est toutefois &agrave;-peu-pr&egrave;s
+        r&eacute;guli&egrave;re.</p>
+       </blockquote>
+      </td>
+      <td align="right" valign="bottom">
+       <table border="1" width="1%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+        <tr align="right"> <th>1</th><th align="left">C</th>            <td nowrap><div  id="note_1">-</div></td></tr>
+        <tr align="right"> <th>2</th><th align="left">C&#9839;</th><td nowrap><div  id="note_2">-</div></td></tr>
+        <tr align="right"> <th>3</th><th align="left">D</th>            <td nowrap><div  id="note_3">-</div></td></tr>
+        <tr align="right"> <th>4</th><th align="left">E&#9837;</th><td nowrap><div  id="note_4">-</div></td></tr>
+        <tr align="right"> <th>5</th><th align="left">E</th>            <td nowrap><div  id="note_5">-</div></td></tr>
+        <tr align="right"> <th>6</th><th align="left">F</th>            <td nowrap><div  id="note_6">-</div></td></tr>
+        <tr align="right"> <th>7</th><th align="left">F&#9839;</th><td nowrap><div  id="note_7">-</div></td></tr>
+        <tr align="right"> <th>8</th><th align="left">G</th>            <td nowrap><div  id="note_8">-</div></td></tr>
+        <tr align="right"> <th>9</th><th align="left">G&#9839;</th><td nowrap><div  id="note_9">-</div></td></tr>
+        <tr align="right"><th>10</th><th align="left">A</th>            <td nowrap><div id="note_10">-</div></td></tr>
+        <tr align="right"><th>11</th><th align="left">B&#9837;</th><td nowrap><div id="note_11">-</div></td></tr>
+        <tr align="right"><th>12</th><th align="left">B</th>            <td nowrap><div id="note_12">-</div></td></tr>
+        <tr align="right"><th>13</th><th align="left">C</th>            <td nowrap><div id="note_13">-</div></td></tr>
+        <tr align="right"><th>14</th><th align="left">C&#9839;</th><td nowrap><div id="note_14">-</div></td></tr>
+        <tr align="right"><th>15</th><th align="left">D</th>            <td nowrap><div id="note_15">-</div></td></tr>
+        <tr align="right"><th>16</th><th align="left">E&#9837;</th><td nowrap><div id="note_16">-</div></td></tr>
+        <tr align="right"><th>17</th><th align="left">E</th>            <td nowrap><div id="note_17">-</div></td></tr>
+        <tr align="right"><th>18</th><th align="left">F</th>            <td nowrap><div id="note_18">-</div></td></tr>
+        <tr align="right"><th>19</th><th align="left">F&#9839;</th><td nowrap><div id="note_19">-</div></td></tr>
+        <tr align="right"><th>20</th><th align="left">G</th>            <td nowrap><div id="note_20">-</div></td></tr>
+        <tr align="right"><th>21</th><th align="left">G&#9839;</th><td nowrap><div id="note_21">-</div></td></tr>
+        <tr align="right"><th>22</th><th align="left">A</th>            <td nowrap><div id="note_22">-</div></td></tr>
+        <tr align="right"><th>23</th><th align="left">B&#9837;</th><td nowrap><div id="note_23">-</div></td></tr>
+        <tr align="right"><th>24</th><th align="left">B</th>            <td nowrap><div id="note_24">-</div></td></tr>
+        <tr align="right"><th>25</th><th align="left">C</th>            <td nowrap><div id="note_25">-</div></td></tr>
+        <tr align="right"><th>26</th><th align="left">C&#9839;</th><td nowrap><div id="note_26">-</div></td></tr>
+        <tr align="right"><th>27</th><th align="left">D</th>            <td nowrap><div id="note_27">-</div></td></tr>
+        <tr align="right"><th>28</th><th align="left">E&#9837;</th><td nowrap><div id="note_28">-</div></td></tr>
+        <tr align="right"><th>29</th><th align="left">E</th>            <td nowrap><div id="note_29">-</div></td></tr>
+        <tr align="right"><th>30</th><th align="left">F</th>            <td nowrap><div id="note_30">-</div></td></tr>
+        <tr align="right"><th>31</th><th align="left">F&#9839;</th><td nowrap><div id="note_31">-</div></td></tr>
+        <tr align="right"><th>32</th><th align="left">G</th>            <td nowrap><div id="note_32">-</div></td></tr>
+        <tr align="right"><th>33</th><th align="left">G&#9839;</th><td nowrap><div id="note_33">-</div></td></tr>
+        <tr align="right"><th>34</th><th align="left">A</th>            <td nowrap><div id="note_34">-</div></td></tr>
+        <tr align="right"><th>35</th><th align="left">B&#9837;</th><td nowrap><div id="note_35">-</div></td></tr>
+        <tr align="right"><th>36</th><th align="left">B</th>            <td nowrap><div id="note_36">-</div></td></tr>
+        <tr align="right"><th>37</th><th align="left">C</th>            <td nowrap><div id="note_37">-</div></td></tr>
+        <tr align="right"><th>38</th><th align="left">C&#9839;</th><td nowrap><div id="note_38">-</div></td></tr>
+        <tr align="right"><th>39</th><th align="left">D</th>            <td nowrap><div id="note_39">-</div></td></tr>
+        <tr align="right"><th>40</th><th align="left">E&#9837;</th><td nowrap><div id="note_40">-</div></td></tr>
+        <tr align="right"><th>41</th><th align="left">E</th>            <td nowrap><div id="note_41">-</div></td></tr>
+        <tr align="right"><th>42</th><th align="left">F</th>            <td nowrap><div id="note_42">-</div></td></tr>
+        <tr align="right"><th>43</th><th align="left">F&#9839;</th><td nowrap><div id="note_43">-</div></td></tr>
+        <tr align="right"><th>44</th><th align="left">G</th>            <td nowrap><div id="note_44">-</div></td></tr>
+        <tr align="right"><th>45</th><th align="left">G&#9839;</th><td nowrap><div id="note_45">-</div></td></tr>
+        <tr align="right"><th>46</th><th align="left">A</th>            <td nowrap><div id="note_46">-</div></td></tr>
+        <tr align="right"><th>47</th><th align="left">B&#9837;</th><td nowrap><div id="note_47">-</div></td></tr>
+        <tr align="right"><th>48</th><th align="left">B</th>            <td nowrap><div id="note_48">-</div></td></tr>
+        <tr align="right"><th>49</th><th align="left">C</th>            <td nowrap><div id="note_49">-</div></td></tr>
+        <tr align="right"><th>50</th><th align="left">C&#9839;</th><td nowrap><div id="note_50">-</div></td></tr>
+        <tr align="right"><th>51</th><th align="left">D</th>            <td nowrap><div id="note_51">-</div></td></tr>
+        <tr align="right"><th>52</th><th align="left">E&#9837;</th><td nowrap><div id="note_52">-</div></td></tr>
+        <tr align="right"><th>53</th><th align="left">E</th>            <td nowrap><div id="note_53">-</div></td></tr>
+        <tr align="right"><th>54</th><th align="left">F</th>            <td nowrap><div id="note_54">-</div></td></tr>
+        <tr align="right"><th>55</th><th align="left">F&#9839;</th><td nowrap><div id="note_55">-</div></td></tr>
+        <tr align="right"><th>56</th><th align="left">G</th>            <td nowrap><div id="note_56">-</div></td></tr>
+        <tr align="right"><th>57</th><th align="left">G&#9839;</th><td nowrap><div id="note_57">-</div></td></tr>
+        <tr align="right"><th>58</th><th align="left">A</th>            <td nowrap><div id="note_58">-</div></td></tr>
+        <tr align="right"><th>59</th><th align="left">B&#9837;</th><td nowrap><div id="note_59">-</div></td></tr>
+        <tr align="right"><th>60</th><th align="left">B</th>            <td nowrap><div id="note_60">-</div></td></tr>
+        <tr align="right"><th>61</th><th align="left">C</th>            <td nowrap><div id="note_61">-</div></td></tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </form>
+
+   <br><br><br><img src="troph_02.png" border="0" width="304" height="245">
+
+   <br><br><br><br><hr width="85%"><br><br><b>Notes&nbsp;:</b><br><br>
+  </center>
+
+  <blockquote>
+   <font size="-1">
+    <p align="justify"><a name="note_01" href="#appel_01">1</a> <b>Dom Fran&ccedil;ois Bedos de Celles</b>,<br>
+    <a href="../../bureau/biblio/dombedos/index.html" target="_blank"><i>L'art du facteur d'orgues</i></a>.<br>
+    Paris, 1766-1778.</p><br>
+
+    <p align="justify"><a name="note_02" href="#appel_02">2</a> <i>Les trait&eacute;s
+    d'<b>Henri-Arnault de Zwolle</b></i> (apr. 1400-1466) <i>et de divers anonymes</i>.<br>
+    Paris, Biblioth&egrave;que nationale, MS. latin 7295).<br>
+    &Eacute;dit&eacute; et comment&eacute; par Georges Le Cerf avec la collaboration d'Edmond-Ren&eacute; Labande.<br>
+    &Eacute;ditions A.&nbsp;Picard, Paris, 1932.<br>
+    <i>Documenta Musicologica</i>, II/4. Kassel, Bärenreiter, 1972.<br>
+    Facsimil&eacute du manuscrit avec une postface de Fran&ccedil;ois&nbsp;Lesure.<br>
+    25&nbsp;&times;&nbsp;35&nbsp;cm, 60&nbsp;pages, 23&nbsp;planches (reproduction de l'&eacute;dition de Paris, 1932).<br>
+    ISBN&nbsp;: 3-761-80266-8.</p><br>
+
+    <p align="justify"><a name="note_03" href="#appel_03">3</a> <b>Marin Mersenne</b>,<br>
+    <i>Harmonie Universelle, Livre sixi&egrave;me, des Orgues, PROPOSITION XV,<br>
+    Expliquer toutes les especes de Diapasons, &amp; de Canons, ou de regles harmoniques dont
+    on peut vser pour perfectionner les Orgues.</i> (page&nbsp;338).<br>
+    Chez S&eacute;bastien Cramoisy, Paris, 1636.<br>
+    R&eacute;&eacute;ditions du Centre National de la Recherche Scientifique (C.N.R.S.), Paris, 1965-1986.<br>
+    Facsimil&eacute de l'exemplaire de l'auteur avec ses annotations, introduction de Fran&ccedil;ois&nbsp;Lesure.<br>
+    Trois tomes, 19&nbsp;&times;&nbsp;27&nbsp;cm<br>
+    ISBN&nbsp;: 2-222-00835-2.</p><br>
+   </font>
+  </blockquote>
+
+  <center>
+   <table border="0" width="100%" cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <blockquote>
+       <font size="-1">
+        <p align="justify"><a name="note_04" href="#appel_04">4</a> <b>Christophoro Alberto Sinn</b>,<br>
+        <i>Die Aus Mathematischen Gr&uuml;nden Richtig Gestellete Musikalische<br>
+        Temperatura Practica, Das Ist: Grundrichtige Vergleichung Der Zw&ouml;lff Semitoniorum in Der Octave,
+        Wie Dieselbe Nach Anweisung Der Arithmetic Und Geometrie Ad Praxin, F&uuml;rnehmlich in Die Orgel-Wercke,
+        K&ouml;nnen Gebracht Werden...</i></p>
+
+        <p><i>Samt einer Vorrede Herrn Caspari Calvoers, Wernigerode: M.A. Struck</i>, 1717.</p>
+
+        <p>Nachwort von Michael Behrens.<br>Herausgegeben von Eitelfriedrich Thom.<br>
+        Michaelstein, 1988. 21&nbsp;&times;&nbsp;15&nbsp;cm.</p>
+       </font>
+      </blockquote>
+     </td>
+     <td align="center"><img src="sinn_00.png" border="0" width="313" height="400" alt="" title=""></td>
+     <td width="50">&nbsp;</td>
+    </tr>
+   </table>
+  </center>
+
+  <blockquote>
+   <font size="-1">
+    <p align="justify"><a name="note_05" href="#appel_05">5</a>
+    <a href="../../bureau/biblio/diderot/diapason.html" target="_parent">Texte</a> r&eacute;&eacute;dit&eacute; presque
+    int&eacute;gralement en 1785 dans l'<a href="../../bureau/biblio/diderot/diderot.html" target="_parent"><i>Art
+    du faiseur d'instruments de musique et lutherie</i></a>.<br>
+
+    Extrait de l'<i>Encyclop&eacute;die m&eacute;thodique ou par ordre de mati&egrave;res, par une
+    soci&eacute;t&eacute; de gens de lettres, de savants et d'artistes&nbsp;; pr&eacute;c&eacute;d&eacute;e
+    d'un Vocabulaire universel, servant de Table pour tout l'Ouvrage, orn&eacute;e des Portraits de
+    MM.&nbsp;Diderot et d'Alembert, premiers &Eacute;diteurs de l'Encyclop&eacute;die.</i><br>
+
+    &Eacute;dition (1781-1832) de &laquo;&nbsp;<i>L'Encyclop&eacute;die, ou dictionnaire raisonn&eacute; des
+    sciences des arts et des m&eacute;tiers</i>&nbsp;&raquo; initi&eacute;e par
+    <a href="http://fr.wikipedia.org/wiki/Charles-Joseph_Panckoucke" target="_blank">Charles-Joseph Panckoucke</a><br>
+
+    Paris, 1785</p>
+   </font>
+  </blockquote>
+
+  <br><br>
+
+ </body>
+
+<!-- Mirrored from hydraule.org/tuyau/tailles/calc_gra_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:32 GMT -->
+</html>

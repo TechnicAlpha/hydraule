@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ODL version="0.1">
+ <KB name="Plenum">
+  <PRESENT_NOTE>
+   1011111111111111111111111111111111111111111111111111110000000
+  </PRESENT_NOTE>
+ </KB>
+ <MIXTURE name="Plenum" def_kb="Plenum">
+  <!-- Plein-jeu VIII - Grand-Orgue (Aux_PJ_GO.odl) -->
+  <RANK>
+   <BREAK pos="1" range="49" />
+   <BREAK pos="13" range="49" />
+   <BREAK pos="18" range="44" />
+   <BREAK pos="25" range="44" />
+   <BREAK pos="30" range="32" />
+   <BREAK pos="37" range="32" />
+   <BREAK pos="42" range="32" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="56" />
+   <BREAK pos="13" range="56" />
+   <BREAK pos="18" range="49" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="30" range="37" />
+   <BREAK pos="37" range="37" />
+   <BREAK pos="42" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="61" />
+   <BREAK pos="13" range="61" />
+   <BREAK pos="18" range="49" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="30" range="44" />
+   <BREAK pos="37" range="37" />
+   <BREAK pos="42" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="68" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="18" range="56" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="42" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="18" range="61" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="44" />
+   <BREAK pos="42" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="13" range="73" />
+   <BREAK pos="18" range="61" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="80" />
+   <BREAK pos="13" range="73" />
+   <BREAK pos="18" range="68" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="30" range="56" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="85" />
+   <BREAK pos="13" range="80" />
+   <BREAK pos="18" range="73" />
+   <BREAK pos="25" range="68" />
+   <BREAK pos="30" range="61" />
+   <BREAK pos="37" range="56" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+  
+  <!-- Fourniture III - Positif (Aux_FourIII_Pos.odl) -->
+  <RANK>
+   <BREAK pos="1" range="49" />
+   <BREAK pos="13" range="49" />
+   <BREAK pos="18" range="49" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="30" range="37" />
+   <BREAK pos="37" range="37" />
+   <BREAK pos="42" range="37" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="61" />
+   <BREAK pos="13" range="61" />
+   <BREAK pos="18" range="49" />
+   <BREAK pos="25" range="49" />
+   <BREAK pos="30" range="44" />
+   <BREAK pos="37" range="44" />
+   <BREAK pos="42" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="68" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="18" range="56" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+
+  <!-- Cymbale III - Positif (Aux_CymIII_Pos.odl) -->
+  <RANK>
+   <BREAK pos="1" range="73" />
+   <BREAK pos="13" range="68" />
+   <BREAK pos="18" range="61" />
+   <BREAK pos="25" range="56" />
+   <BREAK pos="30" range="49" />
+   <BREAK pos="37" range="49" />
+   <BREAK pos="42" range="44" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="80" />
+   <BREAK pos="13" range="73" />
+   <BREAK pos="18" range="68" />
+   <BREAK pos="25" range="61" />
+   <BREAK pos="30" range="56" />
+   <BREAK pos="37" range="56" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+  <RANK>
+   <BREAK pos="1" range="85" />
+   <BREAK pos="13" range="80" />
+   <BREAK pos="18" range="73" />
+   <BREAK pos="25" range="68" />
+   <BREAK pos="30" range="61" />
+   <BREAK pos="37" range="56" />
+   <BREAK pos="42" range="49" />
+  </RANK>
+ </MIXTURE>
+</ODL>
+

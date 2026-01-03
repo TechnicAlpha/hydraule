@@ -1,0 +1,576 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<!--
+ *****************************************************************************************
+ *  Page composée et programmée par S.M.C.J. Ce script est entièrement libre de droits.  *
+ *     Si vous lisez ce code, c'est que vous êtes un petit curieux (très bon défaut)     *
+ *    Comme je ne suis pas chien, je vous ai laissé des explications complémentaires     *
+ *                              dans la page ./explicod.htm                              *
+ *****************************************************************************************
+-->
+<html>
+ 
+<!-- Mirrored from hydraule.org/tuyau/tailles/calc_log_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:40 GMT -->
+<head>
+  <title>Calculs de tailles de tuyaux d'orgues par le moyen des logarithmes.</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF8">
+  <meta name="author" content="S.M.C.J.">
+  <meta name="keywords" content="Hydraule Orgue Orgao Organo Orgel Organ">
+  <meta name="description" content="Documents et informations sur l'orgue a tuyau">
+
+  <style type="text/css">
+         .saisie {background-color:#fff7e7; color:#000080; padding-right:10px; text-align:right}
+     .cellTabRed {color:#ff0000}
+   .cellTabBlack {color:#000000}
+         .bouton {background-color:#edba9d; color:#000080}
+              hr {height:1px; background-color:#000080; border:0;}
+           label {cursor:pointer;} /*  Double définition pour IE cursor:hand; */
+  .pointsDeSuite {width:100%; height:0px; border-bottom:2px dotted #000000;}
+
+  </style>
+
+  <script language="JavaScript">
+   <!--
+    // Empêche la saisie d'autre chose que des neuf chiffres et du point.
+    // Fonctions écrites par Bertrand Wattel (http://bertrand.wattel.free.fr/)
+    // et trouvé sur le site SELFHTML (http://actuel.fr.selfhtml.org/articles/javascript/entrees_formulaire/index.htm).
+    function codeTouche(evenement)
+    {
+     for (prop in evenement) {if (prop == 'which') return (evenement.which); };
+     return(evenement.keyCode);
+    };
+
+    function scanTouche(evenement)
+    {
+     var reCarSpeciaux = /[\x00\x08\x0D]/;
+     var reCarValides = /[0-9.]/;
+
+     var codeDecimal  = codeTouche(evenement);
+     var car = String.fromCharCode(codeDecimal);
+     var autorisation = reCarValides.test(car) || reCarSpeciaux.test(car);
+
+     return autorisation;
+    };
+
+    // Arrondi une valeur à un nombre variable de décimales.
+    // Fonction écrite par Mathias Bynens (http://mathiasbynens.be/archive/2006/01/js-number-format).
+    function number_format(a, b, c, d)
+    {
+     a = Math.round(a * Math.pow(10, b)) / Math.pow(10, b);
+     e = a + ""; f = e.split("."); if (!f[0]) { f[0] = "0"; }; if (!f[1]) { f[1] = ""; };
+     if (f[1].length < b) { g = f[1]; for (i1 = f[1].length + 1; i1 <= b; i1++) {g += "0";} f[1] = g; };
+     if (d != "" && f[0].length > 3)
+     {
+      h = f[0]; f[0] = "";
+      for(j1 = 3; j1 < h.length; j1 += 3) {i1 = h.slice(h.length - j1, h.length - j1 + 3); f[0] = d + i1 +  f[0] + "";};
+      j1 = h.substr(0, (h.length % 3 == 0) ? 3 : (h.length % 3)); f[0] = j1 + f[0];
+     };
+     c = (b <= 0) ? "" : c; return f[0] + c + f[1];
+    };
+
+    // Vérifie la saisie avant de lancer la procédure de calcul.
+    function verifSaisie()
+    {
+     accord = true; message = "Désolé mais le calcul ou le graphique ne sont envisageables\nqu'avec "
+     with (document.formulaire)
+     {
+      if ((premDiam.value == "") || (dernDiam.value == "") || (NbN.value == "")) {alert("Une valeur doit être entrée dans chaque champ."); accord = false;};
+      // Vive l'absence quasi totale de typage en JavaScript...
+      premier = parseFloat(premDiam.value); dernier = parseFloat(dernDiam.value);
+      if ((NbN.value < 3) || (NbN.value > 61)) {alert(message + "une valeur de NbN comprise entre 3 et 61."); accord = false;};
+      if ((premier < 1) || (dernier < 1))      {alert(message + "des valeurs de diamètres supérieures à 1."); accord = false;};
+      if (premier < dernier)                   {alert(message + "une valeur de PremDiam au moins égale à DernDiam."); accord = false;};
+     };
+     return accord;
+    };
+
+    // Calcule les diamètres sur 61 notes.
+    function calcule()
+    {
+     // Calcule les variables de base.
+     with (document.formulaire)
+     {
+      var LogPremDiam = Math.log(premDiam.value);
+      var LogDernDiam = Math.log(dernDiam.value);
+      var           R = (LogPremDiam - LogDernDiam) / (NbN.value - 1);
+
+      var RapPremDern = premDiam.value / dernDiam.value;
+      var  RacNbNieme = Math.pow(RapPremDern, (1 / (NbN.value - 1)));
+      var     RapProg = Math.pow(RacNbNieme, 48)
+     };
+
+     // Affiche les variables de base.
+     // Fuck "innerHTML" of Cro$oft and welcome to the DOM... of BEDOS...
+     with(document.getElementById("LogPremDiam").firstChild)  replaceData(0, length, number_format(LogPremDiam, 7, ",", " "));
+     with(document.getElementById("LogDernDiam").firstChild)  replaceData(0, length, number_format(LogDernDiam, 7, ",", " "));
+     with(document.getElementById("R").firstChild)            replaceData(0, length, number_format(R,           7, ",", " "));
+     with(document.getElementById("RapPremDern").firstChild)  replaceData(0, length, number_format(RapPremDern, 7, ",", " "));
+     with(document.getElementById("RacNbNieme").firstChild)   replaceData(0, length, number_format(RacNbNieme,  7, ",", " "));
+     with(document.getElementById("RapProg").firstChild)      replaceData(0, length, number_format(RapProg,     2, ",", " "));
+
+     // Affiche et calcule les valeurs des notes.
+     noteCalc = document.formulaire.premDiam.value;
+     for (i = 1; i <= 61; i++)
+     {
+      eval("with(document.getElementById('note_" + i + "').firstChild) replaceData(0, length, number_format(noteCalc, 1, ',', ' '));");
+      eval("document.getElementById('note_" + i + "').className = 'cellTabRed';");
+      noteCalc /= RacNbNieme;
+     };
+    };
+
+    function graphique()
+    {
+     calcule();
+     with(document.formulaire)
+     {
+      var fichier = "graphPDF79a2.html?calcul=log&amp;objimp=111&amp;premDiam=" + premDiam.value + "&dernDiam=" + dernDiam.value + "&NbN=" + NbN.value;
+     };
+     var para = 'toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=1,scrollbars=1'
+     fenCom = window.open(fichier, "graphPDF", para);
+    };
+
+    function initRaz()
+    {
+     with(document.getElementById("LogPremDiam").firstChild)  replaceData(0, length, "-");
+     with(document.getElementById("LogDernDiam").firstChild)  replaceData(0, length, "-");
+     with(document.getElementById("R").firstChild)            replaceData(0, length, "-");
+     with(document.getElementById("RapPremDern").firstChild)  replaceData(0, length, "-");
+     with(document.getElementById("RacNbNieme").firstChild)   replaceData(0, length, "-");
+     with(document.getElementById("RapProg").firstChild)      replaceData(0, length, "-");
+
+     for (i = 1; i <= 61; i++)
+     {
+      eval("with(document.getElementById('note_" + i + "').firstChild) replaceData(0, length, '-');");
+      eval("document.getElementById('note_" + i + "').className = 'cellTabBlack';");
+     };
+    };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../images/kraft.gif">
+  <table border="0" width="100%">
+   <tr>
+    <td align="center" valign="middle">
+     <h1><font color="#ff0000"><b>Calculs de<br /><i>tailles de tuyaux d'orgues</i><br />par le moyen des<br /><i>logarithmes</i>.</b></font></h1>
+    </td>
+    <td align="right" valign="top">
+     <a href="../../index-2.html" target="_top"><img src="../../images/hydraule.gif" border="0" width="216" height="230" alt="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br /><br />
+
+  <center>  
+   <form name="formulaire" action="JavaScript:void(0);">
+    <table border="0" width="90%" cellpadding="0" cellspacing="0">
+     <tr valign="top">
+      <td>
+       <blockquote>
+        <p align="justify">Le calcul des diam&egrave;tres des tuyaux par le moyen des logarithmes
+        <!-- Communiqué par Juri Sotov, pendant mon séjour à Dresde en 1993 chez Christian Wegscheider -->
+        est sans doute la fa&ccedil;on la plus simple de proc&eacute;der dans la mesure o&ugrave; l'on est pourvu
+        d'un logiciel de tableur, ou <i>chiffrier</i>, chose qui ne pose plus aucun probl&egrave;me aujourd'hui.
+        Le principe demande de conna&icirc;tre au d&eacute;part trois nombres, savoir&nbsp;:</p>
+
+        <ol>
+         <li>le diam&egrave;tre du tuyau le plus gros.</li>
+         <li>le diam&egrave;tre du tuyau le plus petit.</li>
+         <li>le nombre de notes qu'il faut &eacute;tablir.</li>
+        </ol>
+       </blockquote>
+
+       <center>
+        <table border="0" width="87%" cellpadding="0" cellspacing="0">
+         <tr valign="top">
+          <td>
+           <table border="0" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                <td width="1%" align="left" nowrap>e = <a href="http://fr.wikipedia.org/wiki/Constante_mathématique_e" target="_blank">2.718281828459045</a>&nbsp;</td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap>&nbsp;soit l'exponentielle de 1.</td>
+               </tr>
+              </table>
+             </td>
+            </tr>
+            <tr>
+             <td>
+              Ln = <a href="http://fr.wikipedia.org/wiki/Logarithme_népérien" target="_blank">logarithme n&eacute;p&eacute;rien</a>,
+              ou <i>naturel</i>.<br /><br />
+             </td>
+            </tr>
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0" title="">
+               <tr>
+                <td width="1%" align="left" nowrap>1.&nbsp; <b>PremDiam</b> (C1) = 83,0&nbsp;</td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap>&nbsp;extr&ecirc;me grave.</td>
+               </tr>
+              </table>
+             </td>
+            </tr>
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                <td width="1%" align="left" nowrap>2.&nbsp; <b>DernDiam</b> (G5) = 20,0&nbsp;</td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap>&nbsp;extr&ecirc;me aigu.</td>
+               </tr>
+              </table>
+             </td>
+            </tr>
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                <td width="1%" align="left" nowrap>3.&nbsp; <b>NbN</b> = 56</td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap>nombre de notes entre les deux extr&ecirc;mes (compris).</td>
+               </tr>
+              </table>
+              <br />
+             </td>
+            </tr>
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                <td width="1%" align="left" nowrap><font face="Arial, Helvetica" size="-1">A = Ln(83)&nbsp;</font></td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap><font face="Arial, Helvetica" size="-1">&nbsp;(4,4188406).</font></td>
+               </tr>
+              </table>
+             </td>
+            </tr>
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                <td width="1%" align="left" nowrap><font face="Arial, Helvetica" size="-1">B = Ln(46,5)&nbsp;</font></td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap><font face="Arial, Helvetica" size="-1">&nbsp;(2,9957323).</font></td>
+               </tr>
+              </table>
+             </td>
+            </tr>
+            <tr>
+             <td>
+              <table border="0" width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                <td width="1%" align="left" valign="middle" nowrap>
+                 <table border="0" cellpadding="0" cellspacing="0">
+                  <tr valign="middle">
+                   <td nowrap><font face="Arial, Helvetica" size="-1">R =&nbsp;</font></td>
+                   <td>
+                    <table border="0" cellpadding="0" cellspacing="0" title="(A - B) / (NbN - 1)">
+                     <tr align="center">
+                      <td style="border-bottom:1px solid" nowrap><font face="Arial, Helvetica" size="-1">A - B</font></td>
+                     </tr>
+                     <tr align="center">
+                      <td nowrap><font face="Arial, Helvetica" size="-1">NbN - 1</font></td>
+                     </tr>
+                    </table>
+                   </td>
+                   <td>&nbsp;=&nbsp;</td>
+                   <td>
+                    <table border="0" cellpadding="0" cellspacing="0" title="(4,4188406 - 2,9957323) / (56 - 1)">
+                     <tr align="center">
+                      <td style="border-bottom:1px solid" nowrap><font face="Arial, Helvetica" size="-1">4,418806 - 2,9957323</font></td>
+                      <td rowspan="2">&nbsp;</td>
+                     </tr>
+                     <tr align="center">
+                      <td nowrap><font face="Arial, Helvetica" size="-1">56 - 1</font></td>
+                     </tr>
+                    </table>
+                   </td>
+                  </tr>
+                 </table>
+                </td>
+                <td class="pointsDeSuite">&nbsp;</td>
+                <td width="1%" align="right" nowrap><font face="Arial, Helvetica" size="-1">&nbsp;(0,0258747).</font></td>
+               </tr>
+              </table>
+             </td>
+            </tr>
+           </table>
+          </td>
+          <td width="40">&nbsp;</td>
+          <td>
+           <table border="0" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+             <td align="right">C&#9839;</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 1&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+            <tr>
+             <td align="right">D</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 2&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+            <tr>
+             <td align="right">D&#9839;</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 3&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+            <tr>
+             <td align="right">E</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 4&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+            <tr>
+             <td align="right">F</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 5&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+            <tr>
+             <td align="right">F&#9839;</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 6&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+            <tr>
+             <td align="right">G</td>
+             <td>&nbsp;=&nbsp;</td>
+             <td align="left" nowrap><font face="Arial, Helvetica" size="-1">e ^ (A - 7&nbsp;&times;&nbsp;R)</font></td>
+            </tr>
+           </table>
+           <br />... &amp;c.
+          </td>
+         </tr>
+        </table>
+       </center>
+
+       <blockquote>
+        <p align="justify">Dans les faits, puisque nous avons aujourd'hui &agrave; notre disposition des logiciels
+        de calcul tr&egrave;s puissants, il est encore plus simple de se passer compl&egrave;tement des logarithmes.
+        En effet, partant des trois m&ecirc;me composants de base (<i>diam&egrave;tre du tuyau le plus gros</i>,
+        <i>diam&egrave;tre du tuyau le plus petit</i>, <i>nombre de notes qu'il faut &eacute;tablir</i>),
+        on commence par &eacute;tablir le rapport entre les deux extr&ecirc;mes.</p>
+
+        <table border="0" cellpadding="0" cellspacing="0">
+         <tr valign="middle">
+          <td nowrap>Suivant l'exemple qui pr&eacute;c&egrave;de,&nbsp;</td>
+          <td>
+           <table border="0" cellpadding="0" cellspacing="0" title="83,0 / 20,0">
+            <tr>
+             <td style="border-bottom:1px solid">83,0</td>
+            </tr>
+            <tr>
+             <td>20,0</td>
+            </tr>
+           </table>
+          </td>
+          <td nowrap>&nbsp;= 4,1500000.</td>
+         </tr>
+        </table>
+
+        <p align="justify">Puis on &eacute;tablit la racine N<sup>i&egrave;me</sup> de ce rapport,
+        N &eacute;tant &eacute;gal au nombre de notes <b><u>moins 1</u></b>.<br />
+
+        <table border="0" cellpadding="0" cellspacing="0">
+         <tr valign="middle">
+          <td valign="top"><font size="1"><br /><sup>NbN - 1</sup></font></td>
+          <td><span style="font-size:2.7em">&radic;</span></td>
+          <td title="Racine (NbN - 1)ième de (PremDiam / DernDiam)">
+           <table border="0" cellpadding="0" cellspacing="0">
+            <tr align="center">
+             <td style="border-bottom:1px solid"><span style="text-decoration:overline;">PremDiam</span></td>
+            </tr>
+            <tr align="center">
+             <td>DernDiam</td>
+            </tr>
+           </table>
+          </td>
+          <td nowrap>&nbsp; = &nbsp;</td>
+          <td title="Racine 55ième de 4,1500000"><sup><font size="1">55</font></sup><font style="font-size:1.16em">&radic;</font><span style="text-decoration:overline;">4,1500000</span></td>
+          <td nowrap>&nbsp; = &nbsp;</td>
+          <td title="4,1500000 ^ (1 / 55)">4,1500000</td>
+          <td valign="top" title="4,1500000 ^ (1 / 55)">
+           <table border="0" cellpadding="0" cellspacing="0">
+            <tr align="center"><td style="border-bottom:1px solid"><font size="1">1</font></td></tr>
+            <tr align="center"><td><font size="1">55</font></td></tr>
+            <tr><td><p>&nbsp;</p></td></tr>
+           </table>
+          </td>
+          <td nowrap>&nbsp; = &nbsp; 1,0262124.</td>
+         </tr>
+        </table>
+
+	<br />
+        N.B. les tableurs (ou les langages informatiques) font cette op&eacute;ration par l'exponentiation
+        de l'inverse (ce qui revient rigoureusement au m&ecirc;me).</p>
+
+        <p align="justify">Ce dernier chiffre trouv&eacute; (1,0262124) devient le rapport entre <b><u>tous</u></b>
+        les diam&egrave;tres. Il suffit donc de partir du premier (83&nbsp;mm.) et de diviser successivement chaque
+        dernier diam&egrave;tre connu par ce rapport pour en trouver le suivant.</p>
+
+        <p align="justify">Cette formulation dans les cellules de tableur me semble plus simple mais on choisira l'une
+        ou l'autre des m&eacute;thodes de calcul <i>ad libitum</i> puisqu'elles donnent &eacute;videmment des
+        r&eacute;sultats parfaitement identiques.</p>
+
+        <p align="justify">Pour illustrer ce qui pr&eacute;c&egrave;de, on pourra avantageusement consulter le
+        fichier tableur au <a href="loga.ods" target="_blank">format ODS</a>
+        (<a href="http://fr.openoffice.org/" target="_blank">OpenOffice.org</a>) ou au
+        <a href="loga.xls" target="_blank">format XLS</a> (Micro$oft Excel), ou, plus simplement, remplir le formulaire
+        de l'illustration <i>JavaScript</i> ci-dessous qui calcule 61 notes selon ce proc&eacute;d&eacute;.</p>
+
+        <br /><br />
+       </blockquote>
+
+       <center>
+        <table border="1" width="87%" cellpadding="7" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+         <tr align="center">
+          <td>
+           <label title="Premier diam&egrave;tre." for="idPremDiam"><b><u>P</u>remDiam&nbsp;:</b></label>
+           <input type="text" size=5" maxlength="6" tabindex="1" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="P" class="saisie" value="83.0" name="premDiam" id="idPremDiam" title="Premier diam&egrave;tre.">
+          </td>
+          <td>
+           <label title="Dernier diam&egrave;tre." for="idDernDiam"><b><u>D</u>ernDiam&nbsp;:</b></label>
+           <input type="text" size=5" maxlength="6" tabindex="2" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="D" class="saisie" value="20.0" name="dernDiam" id="idDernDiam" title="Dernier diam&egrave;tre.">
+          </td>
+          <td>
+           <label title="Nombre de notes entre le premier et le dernier diam&egrave;tre compris." for="idNbN"><b><u>N</u>bN&nbsp;:</b></label>
+           <input type="text" size=2" maxlength="2" tabindex="3" onKeyPress="return scanTouche(event)" onFocus="JavaScript:this.select()" accesskey="N" class="saisie" value="56"   name="NbN"      id="idNbN"      title="Nombre de notes entre le premier et le dernier diam&egrave;tre compris.">
+          </td>
+         </tr>
+         <tr align="center">
+          <td colspan="3">
+           <table border="0" width="90%" cellpadding="0" cellspacing="0">
+            <tr align="center">
+             <td><input accesskey="C" tabindex="4" class="bouton" onClick="JavaScript:if (verifSaisie()) {calcule();};"   type="submit" value="   Calculer   "    title="Afficher les r&eacute;sultats dans le tableau de droite."></td>
+             <td><input accesskey="G" tabindex="5" class="bouton" onClick="JavaScript:if (verifSaisie()) {graphique();};" type="button" value=" Graphique "       title="Voir le graphique de ce calcul dans un fichier au format PDF."></td>
+             <td><input accesskey="I" tabindex="6" class="bouton" onClick="JavaScript:initRaz();"                         type="reset"  value="   Initialiser   " title="R&eacute;initialiser les valeurs de d&eacute;part."></td>
+            </tr>
+           </table>
+          </td>
+         </tr>
+        </table>
+        <br /><br />
+        <table border="1" width="87%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+         <tr align="center">
+          <th colspan="3">Logarithmes</th>
+         </tr>
+         <tr align="center">
+          <td title="Logarithme n&eacute;p&eacute;rien du premier diam&egrave;tre."><b>Log(PremDiam)&nbsp;:</b><br /><div id="LogPremDiam">-</div></td>
+          <td title="Logarithme n&eacute;p&eacute;rien du dernier diam&egrave;tre."><b>Log(DernDiam)&nbsp;:</b><br /><div id="LogDernDiam">-</div></td>
+          <td title="R = (log(premier diam&egrave;tre) - log(dernier diam&egrave;tre)) / (NbN - 1)"><b>R&nbsp;:</b><br /><div id="R">-</div></td>
+         </tr>
+        </table>
+        <br /><br />
+        <table border="1" width="87%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+         <tr align="center">
+          <th colspan="3">Racine NbN<sup>i&egrave;me</sup></th>
+         </tr>
+         <tr align="center">
+          <td title="Premier diam&egrave;tre / Dernier diam&egrave;tre"><b><i>PremDiam&nbsp;/&nbsp;DernDiam<br />(rapport)</i>&nbsp;:</b><br /><div id="RapPremDern">-</div></td>
+          <td title="Racine NbNi&egrave;me de (Premier diam&egrave;tre / Dernier diam&egrave;tre)"><b><i>Racine NbN<sup>i&egrave;me</sup> du rapport</i>&nbsp;:</b><br /><div id="RacNbNieme">-</div></td>
+         </tr>
+        </table>
+        <br /><br />
+        <table border="1" width="87%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+         <tr align="center">
+          <th>Progression entre le premier et le cinqui&egrave;me <i>do</i>&nbsp;:</th>
+          <td title="Progression entre le premier et le cinqui&egrave;me do"><div id="RapProg">-</div></td>
+         </tr>
+        </table>
+       </center>
+
+       <br /><br />
+
+       <blockquote>
+        <p align="justify">On notera que la repr&eacute;sentation graphique <i>&agrave; la Dom Bedos</i> de ces valeurs
+        calcul&eacute;es ne peut pas se faire en conservant &agrave; <i>2</i> le rapport des octaves dans le sens
+        horizontal (division) car cela fait alors figurer une courbe et non une droite. Aussi, si l'on souhaite
+        conserver une droite figurant les diam&egrave;tres, il faut alors que le rapport entre les demi-tons de la
+        division horizontale corresponde exactement &agrave; celui des diam&egrave;tres eux-m&ecirc;mes.</p>
+
+        <p align="justify">Suivant l'exemple qui pr&eacute;c&egrave;de, le rapport de l'octave, dans la
+        division horizontale du graphique comme dans celle de la progression des diam&egrave;tres, ne sera donc pas
+        &eacute;gale &agrave; <i>2</i> mais &agrave; 1,0262124<sup>12</sup>, soit 1,3641020. De m&ecirc;me, on peut
+        aussi d&eacute;duire que le rapport entre le premier et le cinqui&egrave;me <i>do</i>, si cher aux facteurs
+        du <font style="font-variant:small-caps;">xix</font><sup>e</sup>&nbsp;si&egrave;cle, est &eacute;gal &agrave;
+        1,0262124<sup>48</sup>, soit 3,46.
+       </blockquote>
+
+       <center><br /><br /><br /><img src="sinn_01.png" border="0" width="192" height="155"></center>
+      </td>
+      <td align="right">
+       <table border="1" width="1%" cellpadding="5" cellspacing="0" bgcolor="#f5e9cf" background="../../images/ingres.jpg">
+        <tr align="right"> <th>1</th><th align="left">C</th>            <td nowrap><div  id="note_1">-</div></td></tr>
+        <tr align="right"> <th>2</th><th align="left">C&#9839;</th><td nowrap><div  id="note_2">-</div></td></tr>
+        <tr align="right"> <th>3</th><th align="left">D</th>            <td nowrap><div  id="note_3">-</div></td></tr>
+        <tr align="right"> <th>4</th><th align="left">D&#9839;</th><td nowrap><div  id="note_4">-</div></td></tr>
+        <tr align="right"> <th>5</th><th align="left">E</th>            <td nowrap><div  id="note_5">-</div></td></tr>
+        <tr align="right"> <th>6</th><th align="left">F</th>            <td nowrap><div  id="note_6">-</div></td></tr>
+        <tr align="right"> <th>7</th><th align="left">F&#9839;</th><td nowrap><div  id="note_7">-</div></td></tr>
+        <tr align="right"> <th>8</th><th align="left">G</th>            <td nowrap><div  id="note_8">-</div></td></tr>
+        <tr align="right"> <th>9</th><th align="left">G&#9839;</th><td nowrap><div  id="note_9">-</div></td></tr>
+        <tr align="right"><th>10</th><th align="left">A</th>            <td nowrap><div id="note_10">-</div></td></tr>
+        <tr align="right"><th>11</th><th align="left">A&#9839;</th><td nowrap><div id="note_11">-</div></td></tr>
+        <tr align="right"><th>12</th><th align="left">B</th>            <td nowrap><div id="note_12">-</div></td></tr>
+        <tr align="right"><th>13</th><th align="left">C</th>            <td nowrap><div id="note_13">-</div></td></tr>
+        <tr align="right"><th>14</th><th align="left">C&#9839;</th><td nowrap><div id="note_14">-</div></td></tr>
+        <tr align="right"><th>15</th><th align="left">D</th>            <td nowrap><div id="note_15">-</div></td></tr>
+        <tr align="right"><th>16</th><th align="left">D&#9839;</th><td nowrap><div id="note_16">-</div></td></tr>
+        <tr align="right"><th>17</th><th align="left">E</th>            <td nowrap><div id="note_17">-</div></td></tr>
+        <tr align="right"><th>18</th><th align="left">F</th>            <td nowrap><div id="note_18">-</div></td></tr>
+        <tr align="right"><th>19</th><th align="left">F&#9839;</th><td nowrap><div id="note_19">-</div></td></tr>
+        <tr align="right"><th>20</th><th align="left">G</th>            <td nowrap><div id="note_20">-</div></td></tr>
+        <tr align="right"><th>21</th><th align="left">G&#9839;</th><td nowrap><div id="note_21">-</div></td></tr>
+        <tr align="right"><th>22</th><th align="left">A</th>            <td nowrap><div id="note_22">-</div></td></tr>
+        <tr align="right"><th>23</th><th align="left">A&#9839;</th><td nowrap><div id="note_23">-</div></td></tr>
+        <tr align="right"><th>24</th><th align="left">B</th>            <td nowrap><div id="note_24">-</div></td></tr>
+        <tr align="right"><th>25</th><th align="left">C</th>            <td nowrap><div id="note_25">-</div></td></tr>
+        <tr align="right"><th>26</th><th align="left">C&#9839;</th><td nowrap><div id="note_26">-</div></td></tr>
+        <tr align="right"><th>27</th><th align="left">D</th>            <td nowrap><div id="note_27">-</div></td></tr>
+        <tr align="right"><th>28</th><th align="left">D&#9839;</th><td nowrap><div id="note_28">-</div></td></tr>
+        <tr align="right"><th>29</th><th align="left">E</th>            <td nowrap><div id="note_29">-</div></td></tr>
+        <tr align="right"><th>30</th><th align="left">F</th>            <td nowrap><div id="note_30">-</div></td></tr>
+        <tr align="right"><th>31</th><th align="left">F&#9839;</th><td nowrap><div id="note_31">-</div></td></tr>
+        <tr align="right"><th>32</th><th align="left">G</th>            <td nowrap><div id="note_32">-</div></td></tr>
+        <tr align="right"><th>33</th><th align="left">G&#9839;</th><td nowrap><div id="note_33">-</div></td></tr>
+        <tr align="right"><th>34</th><th align="left">A</th>            <td nowrap><div id="note_34">-</div></td></tr>
+        <tr align="right"><th>35</th><th align="left">A&#9839;</th><td nowrap><div id="note_35">-</div></td></tr>
+        <tr align="right"><th>36</th><th align="left">B</th>            <td nowrap><div id="note_36">-</div></td></tr>
+        <tr align="right"><th>37</th><th align="left">C</th>            <td nowrap><div id="note_37">-</div></td></tr>
+        <tr align="right"><th>38</th><th align="left">C&#9839;</th><td nowrap><div id="note_38">-</div></td></tr>
+        <tr align="right"><th>39</th><th align="left">D</th>            <td nowrap><div id="note_39">-</div></td></tr>
+        <tr align="right"><th>40</th><th align="left">D&#9839;</th><td nowrap><div id="note_40">-</div></td></tr>
+        <tr align="right"><th>41</th><th align="left">E</th>            <td nowrap><div id="note_41">-</div></td></tr>
+        <tr align="right"><th>42</th><th align="left">F</th>            <td nowrap><div id="note_42">-</div></td></tr>
+        <tr align="right"><th>43</th><th align="left">F&#9839;</th><td nowrap><div id="note_43">-</div></td></tr>
+        <tr align="right"><th>44</th><th align="left">G</th>            <td nowrap><div id="note_44">-</div></td></tr>
+        <tr align="right"><th>45</th><th align="left">G&#9839;</th><td nowrap><div id="note_45">-</div></td></tr>
+        <tr align="right"><th>46</th><th align="left">A</th>            <td nowrap><div id="note_46">-</div></td></tr>
+        <tr align="right"><th>47</th><th align="left">A&#9839;</th><td nowrap><div id="note_47">-</div></td></tr>
+        <tr align="right"><th>48</th><th align="left">B</th>            <td nowrap><div id="note_48">-</div></td></tr>
+        <tr align="right"><th>49</th><th align="left">C</th>            <td nowrap><div id="note_49">-</div></td></tr>
+        <tr align="right"><th>50</th><th align="left">C&#9839;</th><td nowrap><div id="note_50">-</div></td></tr>
+        <tr align="right"><th>51</th><th align="left">D</th>            <td nowrap><div id="note_51">-</div></td></tr>
+        <tr align="right"><th>52</th><th align="left">D&#9839;</th><td nowrap><div id="note_52">-</div></td></tr>
+        <tr align="right"><th>53</th><th align="left">E</th>            <td nowrap><div id="note_53">-</div></td></tr>
+        <tr align="right"><th>54</th><th align="left">F</th>            <td nowrap><div id="note_54">-</div></td></tr>
+        <tr align="right"><th>55</th><th align="left">F&#9839;</th><td nowrap><div id="note_55">-</div></td></tr>
+        <tr align="right"><th>56</th><th align="left">G</th>            <td nowrap><div id="note_56">-</div></td></tr>
+        <tr align="right"><th>57</th><th align="left">G&#9839;</th><td nowrap><div id="note_57">-</div></td></tr>
+        <tr align="right"><th>58</th><th align="left">A</th>            <td nowrap><div id="note_58">-</div></td></tr>
+        <tr align="right"><th>59</th><th align="left">A&#9839;</th><td nowrap><div id="note_59">-</div></td></tr>
+        <tr align="right"><th>60</th><th align="left">B</th>            <td nowrap><div id="note_60">-</div></td></tr>
+        <tr align="right"><th>61</th><th align="left">C</th>            <td nowrap><div id="note_61">-</div></td></tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </form>
+
+   <br /><br />
+
+  </center>
+ </body>
+
+<!-- Mirrored from hydraule.org/tuyau/tailles/calc_log_fr.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:14:44 GMT -->
+</html>

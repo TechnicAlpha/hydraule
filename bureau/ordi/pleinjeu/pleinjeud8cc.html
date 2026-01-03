@@ -1,0 +1,1348 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Page HTML composée et programmée par S.M.C.J. -->
+<!-- Sources PHP ./src/code.php -->
+<html>
+ 
+<!-- Mirrored from hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:41:27 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+  <title>Data outflows and graphics of mixtures.</title>
+
+  <meta http-equiv="content-language" content="en" />
+  <meta http-equiv="content-type"     content="text/html; charset=UTF-8" />
+  <meta       name="author"           content="S.M.C.J." />
+  <meta       name="keywords"         content="Hydraule Orgue Orgao Organo Orgel Organ" />
+  <meta       name="description"      content="Calcul du nombre de tuyaux identiques d'un plein-jeu." />
+
+  <link rel="shortcut icon" href="img/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+
+  <script language="javaScript">
+   <!--
+    // Déclaration des variables GLOBALES.
+    var  base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    var note = new Array(7);
+    note[1] = new Array("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B");
+    note[2] = new Array("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "B", "H");
+    note[3] = new Array("C", "Cs", "D", "Ds", "E", "F", "Fs", "G", "Gs", "A", "B", "H");
+    note[4] = new Array("C", "Cis", "D", "Dis", "E", "F", "Fis", "G", "Gis", "A", "Ais", "H");
+    note[5] = new Array("Ut", "Ut#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si");
+    note[6] = new Array("Ut", "Ut#", "Ré", "Mib", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "Sib", "Si");
+    note[7] = new Array("C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B");
+
+    // Initialisation des variables, reset des champs de saisie Focus sur la saisie du nom de jeu et activation de la première cellule.
+    function init()
+    {
+     // Composition du plein jeu et des emplacements de reprises. « testcomprep » sert à tester la validité de la saisie.
+     noterep = base64_decode(document.form_06.t2.value); comprep = base64_decode(document.form_06.t3.value);
+     testcomprep = ""; for (i = 0; i <= 15; i++) {testcomprep += String.fromCharCode(0); };
+
+     cellActive = document.getElementById("cellInputTessi_1");
+     document.form_01.reset(); document.form_02.reset(); document.form_03.reset();
+     document.form_04.reset(); document.form_05.reset(); document.form_06.reset();
+     scrollTo(0, 0); document.form_02.nomjeu.focus();
+    };
+
+    // Recharge la page avec le bouton « Initialiser ».
+    function recharge()
+    {
+     if (confirm("Are you sure you want to\nreload this page blank?")) {document.location.href = document.location.href; };
+    };
+
+    // Attribue une valeur (un caractère) dans une chaine - Simplification d'écriture.
+    function attrib(chaine, place, remp)
+    {
+     return chaine.substr(0, place) + remp + chaine.substr(place + remp.length);
+    };
+
+    // Conversion d'une chaîne en binaire. Source : Philippe Baumann - http://kevin.vanzonneveld.net
+    function binDec(input) {input = (input + '').replace(/[^01]/gi, ''); return parseInt(input, 2); };
+    
+    // Encodage et décodage en base 64. Source : Tyler Akins - http://rumkin.com
+    function base64_encode(input)
+    {
+     var output = ""; var chr1, chr2, chr3; var enc1, enc2, enc3, enc4; var i = 0;
+
+     do
+     {
+      chr1 = input.charCodeAt(i++); chr2 = input.charCodeAt(i++); chr3 = input.charCodeAt(i++);
+      enc1 = chr1 >> 2; enc2 = ((chr1 & 3) << 4) | (chr2 >> 4); enc3 = ((chr2 & 15) << 2) | (chr3 >> 6); enc4 = chr3 & 63;
+
+      if (isNaN(chr2)) {enc3 = enc4 = 64;} else if (isNaN(chr3)) {enc4 = 64;}
+
+      output = output + base64.charAt(enc1) + base64.charAt(enc2) + base64.charAt(enc3) + base64.charAt(enc4);
+     }
+     while (i < input.length);
+
+     return output;
+    };
+
+    function base64_decode(input)
+    {
+     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+     var output = ""; var i = 0;
+     input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+     do
+     {
+      enc1 = base64.indexOf(input.charAt(i++)); enc2 = base64.indexOf(input.charAt(i++));
+      enc3 = base64.indexOf(input.charAt(i++)); enc4 = base64.indexOf(input.charAt(i++));
+      chr1 = (enc1 << 2) | (enc2 >> 4); chr2 = ((enc2 & 15) << 4) | (enc3 >> 2); chr3 = ((enc3 & 3) << 6) | enc4;
+
+      output = output + String.fromCharCode(chr1);
+
+      if (enc3 != 64) {output = output + String.fromCharCode(chr2); };
+      if (enc4 != 64) {output = output + String.fromCharCode(chr3); };
+     } while (i < input.length);
+
+     return output;
+    };
+
+
+    // Encode une valeur numérique sur deux octets.
+    function encodeVal(input)
+    {
+     //     |<------------- Poids fort ------------->|   |<------- Poids faible ------->| 
+     return String.fromCharCode(parseInt(input / 256)) + String.fromCharCode(input % 256);
+    };
+
+    // Empêche la saisie d'autre chose que des neuf chiffres.
+    // Fonctions écrites par Bertrand Wattel (http://bertrand.wattel.free.fr/)
+    // et trouvé sur le site SELFHTML (http://actuel.fr.selfhtml.org/articles/javascript/entrees_formulaire/index.htm).
+    function codeTouche(evenement)
+    {
+     for (prop in evenement) {if (prop == 'which') return (evenement.which); };
+     return(evenement.keyCode);
+    };
+
+    function scanTouche(evenement)
+    {
+     var reCarSpeciaux = /[\x00\x08\x0D]/;
+     var reCarValides = /[0-9]/;
+
+     var codeDecimal  = codeTouche(evenement);
+     var car = String.fromCharCode(codeDecimal);
+     var autorisation = reCarValides.test(car) || reCarSpeciaux.test(car);
+
+     return autorisation;
+    };
+
+    // Fenêtre d'aide.
+    function ouvre(nomFenetre)
+    {
+     var nomFenetre = nomFenetre + "_en";
+     var posgauche = 1; var poshaut = 1; var largeur = 300; var hauteur = 300;
+     if (screen.width)  {largeur = Math.floor(screen.width  / 1.5); posgauche = Math.floor(screen.width  / 50); };
+     if (screen.height) {hauteur = Math.floor(screen.height / 1.5);   poshaut = Math.floor(screen.height / 50); };
+
+     var para = "toolbar=1,location=0,directories=0,status=0,menubar=1,resizable=1,scrollbars=1,width=" + largeur + ",height=" + hauteur + ",top=" + poshaut + ",left=" + posgauche;
+     nomFenetre = window.open(nomFenetre + ".htm", nomFenetre, para); nomFenetre.focus();
+    };
+
+    // Travail sur les étiquettes du tableau de coche. Du D.O.M. en toutes choses...
+    function renommeCoch(notation)
+    {
+     for (i = 1; i <= 61; i++)
+     {
+      // Écrit la notation des notes.
+      j = ((i - 1) % 12); chaine = note[notation][j]; // « chaine » juste pour la lisibilité du code.
+
+      // Afin de savoir si la notation des notes est allemande.
+      with(document.form_02.notNot) {estTeuton = (options[selectedIndex].text.toLowerCase().indexOf("allemande", 0) == -1); };
+
+      // Mise en minuscules des notes (hors la première octave) pour la notation des octaves allemande.
+      if ((document.form_02.notOct.options[1].selected == true) && (Math.floor((((i - 1) / 12)) + 1) > 1)) {chaine = chaine.toLowerCase(); };
+
+      // Ne laisse qu'un seul enfant D.O.M. dans les cellules afin de conserver le nom de l'ID.
+      eval("noeud = document.getElementById('nomCoch" + i + "')");
+      while (noeud.childNodes[1]) {noeud.removeChild(noeud.childNodes[1]); };
+
+      // Remplacement à la condition que « chaine » NE CONTIENNE PAS « # », « b » et « s ».
+      if ((chaine.indexOf("#", 0) == -1) && ((chaine.indexOf("b", 0) == -1) || (!estTeuton)) && (chaine.indexOf("s", 0) == -1))
+      {
+       eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine);");
+      };
+
+      // Traitement de la mise en exposant ou en indice si « chaine » contient « # », « b », « s » ou « is ».
+      if (chaine.indexOf("#", 0) != -1)
+      {
+       eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('#', 0)));"); // Partie gauche.
+       enfant = document.createElement('sup'); enfant.appendChild(document.createTextNode('#')); noeud.appendChild(enfant); // Incorporation du nouveau <sup>.
+      };
+
+      if ((chaine.indexOf("b", 0) != -1) && (estTeuton)) // Pas de traitement de <sub> sur la lettre « B » en Allemagne !
+      {
+       eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('b', 0)));"); // Partie gauche.
+       enfant = document.createElement('sub'); enfant.appendChild(document.createTextNode('b')); noeud.appendChild(enfant); // Incorporation du nouveau <sub>.
+      };
+
+      if (chaine.indexOf("s", 0) != -1)
+      {
+       if (chaine.indexOf("is", 0) != -1)
+       {
+        eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('is', 0)));"); // Partie gauche.
+        enfant = document.createElement('sup'); enfant.appendChild(document.createTextNode('is')); noeud.appendChild(enfant); // Incorporation du nouveau <sup>.
+       }
+       else
+       {
+        eval("with(document.getElementById('nomCoch" + i + "').firstChild) replaceData(0, length, chaine.substring(0, chaine.indexOf('s', 0)));"); // Partie gauche.
+        enfant = document.createElement('sup'); enfant.appendChild(document.createTextNode('s')); noeud.appendChild(enfant); // Incorporation du nouveau <sup>.
+       };
+      };
+
+      // Écrit la notation des octaves.
+      if (document.form_02.notOct.options[0].selected == true)
+      {
+       eval("with(document.getElementById('numeroCoch" + i + "').firstChild) replaceData(0, length, '" + i + "');"); // Numéro de note.
+      }
+      else                                                                            // Notation allemande.
+      {
+       k = Math.floor(((i - 1) / 12) + 1);
+       if (k == 1) {chaine = " "; };                                                  // Première octave.
+       if (k == 2) {chaine = "°"; };                                                  // Deuxième octave.
+       if (k >= 3) {chaine = ""; for (l = 1; l <= (k - 2); l++) {chaine += "'"; }; }; // Octaves suivantes.
+
+       eval("with(document.getElementById('numeroCoch" + i + "').firstChild) replaceData(0, length, chaine);");
+      };
+     };
+    };
+
+    // Écriture dans la liste déroulante. Ceci arrive :
+    //  * Quand on change la notation des notes ou des octaves.
+    //  * Quand on change les cases à cocher en cliquant dessus ou par la liste des coches rapides.
+    function actuListeRep(coche)
+    {
+     // Garde en mémoire la VALEUR de la sélection de la liste.
+     with (document.getElementById("listeRep")) memoValSel = options[selectedIndex].value;
+
+     // Mise à blanc de la liste déroulante avant reconstitution immédiate afin de respecter le « miroir » des cases à cocher.
+     with(document.getElementById("listeRep")) while (firstChild) {removeChild(firstChild); };
+
+     // Établissement de la combination de la notation des notes ET des octaves en fonction de la notation en cours.
+     var noteOctave = new Array(61);
+     premNote = "";
+     for (i = 1; i <= 61; i++) // i : numéro de note dans le jeu - j : numéro de note dans l'octave - k : numéro d'octave.
+     {
+      j = ((i - 1) % 12); k = Math.floor(((i - 1) / 12) + 1);
+
+      // Notation numérique des octaves.
+      if (document.form_02.notOct.options[0].selected == true) {noteOctave[i] = note[document.form_02.notNot.value][j] + k; };
+
+      // Notation allemande des octaves.
+      if (document.form_02.notOct.options[1].selected == true)
+      {
+       if (k == 1)
+       {
+        noteOctave[i] = note[document.form_02.notNot.value][j];
+       }
+       else
+       {
+        noteOctave[i] = note[document.form_02.notNot.value][j].toLowerCase();  // Passe en minuscule.
+       };
+
+       if (k == 2) {noteOctave[i] += "°"; };                                            // Ajoute le null.
+
+       if (k >= 3) {for (l = 1; l <= (k - 2); l++) {noteOctave[i] += "'"; }; };         // Ajoute les guillemets.
+      };
+
+      // Attribution du texte et de son attribut au sein même de la liste déroulante en « miroir » des cases cochées.
+      if (eval("document.getElementById('cochNote" + i + "').checked == true;"))
+      {
+       if (!premNote) // Écriture de la première note dans la première cellule du tableau.
+       {
+        premNote = noteOctave[i]; document.getElementById("cellInputRep_1").value = premNote;
+         noterep = attrib(noterep, 0, String.fromCharCode(i));                          // Sans oublier d'en prendre note...
+       }
+       else          //  Écriture du reste dans la liste déroulante (De l'art du D.O.M.).
+       {
+            enfant = document.createElement("option");           enfant.appendChild(document.createTextNode(noteOctave[i]));
+        enfantAttr = document.createAttribute("value");          enfantAttr.value = i;
+        document.getElementById("listeRep").appendChild(enfant); enfant.setAttributeNode(enfantAttr);
+       };
+      };
+
+      // Traitement des en-têtes de reprises pour les changement de notations et pour la dévalidation des coches.
+      for (k = 2; k <= 16; k++)                                                  // La première reprise, c'est déjà fait.
+      {
+       if ((noterep.charAt(k - 1).charCodeAt(0) == i) && (eval("document.getElementById('cochNote" + i + "').checked == false")))
+       {
+        eval("document.getElementById('cellInputRep_" + k + "').value = ' - '"); // Mise à blanc de l'en-tête.
+        noterep = attrib(noterep, (k - 1), String.fromCharCode(0));              // Mise en mémoire de cette suppression.
+       };
+
+       if (noterep.charAt(k - 1).charCodeAt(0) == i)                             // Réaffiche le contenu des en-têtes.
+       {
+        eval("document.getElementById('cellInputRep_" + k + "').value = noteOctave[i]");
+       }
+      };
+     };
+
+     // Remet la position de la sélection de la liste en place.
+     //  Si la coche se fait AU DESSUS de la sélection ==> Cherche dans la liste le « value » adéquat pour en connaître la place.
+     // Si la coche se fait EN DESSOUS de la sélection ==> Pas de traitement.
+     //         Si la décoche se fait SUR la sélection ==> memoValSel = 0, soit le premier choix de la liste.
+     indexSelection = 0;
+     for (i = 0; i <= (memoValSel - 1); i++) // Recherche sur la valeur et non sur la position à cause des trous possibles.
+     {
+      if (document.getElementById("listeRep").options[i].value == memoValSel)  {indexSelection = i; i = memoValSel; };  // Sortie de la boucle.
+     };
+     document.getElementById("listeRep").selectedIndex = indexSelection;
+
+     // Met à jour la liste de coches rapides avec la notation.
+     for (i = 1; i <= (document.form_01.rapidCoch.length - 2); i++)
+     {
+      with (document.form_01.rapidCoch.options[i])
+      {
+       text = noteOctave[value.indexOf("X") + 1] + " - " + noteOctave[value.lastIndexOf("X") + 1];
+      };
+     };
+    };
+
+    // Coche les cases en série en fonction de types prédéfinis.
+    function serieCoche(serie)
+    {
+     for (i = 1; i <= 61; i++)
+     {
+      if (serie.substr((i - 1), 1) == "X")
+      {
+       eval("document.getElementById('cochNote" + i + "').checked = true;");
+      }
+      else
+      {
+       eval("document.getElementById('cochNote" + i + "').checked = false;");
+      }
+     }
+     actuListeRep(-1);
+    };
+
+    // N'accepte pas la notation allemande des octaves si la notation des notes est « Latine » ou « Dom Bedos ».
+    function verifNotAllemande()
+    {
+     with(document.form_02.notNot) {chaine = options[selectedIndex].text; };
+     if ((chaine.toLowerCase().indexOf("latin", 0) != -1) || (chaine.toLowerCase().indexOf("bedos", 0) != -1))
+     {
+      document.form_02.notOct.options[0].selected = true;
+     };
+    };
+
+    // Contrôle la saisie des largeurs et hauteurs du futur fichier graphique.
+    function controle(objet, type, memo)
+    {
+     valeur = objet.value; saisie = true;
+
+     switch(type)
+     {
+      case 1:
+       if (valeur > 800) {alert('Enter an image width\nless or equal than 800.'); saisie = false; };
+       if (valeur < 200) {alert('Enter an image width\ngreater or equal than 200.'); saisie = false; };
+      break;
+
+      case 2:
+       if (valeur > 600) {alert('Enter an image height\nless or equal than 600.'); saisie = false; };
+       if (valeur < 150) {alert('Enter an image height\ngreater or equal than 150.'); saisie = false; };
+      break;
+
+      case 3: // Validation du formulaire de téléchargement du fichier XML.
+       if (!valeur) {alert('Choose first a ODL file\non your hard drive.'); saisie = false; } else {document.form_04.submit(); };
+      break;
+     };
+
+     if (!saisie)
+     {
+      if (type < 3)  {objet.value = memo; objet.select(); };
+      objet.focus();
+     };
+    };
+
+    // Change le nombre de lignes ou de colonnes affichées du tableau.
+    function changeAffich(colonnes, lignes)
+    {
+     // Cellules de titre (NOTES du tableau).
+     for (i = 2; i <= 16; i++)
+     {
+      commande = "document.getElementById('cellTdNot_" + i + "').className = '";
+      if (i <= colonnes) {eval(commande + "affiCell'"); } else {eval(commande + "disparait'"); };
+     };
+
+     // Cellules de valeurs (REPRISES du tableau).
+     for (j = 1; j <= 16; j++)
+     {
+      // Action sur les lignes (ceci est fait pour éviter les <tr></tr> vide qui prennent quand même de la place même quand les <td></td> sont neutralisés.
+      commande = "document.getElementById('ligne_" + j + "').className = '";
+      if ((j <= lignes)) {eval(commande + "affiLigne'"); } else {eval(commande + "disparait'"); };
+      for (i = 1; i <= 16; i++)
+      {
+       // Action sur les cellules.
+       commande = "document.getElementById('cellTdTessi_" + String.fromCharCode(i + 64) + j + "').className = '";
+       if ((j <= lignes) && (i <= colonnes)) {eval(commande + "affiCell'"); } else {eval(commande + "disparait'"); };
+      };
+     };
+    };
+
+    function changeTitrePleinJeu()
+    {
+     with(document.form_02) {titre = nomjeu.value + " " + nbRangs.options[nbRangs.value - 1].text; };
+     with(document.getElementById("titrePleinJeu").firstChild) {replaceData(0, length, titre); };
+    };
+
+    // Change la classe de la cellule, met en mémoire son contenu, change son contenu et passe le focus à la liste.
+    function re1(c)
+    {
+     c.className="cellFocus"; memo = c.value; c.value = " <<< ";
+     document.getElementById("listeRep").focus(); document.getElementById("listeRep").className = "cellFocus";
+    };
+
+    // Traite le remplissage visible de la cellule de reprises et s'occupe de la mise en mémoire dans la variable « noterep ».
+    function re2(c)
+    {
+     if (c.id.indexOf("cellInputRep") != -1)
+     {
+      with (document)
+      {
+       // Attribue la valeur d'une reprise à la bonne place dans la bonne cellule.
+       c.value = getElementById("listeRep")[getElementById("listeRep").selectedIndex].text;
+       noCell = parseInt(c.id.substr(13, (c.id.length - 13)))                                    // « cellInputRep_ » fait 12 caractères.
+       // Comparaison avec les valeurs des cellules voisines.
+       // Attention, cette comparaison de s'éffectue que de proche en proche ; il doit être possible d'améliorer
+       i = noterep.charAt(noCell - 2).charCodeAt(0);                                             // Cellule précédente.
+       j = parseInt(getElementById("listeRep")[getElementById("listeRep").selectedIndex].value); // Cellule active.
+       k = noterep.charAt(noCell).charCodeAt(0);                                                 // Cellule suivante.
+
+       if ((j <= i) || ((j >= k) && (k != 0)))
+       {
+        alert("Your input is impossible.\nDo another or fix the values\nof neighboring cells.");
+        c.value = memo;                                                                          // Remet la valeur d'origine.
+       }
+       else
+       {
+        // Attribue la valeur d'une reprise à la bonne place dans la chaîne « noterep ».
+        noterep = attrib(noterep, (noCell - 1), String.fromCharCode(j));
+       };
+      };
+      c.className = "fondSaisie"; document.getElementById("listeRep").className = "fondSaisie";
+     };
+    };
+
+    // Change la classe de la cellule, met en mémoire son contenu, change son contenu et passe le focus à la liste.
+    function te1(c)
+    {
+     c.className="cellFocus"; memo = c.value; c.value = " <<< ";
+     document.getElementById("listeTessi").focus(); document.getElementById("listeTessi").className = "cellFocus";
+    };
+
+    // Traite le remplissage visible de la cellule de tessitures et s'occupe de la mise en mémoire dans la variable « comprep ».
+    function te2(c)
+    {
+     if (c.id.indexOf("cellInputTessi") != -1)
+     {
+      with (document)
+      {
+       // Attribue la valeur d'une tessiture à la bonne place dans la bonne cellule.
+       c.value = getElementById("listeTessi")[getElementById("listeTessi").selectedIndex].text;
+       noCell = parseInt(c.id.substr(15, (c.id.length - 15)));                                       // « cellInputTessi_ » fait 14 caractères.
+       j = parseInt(getElementById("listeTessi")[getElementById("listeTessi").selectedIndex].value); // Cellule active.
+
+       // Attribue la valeur d'une tessiture à la bonne place dans la chaîne COMPREP.
+       comprep = attrib(comprep, (noCell - 1), String.fromCharCode(j))
+      };
+      c.className = "fondSaisie"; document.getElementById("listeTessi").className = "fondSaisie";
+     };
+    };
+
+    // Remet les choses en place si la saisie n'a pas été modifiée.
+    function memoCell(c)
+    {
+     if (c.value == " <<< ")
+     {
+      document.getElementById("listeRep").className = "fondSaisie"; document.getElementById("listeTessi").className = "fondSaisie";
+      c.className = "fondSaisie"; c.value = memo;
+     };
+    };
+
+    // Convertit les trois chaînes « noterep » et « comprep » en base 64 (pour le transfert).
+    function debit()
+    {
+     passe = true;
+
+     // À la condition que douze notes soient cochées au minimum.
+     j = 0; for (i = 1; i <= 61; i++) {if (eval("document.getElementById('cochNote" + i + "').checked == true;")) {j++;}; };
+     if (j < 12) {alert('At least twelve notes\nmust be checked.'); passe = false; };
+
+     // À la condition qu'un nom de jeu soit saisi.
+     if (document.form_02.nomjeu.value == "") {alert("Enter a name stop."); passe = false;}
+
+     // À la condition que toutes les reprises du tableau affiché aient été saisies.
+     if (noterep.substr(1, (document.form_02.nbReps.value - 1)).indexOf(String.fromCharCode(0)) == -1)
+     {
+      chaine1 = "";                                  // Traitement de « chaine1 ».
+      for (i = 1; i <= 61; i++)
+      {
+       if (eval("document.getElementById('cochNote" + i + "').checked == true")) {chaine1 += "1"; } else {chaine1 += "0"; };
+      };
+      chaine1 += "000"; chaine2 = "";                // On a besoin d'une chaîne de 64 caractères.
+      for (i = 0; i <= 7; i++)                       // Réduit les 64 bits précédents à huit octets.
+      {
+       chaine2 += String.fromCharCode(binDec(chaine1.substr((i * 8), 8)));
+      };
+
+      // Code les valeurs numériques de form_02 par une suite de deux octets et rajoute le format de sortie et le nom du jeu.
+      with (document.form_02)
+      {
+       chaine1 = chaine2 + encodeVal(nbRangs.value); // Nombre de rangs.
+       chaine1 +=          encodeVal( nbReps.value); // Nombre de reprises.
+       chaine1 +=          encodeVal( notNot.value); // Notation des notes.
+       chaine1 +=          encodeVal( notOct.value); // Notation des octaves.
+       chaine1 +=          encodeVal(  l_img.value); // Largeur de l'image graphique.
+       chaine1 +=          encodeVal(  h_img.value); // Hauteur de l'image graphique.
+      };
+
+      with (document.form_05)                        // Format de sortie.
+      {
+       for (i = 1; i <= formatSortie.length; i++)
+       {
+        if (formatSortie[(i - 1)].checked) {chaine1 += encodeVal(i); i = formatSortie.length; };
+       };
+      };
+      
+      chaine1 += document.form_02.nomjeu.value;      // Nom du jeu (255 octets maximum).
+
+      document.form_06.t1.value = base64_encode(chaine1);
+      document.form_06.t2.value = base64_encode(noterep);
+      document.form_06.t3.value = base64_encode(comprep);
+     }
+     else
+     {
+      alert('You have not entered all\nthe notes of the repetitions.');  passe = false;
+     };
+
+     // À la condition qu'au moins une tessiture par rang ait été saisie.
+     for (i = 0; i <= (document.form_02.nbRangs.value - 1); i++)
+     {
+      if (comprep.substr((i * 16), 16) == testcomprep)
+      {
+       alert("Enter at least\na range by rank.");  i = 16; passe = false;
+      };
+     };
+
+     // Valide ou - non - le formulaire.
+     if (passe) {document.form_06.submit(); };
+    };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" onLoad="javaScript:init();">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <br /><br /><h1><font color="#ff0000">The computer</font></h1>
+     <h2><font color="#008000">Data outflows and<br />graphics of mixtures.</font></h2>
+     <h3><font color="#000080">Entry Form</font></h3>
+     <a href="pleinjeu0ee9.html?l=fr"><img src="img/flag_fr.gif" border="0" width="40" height="28" alt="Version fran&ccedil;aise" title="Version fran&ccedil;aise"></a>&nbsp; &nbsp; 
+     <a href="pleinjeu8c8a.html?l=de"><img src="img/flag_de.gif" border="0" width="40" height="28" alt="Deutsche Version" title="Deutsche Version"></a>&nbsp; &nbsp; 
+    </td>
+    <td align="right">
+     <a href="../../../index.html" target="_top"><img src="img/hydraule.png" border="0" width="216" height="230" alt="L'Hydraule" title="L'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <br /><br /><br /><br />
+
+  <center>
+   <table border="0" width="88%" cellpadding="0" cellspacing="0">
+    <tr>
+     <!-- Cellule de la coche des notes (gauche).-->
+     <td width="10%">
+      <form name="form_01">
+       <!-- Table de la coche des notes. -->
+       <table border="5" cellspacing="0" cellpadding="15" bgcolor="#f5e9cf" background="img/ingres.jpg">
+        <tr>
+         <td align="center">
+          <table border="0" cellpadding="0" cellspacing="0">
+           <tr><th colspan="3" nowrap>Notes of<br />keyboard<br /><br /></th></tr>
+           <tr><td align="right"><span id="nomCoch1">C</span></td><td align="left">&nbsp;<span id="numeroCoch1">1</span></td><td><input type="checkbox" id="cochNote1" onChange="javaScript:actuListeRep(1)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch2">C<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch2">2</span></td><td><input type="checkbox" id="cochNote2" onChange="javaScript:actuListeRep(2)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch3">D</span></td><td align="left">&nbsp;<span id="numeroCoch3">3</span></td><td><input type="checkbox" id="cochNote3" onChange="javaScript:actuListeRep(3)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch4">D<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch4">4</span></td><td><input type="checkbox" id="cochNote4" onChange="javaScript:actuListeRep(4)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch5">E</span></td><td align="left">&nbsp;<span id="numeroCoch5">5</span></td><td><input type="checkbox" id="cochNote5" onChange="javaScript:actuListeRep(5)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch6">F</span></td><td align="left">&nbsp;<span id="numeroCoch6">6</span></td><td><input type="checkbox" id="cochNote6" onChange="javaScript:actuListeRep(6)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch7">F<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch7">7</span></td><td><input type="checkbox" id="cochNote7" onChange="javaScript:actuListeRep(7)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch8">G</span></td><td align="left">&nbsp;<span id="numeroCoch8">8</span></td><td><input type="checkbox" id="cochNote8" onChange="javaScript:actuListeRep(8)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch9">G<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch9">9</span></td><td><input type="checkbox" id="cochNote9" onChange="javaScript:actuListeRep(9)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch10">A</span></td><td align="left">&nbsp;<span id="numeroCoch10">10</span></td><td><input type="checkbox" id="cochNote10" onChange="javaScript:actuListeRep(10)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch11">A<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch11">11</span></td><td><input type="checkbox" id="cochNote11" onChange="javaScript:actuListeRep(11)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch12">B</span></td><td align="left">&nbsp;<span id="numeroCoch12">12</span></td><td><input type="checkbox" id="cochNote12" onChange="javaScript:actuListeRep(12)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch13">C</span></td><td align="left">&nbsp;<span id="numeroCoch13">13</span></td><td><input type="checkbox" id="cochNote13" onChange="javaScript:actuListeRep(13)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch14">C<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch14">14</span></td><td><input type="checkbox" id="cochNote14" onChange="javaScript:actuListeRep(14)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch15">D</span></td><td align="left">&nbsp;<span id="numeroCoch15">15</span></td><td><input type="checkbox" id="cochNote15" onChange="javaScript:actuListeRep(15)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch16">D<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch16">16</span></td><td><input type="checkbox" id="cochNote16" onChange="javaScript:actuListeRep(16)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch17">E</span></td><td align="left">&nbsp;<span id="numeroCoch17">17</span></td><td><input type="checkbox" id="cochNote17" onChange="javaScript:actuListeRep(17)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch18">F</span></td><td align="left">&nbsp;<span id="numeroCoch18">18</span></td><td><input type="checkbox" id="cochNote18" onChange="javaScript:actuListeRep(18)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch19">F<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch19">19</span></td><td><input type="checkbox" id="cochNote19" onChange="javaScript:actuListeRep(19)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch20">G</span></td><td align="left">&nbsp;<span id="numeroCoch20">20</span></td><td><input type="checkbox" id="cochNote20" onChange="javaScript:actuListeRep(20)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch21">G<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch21">21</span></td><td><input type="checkbox" id="cochNote21" onChange="javaScript:actuListeRep(21)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch22">A</span></td><td align="left">&nbsp;<span id="numeroCoch22">22</span></td><td><input type="checkbox" id="cochNote22" onChange="javaScript:actuListeRep(22)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch23">A<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch23">23</span></td><td><input type="checkbox" id="cochNote23" onChange="javaScript:actuListeRep(23)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch24">B</span></td><td align="left">&nbsp;<span id="numeroCoch24">24</span></td><td><input type="checkbox" id="cochNote24" onChange="javaScript:actuListeRep(24)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch25">C</span></td><td align="left">&nbsp;<span id="numeroCoch25">25</span></td><td><input type="checkbox" id="cochNote25" onChange="javaScript:actuListeRep(25)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch26">C<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch26">26</span></td><td><input type="checkbox" id="cochNote26" onChange="javaScript:actuListeRep(26)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch27">D</span></td><td align="left">&nbsp;<span id="numeroCoch27">27</span></td><td><input type="checkbox" id="cochNote27" onChange="javaScript:actuListeRep(27)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch28">D<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch28">28</span></td><td><input type="checkbox" id="cochNote28" onChange="javaScript:actuListeRep(28)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch29">E</span></td><td align="left">&nbsp;<span id="numeroCoch29">29</span></td><td><input type="checkbox" id="cochNote29" onChange="javaScript:actuListeRep(29)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch30">F</span></td><td align="left">&nbsp;<span id="numeroCoch30">30</span></td><td><input type="checkbox" id="cochNote30" onChange="javaScript:actuListeRep(30)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch31">F<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch31">31</span></td><td><input type="checkbox" id="cochNote31" onChange="javaScript:actuListeRep(31)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch32">G</span></td><td align="left">&nbsp;<span id="numeroCoch32">32</span></td><td><input type="checkbox" id="cochNote32" onChange="javaScript:actuListeRep(32)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch33">G<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch33">33</span></td><td><input type="checkbox" id="cochNote33" onChange="javaScript:actuListeRep(33)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch34">A</span></td><td align="left">&nbsp;<span id="numeroCoch34">34</span></td><td><input type="checkbox" id="cochNote34" onChange="javaScript:actuListeRep(34)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch35">A<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch35">35</span></td><td><input type="checkbox" id="cochNote35" onChange="javaScript:actuListeRep(35)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch36">B</span></td><td align="left">&nbsp;<span id="numeroCoch36">36</span></td><td><input type="checkbox" id="cochNote36" onChange="javaScript:actuListeRep(36)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch37">C</span></td><td align="left">&nbsp;<span id="numeroCoch37">37</span></td><td><input type="checkbox" id="cochNote37" onChange="javaScript:actuListeRep(37)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch38">C<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch38">38</span></td><td><input type="checkbox" id="cochNote38" onChange="javaScript:actuListeRep(38)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch39">D</span></td><td align="left">&nbsp;<span id="numeroCoch39">39</span></td><td><input type="checkbox" id="cochNote39" onChange="javaScript:actuListeRep(39)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch40">D<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch40">40</span></td><td><input type="checkbox" id="cochNote40" onChange="javaScript:actuListeRep(40)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch41">E</span></td><td align="left">&nbsp;<span id="numeroCoch41">41</span></td><td><input type="checkbox" id="cochNote41" onChange="javaScript:actuListeRep(41)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch42">F</span></td><td align="left">&nbsp;<span id="numeroCoch42">42</span></td><td><input type="checkbox" id="cochNote42" onChange="javaScript:actuListeRep(42)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch43">F<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch43">43</span></td><td><input type="checkbox" id="cochNote43" onChange="javaScript:actuListeRep(43)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch44">G</span></td><td align="left">&nbsp;<span id="numeroCoch44">44</span></td><td><input type="checkbox" id="cochNote44" onChange="javaScript:actuListeRep(44)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch45">G<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch45">45</span></td><td><input type="checkbox" id="cochNote45" onChange="javaScript:actuListeRep(45)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch46">A</span></td><td align="left">&nbsp;<span id="numeroCoch46">46</span></td><td><input type="checkbox" id="cochNote46" onChange="javaScript:actuListeRep(46)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch47">A<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch47">47</span></td><td><input type="checkbox" id="cochNote47" onChange="javaScript:actuListeRep(47)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch48">B</span></td><td align="left">&nbsp;<span id="numeroCoch48">48</span></td><td><input type="checkbox" id="cochNote48" onChange="javaScript:actuListeRep(48)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch49">C</span></td><td align="left">&nbsp;<span id="numeroCoch49">49</span></td><td><input type="checkbox" id="cochNote49" onChange="javaScript:actuListeRep(49)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch50">C<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch50">50</span></td><td><input type="checkbox" id="cochNote50" onChange="javaScript:actuListeRep(50)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch51">D</span></td><td align="left">&nbsp;<span id="numeroCoch51">51</span></td><td><input type="checkbox" id="cochNote51" onChange="javaScript:actuListeRep(51)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch52">D<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch52">52</span></td><td><input type="checkbox" id="cochNote52" onChange="javaScript:actuListeRep(52)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch53">E</span></td><td align="left">&nbsp;<span id="numeroCoch53">53</span></td><td><input type="checkbox" id="cochNote53" onChange="javaScript:actuListeRep(53)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch54">F</span></td><td align="left">&nbsp;<span id="numeroCoch54">54</span></td><td><input type="checkbox" id="cochNote54" onChange="javaScript:actuListeRep(54)" checked /></td></tr>
+           <tr><td align="right"><span id="nomCoch55">F<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch55">55</span></td><td><input type="checkbox" id="cochNote55" onChange="javaScript:actuListeRep(55)" /></td></tr>
+           <tr><td align="right"><span id="nomCoch56">G</span></td><td align="left">&nbsp;<span id="numeroCoch56">56</span></td><td><input type="checkbox" id="cochNote56" onChange="javaScript:actuListeRep(56)" /></td></tr>
+           <tr><td align="right"><span id="nomCoch57">G<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch57">57</span></td><td><input type="checkbox" id="cochNote57" onChange="javaScript:actuListeRep(57)" /></td></tr>
+           <tr><td align="right"><span id="nomCoch58">A</span></td><td align="left">&nbsp;<span id="numeroCoch58">58</span></td><td><input type="checkbox" id="cochNote58" onChange="javaScript:actuListeRep(58)" /></td></tr>
+           <tr><td align="right"><span id="nomCoch59">A<sup>#</sup></span></td><td align="left">&nbsp;<span id="numeroCoch59">59</span></td><td><input type="checkbox" id="cochNote59" onChange="javaScript:actuListeRep(59)" /></td></tr>
+           <tr><td align="right"><span id="nomCoch60">B</span></td><td align="left">&nbsp;<span id="numeroCoch60">60</span></td><td><input type="checkbox" id="cochNote60" onChange="javaScript:actuListeRep(60)" /></td></tr>
+           <tr><td align="right"><span id="nomCoch61">C</span></td><td align="left">&nbsp;<span id="numeroCoch61">61</span></td><td><input type="checkbox" id="cochNote61" onChange="javaScript:actuListeRep(61)" /></td></tr>
+           <tr>
+            <th colspan="3">
+             <br />Quickly<br />check<br />
+             <select name="rapidCoch" class="fondSaisie" onChange="javaScript:serieCoche(this.value);">
+              <option value="OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" selected>----------</option>
+              <option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX">C1 - C6</option><!-- C1 - C6 -->
+              <option value="XXXXXXXXXXXXXXXXXXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO">C1 - F2</option><!-- C1 - F2 -->
+              <option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO">C1 - F3</option><!-- C1 - F3 -->
+              <option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOOOOOOOOOOOOOOOOOOOOO">C1 - G3</option><!-- C1 - G3 -->
+              <option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO">C1 - F5</option><!-- C1 - F5 -->
+              <option value="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOO">C1 - G5</option><!-- C1 - G5 -->
+              <option value="OOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO">F1 - F5</option><!-- F1 - F5 -->
+              <option value="OOOOOOOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO">C2 - F5</option><!-- C2 - F5 -->
+              <option value="OOOOOOOOOOOOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO">F2 - F5</option><!-- F2 - F5 -->
+              <option value="OOOOOOOOOOOOOOOOOOOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOO">C3 - F5</option><!-- C3 - F5 -->
+              <option value="XOXOXXOXOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOOOO">S. oct</option><!-- Octave courte -->
+             </select>
+            </th>
+           </tr>
+          </table>
+         </td>
+        </tr>
+       </table> <!-- Fin de la table de la coche des notes. -->
+      </form>
+     </td> <!-- Fin de la cellule de gauche. -->
+
+     <!-- Cellule de droite. -->
+     <td valign="top" align="center">
+      <h2><font color="#008000">General Datas:</font></h2><br />
+
+      <form name="form_02">
+       <!-- Table de la sélection des données générales. -->
+       <table border="5" cellpadding="14" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg" width="75%">
+        <tr>
+         <td>
+          <table border="0" cellpadding="7" cellspacing="0" width="100%">
+           <tr>
+            <td>
+             <table border="0" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+               <td width="1%" nowrap><b>Stop name:</b> &nbsp;</td>
+               <td class="pointsDeSuite">&nbsp;</td>
+               <td align="right" width="1%" nowrap>
+                &nbsp;
+                <input type="text" name="nomjeu" size="25" value="Mixture" onFocus="javaScript:this.select()" onChange="javaScript:changeTitrePleinJeu()" class="fondSaisie" />
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+           <tr>
+            <td>
+             <table border="0" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+               <td width="1%" nowrap><b>Number of ranks:</b> &nbsp;</td>
+               <td class="pointsDeSuite">&nbsp;</td>
+               <td align="right" width="1%" nowrap>
+                &nbsp;
+                <select name="nbRangs" onChange="javaScript:changeAffich(document.form_02.nbReps.value, this.value); changeTitrePleinJeu()" class="fondSaisie">
+                 <option value="1">I </option>
+                 <option value="2">II </option>
+                 <option value="3" selected>III </option>
+                 <option value="4">IV </option>
+                 <option value="5">V </option>
+                 <option value="6">VI </option>
+                 <option value="7">VII </option>
+                 <option value="8">VIII </option>
+                 <option value="9">IX </option>
+                 <option value="10">X </option>
+                 <option value="11">XI </option>
+                 <option value="12">XII </option>
+                 <option value="13">XIII </option>
+                 <option value="14">XIV </option>
+                 <option value="15">XV </option>
+                 <option value="16">XVI </option>
+                </select>
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+           <tr>
+            <td>
+             <table border="0" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+               <td width="1%" nowrap><b>Number of repetitions:</b> &nbsp;</td>
+               <td class="pointsDeSuite">&nbsp;</td>
+               <td align="right" width="1%" nowrap>
+                &nbsp;
+                <select name="nbReps" onChange="javaScript:changeAffich(this.value, document.form_02.nbRangs.value)" class="fondSaisie">
+                 <option value="1">1 </option>
+                 <option value="2">2 </option>
+                 <option value="3">3 </option>
+                 <option value="4" selected>4 </option>
+                 <option value="5">5 </option>
+                 <option value="6">6 </option>
+                 <option value="7">7 </option>
+                 <option value="8">8 </option>
+                 <option value="9">9 </option>
+                 <option value="10">10 </option>
+                 <option value="11">11 </option>
+                 <option value="12">12 </option>
+                 <option value="13">13 </option>
+                 <option value="14">14 </option>
+                 <option value="15">15 </option>
+                 <option value="16">16 </option>
+                </select>
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+           <tr>
+            <td>
+             <table border="0" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+               <td width="1%" nowrap><b>Notes notation:</b> &nbsp;</td>
+               <td class="pointsDeSuite">&nbsp;</td>
+               <td align="right" width="1%" nowrap>
+                &nbsp;
+                <select name="notNot" class="fondSaisie" onChange="javaScript:verifNotAllemande(); renommeCoch(this.value); actuListeRep(0);">
+                <option value="1" selected>Anglo-Saxon</option>
+                <option value="2">German 1</option>
+                <option value="3">German 2</option>
+                <option value="4">German 3</option>
+                <option value="5">Latin 1</option>
+                <option value="6">Latin 2</option>
+                <option value="7">Dom Bedos</option>
+                </select>
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+           <tr>
+            <td>
+             <table border="0" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+               <td width="1%" nowrap><b>Octaves notation:</b> &nbsp;</td>
+               <td class="pointsDeSuite">&nbsp;</td>
+               <td align="right" width="1%" nowrap>
+                &nbsp;
+                <select name="notOct" class="fondSaisie" onChange="javaScript:verifNotAllemande(); renommeCoch(document.form_02.notNot.value); actuListeRep(0);">
+                 <option value="1" selected>Digital</option>
+                 <option value="2">German</option>
+                </select>
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+           <tr>
+            <td>
+             <table border="0" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+               <td width="1%" nowrap><b>Graphic image:</b> &nbsp;</td>
+               <td class="pointsDeSuite">&nbsp;</td>
+               <td align="right" width="1%" nowrap>
+                &nbsp;
+                Width:
+                <input type="text" name="l_img" size="4" maxlength="3" onKeyPress="return scanTouche(event);" value="450" onFocus="javaScript:this.select(); memo=this.value;" onBlur="javaScript:controle(this, 1, memo);" class="fondSaisie" /> -
+                Height:
+                <input type="text" name="h_img" size="4" maxlength="3" onKeyPress="return scanTouche(event);" value="278" onFocus="javaScript:this.select(); memo=this.value;" onBlur="javaScript:controle(this, 2, memo);" class="fondSaisie" />
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+          </table>
+         </td>
+        </tr>
+       </table> <!-- Fin de la table de la sélection des données générales. -->
+      </form>
+
+      <br /><br /><h2><font color="#008000">Composition:</font></h2><br />
+
+      <form name="form_03">
+       <!-- Table de la sélection des reprises. -->
+       <table border="5" cellpadding="15" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg">
+        <tr>
+         <caption align="top"><font size="+1"><b><span id="titrePleinJeu">Mixture III</span></b></font></caption>
+         <td>
+          <table border="0" cellpadding="0" cellspacing="0">
+           <tr><th colspan="3" align="left">Breaks:</th></tr>
+           <tr>
+            <td valign="top" rowspan="2">
+             <select id="listeRep" onChange="javaScript:re2(cellActive)" onBlur="javaScript:memoCell(cellActive)" class="fondsaisie">
+               <option value="2">C#1</option>
+               <option value="3">D1</option>
+               <option value="4">D#1</option>
+               <option value="5">E1</option>
+               <option value="6">F1</option>
+               <option value="7">F#1</option>
+               <option value="8">G1</option>
+               <option value="9">G#1</option>
+               <option value="10">A1</option>
+               <option value="11">A#1</option>
+               <option value="12">B1</option>
+               <option value="13" selected>C2</option>
+               <option value="14">C#2</option>
+               <option value="15">D2</option>
+               <option value="16">D#2</option>
+               <option value="17">E2</option>
+               <option value="18">F2</option>
+               <option value="19">F#2</option>
+               <option value="20">G2</option>
+               <option value="21">G#2</option>
+               <option value="22">A2</option>
+               <option value="23">A#2</option>
+               <option value="24">B2</option>
+               <option value="25">C3</option>
+               <option value="26">C#3</option>
+               <option value="27">D3</option>
+               <option value="28">D#3</option>
+               <option value="29">E3</option>
+               <option value="30">F3</option>
+               <option value="31">F#3</option>
+               <option value="32">G3</option>
+               <option value="33">G#3</option>
+               <option value="34">A3</option>
+               <option value="35">A#3</option>
+               <option value="36">B3</option>
+               <option value="37">C4</option>
+               <option value="38">C#4</option>
+               <option value="39">D4</option>
+               <option value="40">D#4</option>
+               <option value="41">E4</option>
+               <option value="42">F4</option>
+               <option value="43">F#4</option>
+               <option value="44">G4</option>
+               <option value="45">G#4</option>
+               <option value="46">A4</option>
+               <option value="47">A#4</option>
+               <option value="48">B4</option>
+               <option value="49">C5</option>
+               <option value="50">C#5</option>
+               <option value="51">D5</option>
+               <option value="52">D#5</option>
+               <option value="53">E5</option>
+               <option value="54">F5</option>
+             </select>
+            </td>
+            <td rowspan="3" width="10">&nbsp;</td>
+            <td>
+             <table border="0">
+              <tr>
+               <td id="cellTdRep_1" class="affiCell"><input type="text" id="cellInputRep_1" readOnly="1" value="C1" size="4" class="fondSaisieDisabled" /></td>
+               <td id="cellTdNot_2" class="affiCell"><input type="text" value=" - " id="cellInputRep_2" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_3" class="affiCell"><input type="text" value=" - " id="cellInputRep_3" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_4" class="affiCell"><input type="text" value=" - " id="cellInputRep_4" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_5" class="disparait"><input type="text" value=" - " id="cellInputRep_5" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_6" class="disparait"><input type="text" value=" - " id="cellInputRep_6" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_7" class="disparait"><input type="text" value=" - " id="cellInputRep_7" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_8" class="disparait"><input type="text" value=" - " id="cellInputRep_8" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_9" class="disparait"><input type="text" value=" - " id="cellInputRep_9" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_10" class="disparait"><input type="text" value=" - " id="cellInputRep_10" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_11" class="disparait"><input type="text" value=" - " id="cellInputRep_11" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_12" class="disparait"><input type="text" value=" - " id="cellInputRep_12" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_13" class="disparait"><input type="text" value=" - " id="cellInputRep_13" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_14" class="disparait"><input type="text" value=" - " id="cellInputRep_14" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_15" class="disparait"><input type="text" value=" - " id="cellInputRep_15" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdNot_16" class="disparait"><input type="text" value=" - " id="cellInputRep_16" onFocus="a=0; cellActive=this; re1(cellActive)" size="4" class="fondSaisie" /></td>
+               </td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+           <tr><td><hr></td></tr>
+           <tr>
+            <td valign="top">
+             <b>Ranges:</b><br />
+             <select id="listeTessi" onChange="javaScript:te2(cellActive)" onBlur="javaScript:memoCell(cellActive)" class="fondSaisie">
+              <option value="0"> - </option>
+              <option value="1">32'</option>
+              <option value="5">25'3/5</option>
+              <option value="8">21'1/3</option>
+              <option value="13">16'</option>
+              <option value="17">12'4/5</option>
+              <option value="20">10'2/3</option>
+              <option value="25">8'</option>
+              <option value="29">6'2/5</option>
+              <option value="32">5'1/3</option>
+              <option value="37">4'</option>
+              <option value="41">3'1/5</option>
+              <option value="44">2'2/3</option>
+              <option value="49" selected>2'</option>
+              <option value="53">1'3/5</option>
+              <option value="56">1'1/3</option>
+              <option value="61">1'</option>
+              <option value="65">4/5'</option>
+              <option value="68">2/3'</option>
+              <option value="73">1/2'</option>
+              <option value="77">2/5'</option>
+              <option value="80">1/3'</option>
+              <option value="85">1/4'</option>
+              <option value="89">1/5'</option>
+              <option value="92">1/6'</option>
+              <option value="97">1/8'</option>
+              <option value="101">1/10'</option>
+              <option value="104">1/12'</option>
+              <option value="109">1/16'</option>
+              <option value="113">1/20'</option>
+              <option value="116">1/24'</option>
+              <option value="121">1/32'</option>
+             </select>
+
+             <br /><br />
+             <center>
+              <input type="button" value="   Submit   " onClick="javaScript:if (cellActive.id.indexOf('cellInputRep') != -1) {re2(cellActive); } else {te2(cellActive); };" class="bouton" />
+             </center>
+            </td>
+            <td valign="top">
+             <table border="0">
+              <tr id="ligne_1" class="affiLigne">
+               <td id="cellTdTessi_A1" class="affiCell"><input type="text" value=" - " id="cellInputTessi_1" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B1" class="affiCell"><input type="text" value=" - " id="cellInputTessi_2" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C1" class="affiCell"><input type="text" value=" - " id="cellInputTessi_3" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D1" class="affiCell"><input type="text" value=" - " id="cellInputTessi_4" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E1" class="disparait"><input type="text" value=" - " id="cellInputTessi_5" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F1" class="disparait"><input type="text" value=" - " id="cellInputTessi_6" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G1" class="disparait"><input type="text" value=" - " id="cellInputTessi_7" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H1" class="disparait"><input type="text" value=" - " id="cellInputTessi_8" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I1" class="disparait"><input type="text" value=" - " id="cellInputTessi_9" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J1" class="disparait"><input type="text" value=" - " id="cellInputTessi_10" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K1" class="disparait"><input type="text" value=" - " id="cellInputTessi_11" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L1" class="disparait"><input type="text" value=" - " id="cellInputTessi_12" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M1" class="disparait"><input type="text" value=" - " id="cellInputTessi_13" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N1" class="disparait"><input type="text" value=" - " id="cellInputTessi_14" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O1" class="disparait"><input type="text" value=" - " id="cellInputTessi_15" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P1" class="disparait"><input type="text" value=" - " id="cellInputTessi_16" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#000000">&nbsp;</td>
+              </tr>
+              <tr id="ligne_2" class="affiLigne">
+               <td id="cellTdTessi_A2" class="affiCell"><input type="text" value=" - " id="cellInputTessi_17" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B2" class="affiCell"><input type="text" value=" - " id="cellInputTessi_18" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C2" class="affiCell"><input type="text" value=" - " id="cellInputTessi_19" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D2" class="affiCell"><input type="text" value=" - " id="cellInputTessi_20" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E2" class="disparait"><input type="text" value=" - " id="cellInputTessi_21" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F2" class="disparait"><input type="text" value=" - " id="cellInputTessi_22" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G2" class="disparait"><input type="text" value=" - " id="cellInputTessi_23" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H2" class="disparait"><input type="text" value=" - " id="cellInputTessi_24" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I2" class="disparait"><input type="text" value=" - " id="cellInputTessi_25" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J2" class="disparait"><input type="text" value=" - " id="cellInputTessi_26" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K2" class="disparait"><input type="text" value=" - " id="cellInputTessi_27" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L2" class="disparait"><input type="text" value=" - " id="cellInputTessi_28" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M2" class="disparait"><input type="text" value=" - " id="cellInputTessi_29" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N2" class="disparait"><input type="text" value=" - " id="cellInputTessi_30" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O2" class="disparait"><input type="text" value=" - " id="cellInputTessi_31" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P2" class="disparait"><input type="text" value=" - " id="cellInputTessi_32" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ff0000">&nbsp;</td>
+              </tr>
+              <tr id="ligne_3" class="affiLigne">
+               <td id="cellTdTessi_A3" class="affiCell"><input type="text" value=" - " id="cellInputTessi_33" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B3" class="affiCell"><input type="text" value=" - " id="cellInputTessi_34" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C3" class="affiCell"><input type="text" value=" - " id="cellInputTessi_35" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D3" class="affiCell"><input type="text" value=" - " id="cellInputTessi_36" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E3" class="disparait"><input type="text" value=" - " id="cellInputTessi_37" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F3" class="disparait"><input type="text" value=" - " id="cellInputTessi_38" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G3" class="disparait"><input type="text" value=" - " id="cellInputTessi_39" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H3" class="disparait"><input type="text" value=" - " id="cellInputTessi_40" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I3" class="disparait"><input type="text" value=" - " id="cellInputTessi_41" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J3" class="disparait"><input type="text" value=" - " id="cellInputTessi_42" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K3" class="disparait"><input type="text" value=" - " id="cellInputTessi_43" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L3" class="disparait"><input type="text" value=" - " id="cellInputTessi_44" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M3" class="disparait"><input type="text" value=" - " id="cellInputTessi_45" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N3" class="disparait"><input type="text" value=" - " id="cellInputTessi_46" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O3" class="disparait"><input type="text" value=" - " id="cellInputTessi_47" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P3" class="disparait"><input type="text" value=" - " id="cellInputTessi_48" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#008000">&nbsp;</td>
+              </tr>
+              <tr id="ligne_4" class="disparait">
+               <td id="cellTdTessi_A4" class="disparait"><input type="text" value=" - " id="cellInputTessi_49" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B4" class="disparait"><input type="text" value=" - " id="cellInputTessi_50" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C4" class="disparait"><input type="text" value=" - " id="cellInputTessi_51" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D4" class="disparait"><input type="text" value=" - " id="cellInputTessi_52" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E4" class="disparait"><input type="text" value=" - " id="cellInputTessi_53" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F4" class="disparait"><input type="text" value=" - " id="cellInputTessi_54" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G4" class="disparait"><input type="text" value=" - " id="cellInputTessi_55" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H4" class="disparait"><input type="text" value=" - " id="cellInputTessi_56" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I4" class="disparait"><input type="text" value=" - " id="cellInputTessi_57" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J4" class="disparait"><input type="text" value=" - " id="cellInputTessi_58" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K4" class="disparait"><input type="text" value=" - " id="cellInputTessi_59" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L4" class="disparait"><input type="text" value=" - " id="cellInputTessi_60" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M4" class="disparait"><input type="text" value=" - " id="cellInputTessi_61" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N4" class="disparait"><input type="text" value=" - " id="cellInputTessi_62" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O4" class="disparait"><input type="text" value=" - " id="cellInputTessi_63" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P4" class="disparait"><input type="text" value=" - " id="cellInputTessi_64" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#0000ff">&nbsp;</td>
+              </tr>
+              <tr id="ligne_5" class="disparait">
+               <td id="cellTdTessi_A5" class="disparait"><input type="text" value=" - " id="cellInputTessi_65" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B5" class="disparait"><input type="text" value=" - " id="cellInputTessi_66" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C5" class="disparait"><input type="text" value=" - " id="cellInputTessi_67" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D5" class="disparait"><input type="text" value=" - " id="cellInputTessi_68" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E5" class="disparait"><input type="text" value=" - " id="cellInputTessi_69" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F5" class="disparait"><input type="text" value=" - " id="cellInputTessi_70" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G5" class="disparait"><input type="text" value=" - " id="cellInputTessi_71" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H5" class="disparait"><input type="text" value=" - " id="cellInputTessi_72" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I5" class="disparait"><input type="text" value=" - " id="cellInputTessi_73" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J5" class="disparait"><input type="text" value=" - " id="cellInputTessi_74" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K5" class="disparait"><input type="text" value=" - " id="cellInputTessi_75" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L5" class="disparait"><input type="text" value=" - " id="cellInputTessi_76" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M5" class="disparait"><input type="text" value=" - " id="cellInputTessi_77" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N5" class="disparait"><input type="text" value=" - " id="cellInputTessi_78" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O5" class="disparait"><input type="text" value=" - " id="cellInputTessi_79" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P5" class="disparait"><input type="text" value=" - " id="cellInputTessi_80" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ff00ff">&nbsp;</td>
+              </tr>
+              <tr id="ligne_6" class="disparait">
+               <td id="cellTdTessi_A6" class="disparait"><input type="text" value=" - " id="cellInputTessi_81" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B6" class="disparait"><input type="text" value=" - " id="cellInputTessi_82" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C6" class="disparait"><input type="text" value=" - " id="cellInputTessi_83" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D6" class="disparait"><input type="text" value=" - " id="cellInputTessi_84" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E6" class="disparait"><input type="text" value=" - " id="cellInputTessi_85" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F6" class="disparait"><input type="text" value=" - " id="cellInputTessi_86" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G6" class="disparait"><input type="text" value=" - " id="cellInputTessi_87" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H6" class="disparait"><input type="text" value=" - " id="cellInputTessi_88" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I6" class="disparait"><input type="text" value=" - " id="cellInputTessi_89" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J6" class="disparait"><input type="text" value=" - " id="cellInputTessi_90" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K6" class="disparait"><input type="text" value=" - " id="cellInputTessi_91" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L6" class="disparait"><input type="text" value=" - " id="cellInputTessi_92" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M6" class="disparait"><input type="text" value=" - " id="cellInputTessi_93" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N6" class="disparait"><input type="text" value=" - " id="cellInputTessi_94" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O6" class="disparait"><input type="text" value=" - " id="cellInputTessi_95" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P6" class="disparait"><input type="text" value=" - " id="cellInputTessi_96" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ffaa00">&nbsp;</td>
+              </tr>
+              <tr id="ligne_7" class="disparait">
+               <td id="cellTdTessi_A7" class="disparait"><input type="text" value=" - " id="cellInputTessi_97" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B7" class="disparait"><input type="text" value=" - " id="cellInputTessi_98" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C7" class="disparait"><input type="text" value=" - " id="cellInputTessi_99" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D7" class="disparait"><input type="text" value=" - " id="cellInputTessi_100" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E7" class="disparait"><input type="text" value=" - " id="cellInputTessi_101" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F7" class="disparait"><input type="text" value=" - " id="cellInputTessi_102" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G7" class="disparait"><input type="text" value=" - " id="cellInputTessi_103" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H7" class="disparait"><input type="text" value=" - " id="cellInputTessi_104" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I7" class="disparait"><input type="text" value=" - " id="cellInputTessi_105" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J7" class="disparait"><input type="text" value=" - " id="cellInputTessi_106" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K7" class="disparait"><input type="text" value=" - " id="cellInputTessi_107" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L7" class="disparait"><input type="text" value=" - " id="cellInputTessi_108" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M7" class="disparait"><input type="text" value=" - " id="cellInputTessi_109" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N7" class="disparait"><input type="text" value=" - " id="cellInputTessi_110" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O7" class="disparait"><input type="text" value=" - " id="cellInputTessi_111" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P7" class="disparait"><input type="text" value=" - " id="cellInputTessi_112" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#00ffff">&nbsp;</td>
+              </tr>
+              <tr id="ligne_8" class="disparait">
+               <td id="cellTdTessi_A8" class="disparait"><input type="text" value=" - " id="cellInputTessi_113" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B8" class="disparait"><input type="text" value=" - " id="cellInputTessi_114" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C8" class="disparait"><input type="text" value=" - " id="cellInputTessi_115" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D8" class="disparait"><input type="text" value=" - " id="cellInputTessi_116" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E8" class="disparait"><input type="text" value=" - " id="cellInputTessi_117" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F8" class="disparait"><input type="text" value=" - " id="cellInputTessi_118" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G8" class="disparait"><input type="text" value=" - " id="cellInputTessi_119" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H8" class="disparait"><input type="text" value=" - " id="cellInputTessi_120" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I8" class="disparait"><input type="text" value=" - " id="cellInputTessi_121" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J8" class="disparait"><input type="text" value=" - " id="cellInputTessi_122" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K8" class="disparait"><input type="text" value=" - " id="cellInputTessi_123" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L8" class="disparait"><input type="text" value=" - " id="cellInputTessi_124" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M8" class="disparait"><input type="text" value=" - " id="cellInputTessi_125" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N8" class="disparait"><input type="text" value=" - " id="cellInputTessi_126" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O8" class="disparait"><input type="text" value=" - " id="cellInputTessi_127" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P8" class="disparait"><input type="text" value=" - " id="cellInputTessi_128" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ffa0a0">&nbsp;</td>
+              </tr>
+              <tr id="ligne_9" class="disparait">
+               <td id="cellTdTessi_A9" class="disparait"><input type="text" value=" - " id="cellInputTessi_129" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B9" class="disparait"><input type="text" value=" - " id="cellInputTessi_130" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C9" class="disparait"><input type="text" value=" - " id="cellInputTessi_131" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D9" class="disparait"><input type="text" value=" - " id="cellInputTessi_132" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E9" class="disparait"><input type="text" value=" - " id="cellInputTessi_133" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F9" class="disparait"><input type="text" value=" - " id="cellInputTessi_134" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G9" class="disparait"><input type="text" value=" - " id="cellInputTessi_135" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H9" class="disparait"><input type="text" value=" - " id="cellInputTessi_136" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I9" class="disparait"><input type="text" value=" - " id="cellInputTessi_137" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J9" class="disparait"><input type="text" value=" - " id="cellInputTessi_138" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K9" class="disparait"><input type="text" value=" - " id="cellInputTessi_139" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L9" class="disparait"><input type="text" value=" - " id="cellInputTessi_140" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M9" class="disparait"><input type="text" value=" - " id="cellInputTessi_141" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N9" class="disparait"><input type="text" value=" - " id="cellInputTessi_142" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O9" class="disparait"><input type="text" value=" - " id="cellInputTessi_143" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P9" class="disparait"><input type="text" value=" - " id="cellInputTessi_144" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#909090">&nbsp;</td>
+              </tr>
+              <tr id="ligne_10" class="disparait">
+               <td id="cellTdTessi_A10" class="disparait"><input type="text" value=" - " id="cellInputTessi_145" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B10" class="disparait"><input type="text" value=" - " id="cellInputTessi_146" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C10" class="disparait"><input type="text" value=" - " id="cellInputTessi_147" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D10" class="disparait"><input type="text" value=" - " id="cellInputTessi_148" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E10" class="disparait"><input type="text" value=" - " id="cellInputTessi_149" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F10" class="disparait"><input type="text" value=" - " id="cellInputTessi_150" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G10" class="disparait"><input type="text" value=" - " id="cellInputTessi_151" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H10" class="disparait"><input type="text" value=" - " id="cellInputTessi_152" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I10" class="disparait"><input type="text" value=" - " id="cellInputTessi_153" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J10" class="disparait"><input type="text" value=" - " id="cellInputTessi_154" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K10" class="disparait"><input type="text" value=" - " id="cellInputTessi_155" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L10" class="disparait"><input type="text" value=" - " id="cellInputTessi_156" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M10" class="disparait"><input type="text" value=" - " id="cellInputTessi_157" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N10" class="disparait"><input type="text" value=" - " id="cellInputTessi_158" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O10" class="disparait"><input type="text" value=" - " id="cellInputTessi_159" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P10" class="disparait"><input type="text" value=" - " id="cellInputTessi_160" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#800000">&nbsp;</td>
+              </tr>
+              <tr id="ligne_11" class="disparait">
+               <td id="cellTdTessi_A11" class="disparait"><input type="text" value=" - " id="cellInputTessi_161" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B11" class="disparait"><input type="text" value=" - " id="cellInputTessi_162" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C11" class="disparait"><input type="text" value=" - " id="cellInputTessi_163" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D11" class="disparait"><input type="text" value=" - " id="cellInputTessi_164" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E11" class="disparait"><input type="text" value=" - " id="cellInputTessi_165" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F11" class="disparait"><input type="text" value=" - " id="cellInputTessi_166" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G11" class="disparait"><input type="text" value=" - " id="cellInputTessi_167" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H11" class="disparait"><input type="text" value=" - " id="cellInputTessi_168" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I11" class="disparait"><input type="text" value=" - " id="cellInputTessi_169" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J11" class="disparait"><input type="text" value=" - " id="cellInputTessi_170" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K11" class="disparait"><input type="text" value=" - " id="cellInputTessi_171" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L11" class="disparait"><input type="text" value=" - " id="cellInputTessi_172" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M11" class="disparait"><input type="text" value=" - " id="cellInputTessi_173" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N11" class="disparait"><input type="text" value=" - " id="cellInputTessi_174" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O11" class="disparait"><input type="text" value=" - " id="cellInputTessi_175" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P11" class="disparait"><input type="text" value=" - " id="cellInputTessi_176" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ff00ff">&nbsp;</td>
+              </tr>
+              <tr id="ligne_12" class="disparait">
+               <td id="cellTdTessi_A12" class="disparait"><input type="text" value=" - " id="cellInputTessi_177" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B12" class="disparait"><input type="text" value=" - " id="cellInputTessi_178" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C12" class="disparait"><input type="text" value=" - " id="cellInputTessi_179" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D12" class="disparait"><input type="text" value=" - " id="cellInputTessi_180" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E12" class="disparait"><input type="text" value=" - " id="cellInputTessi_181" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F12" class="disparait"><input type="text" value=" - " id="cellInputTessi_182" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G12" class="disparait"><input type="text" value=" - " id="cellInputTessi_183" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H12" class="disparait"><input type="text" value=" - " id="cellInputTessi_184" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I12" class="disparait"><input type="text" value=" - " id="cellInputTessi_185" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J12" class="disparait"><input type="text" value=" - " id="cellInputTessi_186" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K12" class="disparait"><input type="text" value=" - " id="cellInputTessi_187" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L12" class="disparait"><input type="text" value=" - " id="cellInputTessi_188" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M12" class="disparait"><input type="text" value=" - " id="cellInputTessi_189" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N12" class="disparait"><input type="text" value=" - " id="cellInputTessi_190" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O12" class="disparait"><input type="text" value=" - " id="cellInputTessi_191" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P12" class="disparait"><input type="text" value=" - " id="cellInputTessi_192" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ffaa00">&nbsp;</td>
+              </tr>
+              <tr id="ligne_13" class="disparait">
+               <td id="cellTdTessi_A13" class="disparait"><input type="text" value=" - " id="cellInputTessi_193" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B13" class="disparait"><input type="text" value=" - " id="cellInputTessi_194" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C13" class="disparait"><input type="text" value=" - " id="cellInputTessi_195" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D13" class="disparait"><input type="text" value=" - " id="cellInputTessi_196" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E13" class="disparait"><input type="text" value=" - " id="cellInputTessi_197" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F13" class="disparait"><input type="text" value=" - " id="cellInputTessi_198" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G13" class="disparait"><input type="text" value=" - " id="cellInputTessi_199" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H13" class="disparait"><input type="text" value=" - " id="cellInputTessi_200" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I13" class="disparait"><input type="text" value=" - " id="cellInputTessi_201" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J13" class="disparait"><input type="text" value=" - " id="cellInputTessi_202" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K13" class="disparait"><input type="text" value=" - " id="cellInputTessi_203" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L13" class="disparait"><input type="text" value=" - " id="cellInputTessi_204" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M13" class="disparait"><input type="text" value=" - " id="cellInputTessi_205" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N13" class="disparait"><input type="text" value=" - " id="cellInputTessi_206" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O13" class="disparait"><input type="text" value=" - " id="cellInputTessi_207" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P13" class="disparait"><input type="text" value=" - " id="cellInputTessi_208" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#00ff00">&nbsp;</td>
+              </tr>
+              <tr id="ligne_14" class="disparait">
+               <td id="cellTdTessi_A14" class="disparait"><input type="text" value=" - " id="cellInputTessi_209" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B14" class="disparait"><input type="text" value=" - " id="cellInputTessi_210" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C14" class="disparait"><input type="text" value=" - " id="cellInputTessi_211" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D14" class="disparait"><input type="text" value=" - " id="cellInputTessi_212" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E14" class="disparait"><input type="text" value=" - " id="cellInputTessi_213" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F14" class="disparait"><input type="text" value=" - " id="cellInputTessi_214" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G14" class="disparait"><input type="text" value=" - " id="cellInputTessi_215" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H14" class="disparait"><input type="text" value=" - " id="cellInputTessi_216" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I14" class="disparait"><input type="text" value=" - " id="cellInputTessi_217" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J14" class="disparait"><input type="text" value=" - " id="cellInputTessi_218" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K14" class="disparait"><input type="text" value=" - " id="cellInputTessi_219" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L14" class="disparait"><input type="text" value=" - " id="cellInputTessi_220" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M14" class="disparait"><input type="text" value=" - " id="cellInputTessi_221" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N14" class="disparait"><input type="text" value=" - " id="cellInputTessi_222" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O14" class="disparait"><input type="text" value=" - " id="cellInputTessi_223" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P14" class="disparait"><input type="text" value=" - " id="cellInputTessi_224" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#ffa0a0">&nbsp;</td>
+              </tr>
+              <tr id="ligne_15" class="disparait">
+               <td id="cellTdTessi_A15" class="disparait"><input type="text" value=" - " id="cellInputTessi_225" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B15" class="disparait"><input type="text" value=" - " id="cellInputTessi_226" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C15" class="disparait"><input type="text" value=" - " id="cellInputTessi_227" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D15" class="disparait"><input type="text" value=" - " id="cellInputTessi_228" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E15" class="disparait"><input type="text" value=" - " id="cellInputTessi_229" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F15" class="disparait"><input type="text" value=" - " id="cellInputTessi_230" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G15" class="disparait"><input type="text" value=" - " id="cellInputTessi_231" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H15" class="disparait"><input type="text" value=" - " id="cellInputTessi_232" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I15" class="disparait"><input type="text" value=" - " id="cellInputTessi_233" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J15" class="disparait"><input type="text" value=" - " id="cellInputTessi_234" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K15" class="disparait"><input type="text" value=" - " id="cellInputTessi_235" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L15" class="disparait"><input type="text" value=" - " id="cellInputTessi_236" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M15" class="disparait"><input type="text" value=" - " id="cellInputTessi_237" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N15" class="disparait"><input type="text" value=" - " id="cellInputTessi_238" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O15" class="disparait"><input type="text" value=" - " id="cellInputTessi_239" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P15" class="disparait"><input type="text" value=" - " id="cellInputTessi_240" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#909090">&nbsp;</td>
+              </tr>
+              <tr id="ligne_16" class="disparait">
+               <td id="cellTdTessi_A16" class="disparait"><input type="text" value=" - " id="cellInputTessi_241" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_B16" class="disparait"><input type="text" value=" - " id="cellInputTessi_242" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_C16" class="disparait"><input type="text" value=" - " id="cellInputTessi_243" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_D16" class="disparait"><input type="text" value=" - " id="cellInputTessi_244" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_E16" class="disparait"><input type="text" value=" - " id="cellInputTessi_245" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_F16" class="disparait"><input type="text" value=" - " id="cellInputTessi_246" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_G16" class="disparait"><input type="text" value=" - " id="cellInputTessi_247" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_H16" class="disparait"><input type="text" value=" - " id="cellInputTessi_248" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_I16" class="disparait"><input type="text" value=" - " id="cellInputTessi_249" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_J16" class="disparait"><input type="text" value=" - " id="cellInputTessi_250" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_K16" class="disparait"><input type="text" value=" - " id="cellInputTessi_251" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_L16" class="disparait"><input type="text" value=" - " id="cellInputTessi_252" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_M16" class="disparait"><input type="text" value=" - " id="cellInputTessi_253" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_N16" class="disparait"><input type="text" value=" - " id="cellInputTessi_254" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_O16" class="disparait"><input type="text" value=" - " id="cellInputTessi_255" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td id="cellTdTessi_P16" class="disparait"><input type="text" value=" - " id="cellInputTessi_256" onFocus="javaScript:cellActive=this; te1(cellActive)" size="4" class="fondSaisie" /></td>
+               <td background="img/pix.gif" bgcolor="#800000">&nbsp;</td>
+              </tr>
+             </table>
+            </td>
+           </tr>
+          </table>
+         </td>
+        </tr>
+       </table> <!-- Fin de la table de la sélection des reprises -->
+      </form>
+
+      <br /><br /><h2><font color="#008000">Orders and results:</font></h2><br />
+
+      <!-- Table des commandes et résultats -->
+      <table border="5" cellpadding="14" cellspacing="0" bgcolor="#f5e9cf" background="img/ingres.jpg" width="85%">
+       <tr>
+        <td>
+         <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr valign="top">
+           <td align="center" width="48%">
+            <fieldset>
+             <legend title="Organ Definition Language (XML)">O.D.L. input</legend>
+             <form name="form_04" ENCTYPE="multipart/form-data" method="POST" action="http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en">
+              <input type="hidden" name="MAX_FILE_SIZE" value="50000" />
+              <input type="file" name="XMLfichier" size="20" title="Organ Definition Language (XML)" class="fondSaisie" /><br /><br />
+              <input type="button" value=" File input " onClick="javaScript:controle(document.form_04.XMLfichier, 3, '');" title="Organ Definition Language (XML)" class="bouton" />
+             </form>
+            </fieldset>
+           </td>
+           <td width="4%">&nbsp;</td>
+           <td width="48%">
+            <fieldset>
+             <legend>Output</legend>
+             <form name="form_05">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+               <tr valign="top">
+                <td width="25%">
+                 <input type="button" value="    Outflows    " onClick="javaScript:debit()" class="bouton" />
+                </td>
+                <td width="10%">&nbsp;</td>
+                <td nowrap>
+                 <input name="formatSortie" type="radio" value="1" id="html" class="fondSaisie" checked /> &nbsp; &nbsp;
+                 <label for="html" style="cursor:pointer;" title="Hyper Text Markup Language">H.T.M.L.</label><br />
+                 <input name="formatSortie" type="radio" value="2" id="rtf" class="fondSaisie" /> &nbsp; &nbsp;
+                 <label for="rtf" style="cursor:pointer;" title="Rich Text Format">R.T.F.</label><br />
+                 <input name="formatSortie" type="radio" value="3" id="txt" class="fondSaisie" /> &nbsp; &nbsp;
+                 <label for="txt" style="cursor:pointer;" title="TXT">Text only</label><br />
+                 <input name="formatSortie" type="radio" value="4" id="odl" class="fondSaisie" /> &nbsp; &nbsp;
+                 <label for="odl" style="cursor:pointer;" title="Organ Definition Language (XML)">O.D.L.</label>
+                </td>
+               </tr>
+              </table>
+             </form>
+            </fieldset>
+           </td>
+          </tr>
+          <tr>
+           <td colspan="3" align="center">
+            <br />
+            <input type="button" value="    Help    " onClick="javaScript:ouvre('aide');" class="bouton" />
+            &nbsp; &nbsp; &nbsp;
+            <input type="button" value="Initialize" onClick="javaScript:recharge();" class="bouton" /> &nbsp; &nbsp; &nbsp;
+           </td>
+          </tr>
+         </table>
+        </td>
+       </tr>
+      </table> <!-- Fin de la table des commandes et résultats -->
+
+      <br /><br /><br /><br />
+      <table border="0" cellpadding="0" cellspacing="0"  title="S.M.C.J. me direxit"><tr><td><pre><b><font color="#000080">
+    ____  ____  ____  ____   
+   /\   \/\   \/\   \/\   \  
+  /  \___\ \___\ \___\ \___\ 
+  \  / __/_/   / /   / /   / 
+   \/_/\   \__/\/___/\/___/  
+     /  \___\ <a href="src/code.html" target="_blank" style="text-decoration:none" alt="Code source" title="Code source">  </a> /  \___\    
+     \  / __/_<a href="src/code.html" target="_blank" style="text-decoration:none" alt="Code source" title="Code source">  </a>_\  /   /    
+      \/_/\   \/\ \/___/     
+        /  \__/  \___\       
+        \  / _\  /   /       
+         \/_/\ \/___/        
+           /  \___\          
+           \  /   /          
+            \/___/           
+</font></b></pre></td></tr></table>
+
+      <!-- C'est le seul formulaire (très léger) qui est envoyé. -->
+      <form name="form_06" method="post" action="http://hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en" target="_blank">
+       <!-- Contient les cases à cocher de form_01, les données générales de form_02 et le type de sortie de form_05. -->
+       <input type="hidden" name="t1" value="" />
+       <!-- Contient les notes de reprises de form_03. -->
+       <input type="hidden" name="t2" value="AQAAAAAAAAAAAAAAAAAAAA==" />
+       <!-- Contient la composition de form_03. -->       
+       <input type="hidden" name="t3" value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==" />
+      </form>
+     </td> <!-- Fin de la cellule de droite -->
+    </tr>
+   </table>
+
+  </center>
+
+  <br /><br />
+
+ </body>
+
+<!-- Mirrored from hydraule.org/bureau/ordi/pleinjeu/pleinjeu.php?l=en by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:41:27 GMT -->
+</html>
+

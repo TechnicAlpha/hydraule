@@ -1,0 +1,438 @@
+<!--
+  Page HTML composée par S.M.C.J.
+  Reconstitution des cadres : http://hydraule.free.fr/eglise/narthex/idxliens.htm
+  <li><a href=" " target="_blank"> </a> (site de ).</li>
+
+  <li>
+   <a href=" " target="_blank"> </a> (site de ).
+   <a href="javascript:void(0)" onClick="ouvre(' ')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  
+-->
+
+<html>
+
+<!-- Mirrored from hydraule.org/eglise/narthex/liens.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:07:38 GMT -->
+<head>
+ <title>L'Hydraule - Liens sur les autres sites.)</title>
+ <meta name="author" content="S.M.C.J.">
+ <meta name="keywords" content="Hydraule Orgue Orgao Organo Orgel Organ">
+ <meta name="description" content="Documents et informations sur l'orgue a tuyau">
+
+ <script language="JavaScript1.2">
+  <!-- 
+   function ouvre(nom)
+   {
+    var posgauche = 1; var poshaut = 1; var largeur = 300; var hauteur = 300;
+    if (screen.width) {largeur = Math.floor(screen.width / 2); posgauche = Math.floor(screen.width / 50)}
+    if (screen.height) {hauteur = Math.floor(screen.height / 2); poshaut = Math.floor(screen.height  / 50)}
+
+    var para = 'toolbar=0,location=0,directories=0,status=0,menubar=0,resizable=0,scrollbars=1,width=' + largeur + ',height=' + hauteur + ',top=' + poshaut + ',left=' + posgauche
+    var fichier = 'comment/' + nom + '.htm'
+    window.open(fichier, nom, para)
+   }
+
+   //------------------------------------------------------
+   //         Watching Eyes Script (Second edition)
+   //              script by Virtual_Max 
+   // Please, check my site for latest edition of this script
+   //      http://www.geocities.com/siliconvalley/lakes/8620    
+   // This script can be used/modified free without special permission 
+   // until this notice presents unchanged in all copies and derivatives.             
+   // MIE5, NN4, NN6, Firefox compatible
+   //------------------------------------------------------
+
+   var mx = 200; var my = 200; var moving = true;
+
+   var    imw = 89  // eyes bg image width
+   var    imh = 41  // eyes bg image height
+   var   imey = 20  // y coordinate of eyes center
+   var  imex1 = 20  // x coordinate of left eye
+   var  imex2 = 60  // x coordinate of right eye
+
+   var rx; var ry; var eyetimer = null; var eyeballs, lefteye, righteye;
+
+   function getById(id, o)
+   {
+    if (document.getElementById) {return document.getElementById(id); };
+    if (document.all)            {return document.all[id]; };
+    if (o == null)               {o = window.document; };
+    if (o.layers[id])            {return o.layers[id]; };
+    if (o.images[id])            {return o.images[id]; };
+
+    for (var i = 0; i < o.layers.length; i++)
+    {
+     var oo = getById(id, o.layers[i].document); 
+     if (oo != null) {return oo; };
+    };
+    return null;
+   };
+
+   function moveObject(x, y, o)
+   {
+    if (o == null) {return; };
+    if (document.layers)
+    {
+     o.moveTo(x, y);
+    }
+    else
+    {
+     o = o.style;
+     if (document.all) {o.pixelLeft = x; o.pixelTop = y; } else {o.left = x; o.top = y; };
+    };
+   };
+
+   function mymousemoved(ex, ey) {mx = ex; my = ey; };
+
+   function movestart()
+   {
+    if (moving)
+    {
+     rx += (mx - rx - imw / 2)  * 0.1;
+     ry += (my - ry - imh - 20) * 0.1;
+    };
+
+     dy = my - ry - imey;
+    dx1 = mx - rx - imex1;
+    dx2 = mx - rx - imex2;
+    r = Math.sqrt(dx1 * dx1 + dy * dy);
+    if (r < 20) {r = 20; };
+    dx1 = dx1 * 10 / r + rx + 10;
+    dy1 = dy  * 10 / r + ry + 10;
+    r = Math.sqrt(dx2 * dx2 + dy * dy);
+    if (r < 20) {r = 20; };
+    dx2 = dx2 * 10 / r + rx + 50;
+
+    if (eyeballs == null) eyeballs = getById("eyeballs");
+    if  (lefteye == null)  lefteye = getById("lefteye");
+    if (righteye == null) righteye = getById("righteye");
+
+    moveObject(Math.floor(rx),  Math.floor(ry),  eyeballs);
+    moveObject(Math.floor(dx1), Math.floor(dy1), lefteye);
+    moveObject(Math.floor(dx2), Math.floor(dy1), righteye);
+    eyetimer = setTimeout("movestart()", 100);
+   };
+
+   function myhandler(e)
+   {
+    if (e)
+    {
+     ex = e.pageX; 
+     ey = e.pageY;
+     mymousemoved(ex, ey);
+     return routeEvent(e);
+    };
+
+    if (event)
+    {
+     ex = event.clientX + window.document.body.scrollLeft;
+     ey = event.clientY + window.document.body.scrollTop;
+     mymousemoved(ex, ey);
+    };
+    return null;
+   };
+
+   function clearmytimer() {if (eyetimer != null) {clearTimeout(eyetimer); }; };
+
+   function setupeyes(href,eyeballs,eye,xx,yy,follow)
+   {
+    if (xx != null) {mx = xx; };
+    if (yy != null) {my = yy; };
+    if (follow != null) {moving = follow; };
+    rx = mx - 40; ry = my - 60;
+
+    window.onunload = clearmytimer;
+    s  = '<style type=text/css>';
+    s += ' .eyes {position:absolute; top:' + my + '; left:' + (mx + 80) + '; width:1; };';
+    s += '</style>';
+    document.writeln(s);
+
+    s ='<div id="eyeballs" class="eyes">'
+    if (href) s += '<a href="../../index.html">'
+    s += '<img src="' + eyeballs + '" border="0">'
+    if (href) s += '</a>'
+    s += '</div><div id="lefteye"  class="eyes">'
+    if (href) s += '<a href="../../index.html">'
+    s += '<img src="' + eye      + '" border="0">'
+    if (href) s += '</a>'
+    s += '</div><div id="righteye" class="eyes">'
+    if (href) s += '<a href="../../index.html">'
+    s += '<img src="' + eye      + '" border="0">'
+    if (href) s += '</a>'
+    s += '</div>';
+    document.writeln(s);
+
+    if (document.layers)
+    {
+     window.captureEvents(Event.MOUSEMOVE);
+     window.onMouseMove = myhandler;
+     window.onresize = new Function('history.go(0)');
+    }
+    else
+    {
+     document.onmousemove=myhandler;
+    };
+
+    movestart();
+   };
+   // -->
+  </script>
+ </head>
+
+ <body text="#000000" link="#0000ff" vlink="#551a8b" alink="#ff0000" bgcolor="#fff7e7" background="../../images/kraft.gif">
+
+  <table border="0" width="100%">
+   <tr>
+    <td align="center" valign="center">
+     <font color="#ff0000"><h1>Les liens</h1><H2>des sites</h2><h3>traitant de l'orgue</h3><h4>sur la toile</h4></font>
+    </td>
+    <td align="right">
+     <a href="../../index-2.html" target="_top" title="Page d'accueil de l'Hydraule" accesskey="H"><img src="../../images/hydraule.gif" border="0" width="216" height="230" alt="Page d'accueil de l'Hydraule"></a>
+    </td>
+   </tr>
+  </table>
+
+  <blockquote>
+   <img src="lully.png" border="0" align="left" width="180" height="225" alt=""><br><br>
+  
+   <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Voici donc la page de lien de
+   l'<i>Hydraule</i> reconstruite et mise &agrave; jour. Ces liens ne sont &eacute;videmment
+   pas exhaustifs car des sites comme celui de
+   <a href="http://frederic.chapelet.free.fr/" target="_blank">Fr&eacute;d&eacute;ric
+   Chapelet</a> (ou d'autres) font ce travail beaucoup mieux que je ne pourrai le faire. Par
+   contre, vous trouverez ici des liens sur des sites qui m'ont particuli&egrave;rement plu ou
+   dont les administrateurs ont eu la gentillesse de faire r&eacute;f&eacute;rence &agrave;
+   mon travail.</p>
+
+   <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous d&eacute;sirez figurer sur cette
+   liste de liens&nbsp;? <i>No&nbsp;problem</i>, car cette fois, cette page est con&ccedil;ue
+   pour &ecirc;tre mise &agrave; jour en un clin d'&oelig;il (comme la page des
+   <a href="../../bureau/idxfacfr.html" target="_top">adresses des facteurs d'orgues</a> ou des
+   <a href="../../bureau/idxorgfr.html" target="_top">organistes</a>)&nbsp;; comme d'habitude,
+   il vous suffit donc de
+   <a href="mailto:smcj@hydraule.org?subject=Proposition d'un lien. &#xe0; poser sur l'Hydraule">m'&eacute;crire</a>.
+   <p align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous d&eacute;sirez qu'y soit
+   ajout&eacute; un commentaire de mon cru comme c'est d&eacute;j&agrave; le cas pour certains
+   liens que j'aime particuli&egrave;rement&nbsp;? Alors l&agrave;, c'est une autre
+   histoire&nbsp;: les commentaires, c'est mon affaire, pas la v&ocirc;tre&nbsp;; j'en mets
+   si je veux, quand je veux et dans la mesure expresse o&ugrave; la conjonction astrale de
+   Mercure et du Soleil n'est pas en opposition totale avec Saturne (ce qui, contrairement
+   aux apparences, est tr&egrave;s courant...). Donc, pas la peine d'implorer la gr&acirc;ce
+   des Dieux, de me faire une crise de nerf (comme certains m'en ont d&eacute;j&agrave;
+   gratifi&eacute;...), de m'envoyer un tombereau d'e-mails, d'en appeler au pape (qui s'en
+   moque autant sinon plus), je ne r&eacute;pondrai pas &agrave; cette requ&ecirc;te-l&agrave;.
+   L'<i>Hydraule</i> est un lieu d'&eacute;change bas&eacute; sur la gratuit&eacute; du
+   geste&nbsp;; pas un comptoir de l'Internet marchand.</p><br><br>
+  </blockquote>
+
+  <table border="0" width="100%">
+   <tr>
+    <td width="50%">&nbsp;</td>
+    <td>S.M.C.J., Graniers, ce 1<sup>er</sup> janvier 2001.</td>
+   </tr>
+  </table>
+
+  <center><br><br><img src="deco.png" width="179" height="106" border="0" alt="Motif des volets de l'orgue d'Uz&egrave;s"><br><br></center>
+
+  <blockquote>
+   <br><h3 align="center"><font color="#008000">Quelques pages dont on jugera que l'<i>esprit</i> peut se pr&eacute;valoir de ma pr&eacute;f&eacute;rence...</font></h3>
+    <li>
+     <a href="http://frederic.chapelet.free.fr/" target="_blank">L'organaute</a>
+     (Site de Fr&eacute;d&eacute;ric Chapelet).
+     <a href="javascript:void(0)" onClick="ouvre('chapelet')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+    </li>
+    <li>
+     <a href="http://decouverte.orgue.free.fr/" target="_blank">&Agrave; la d&eacute;couverte des orgues d'Alsace</a> (site de d'&Eacute;ric Eisenberg).
+     <a href="javascript:void(0)" onClick="ouvre('eisen')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+    </li>
+    <li>
+     <a href="http://www.enstimac.fr/~schwartz/or/mad.htm" target="_blank">L'orgue de La Madeleine d'Albi</a> (site de Jacques Schwartzentruber).
+     <a href="javascript:void(0)" onClick="ouvre('schwartz')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+    </li>
+    <li> <a href="http://www.orgue-aquitaine.fr/" target="_blank">L'orgue en @quitaine</a> (site de St&eacute;phane Raffaud).</li>
+   </ul>
+
+ <br><h3 align="center"><font color="#008000">Quelques facteurs d'orgues d'ici et d'ailleurs...</font></h3>
+ <ul>
+  <li><a href="http://lplet.org/" target="_blank">Laurent Plet</a>.</li>
+  <li><a href="http://www.muhleisen.fr/" target="_blank">Georges Walther&nbsp;/&nbsp;Entreprise Muhleisen</a>.</li>
+  <li><a href="http://www.tricoteaux.com/" target="_blank">Jean-Marie Tricoteaux</a>.</li>
+  <li><a href="http://orgues-fossaert.com/" target="_blank">Yves Fossaert</a>.</li>
+  <li><a href="http://www.laliberte-payment.com/" target="_blank">Lalibert&eacute;-Payment</a>.</li>
+  <li><a href="http://hausorgel.de/" target="_blank">Von Hausorgeln und ihrem Bau</a> (remarquable site -&nbsp;en allemand&nbsp;- de Thomas et Ulrich Reinhardt et de Hans J&ouml;rg Fr&auml;ulin).</li>
+ </ul>
+
+ <br><h3 align="center"><font color="#008000">Et encore...</font></h3>
+ <ul>
+  <li>
+   <a href="http://infopuq.uquebec.ca/~uss1010/orgues.html" target="_blank">L'orgue dans le monde</a>
+   (Site de Robert Poliquin).
+   <a href="javascript:void(0)" onClick="ouvre('poliquin')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li>
+   <a href="http://pages.videotron.com/acote/" target="_blank">Saguenay, Lac Saint Jean</a>
+   (Site d'Andr&eacute; C&ocirc;t&eacute;).
+   <a href="javascript:void(0)" onClick="ouvre('cote')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li><a href="http://orgue.sorbonne.free.fr/" target="_blank">Sauvegarde de l'Orgue de la Sorbonne</a> (site de Pierre Dubois).</li>
+  <li>L'orgue de l'&eacute;glise <a href="http://orgues.nancy.free.fr/" target="_blank">Saint-S&eacute;bastien de Nancy</a>.</li>
+  <li><a href="http://www.cavaillecolldebecon.com/public/accueil.php?langue=fra" target="_blank">Amis de l'Orgue Cavaille-Coll de Saint-Maurice de B&eacute;con</a></li>
+  <li><a href="http://www.thomasmonnet.com/" target="_blank">Thomas Monnet</a>, organiste.</li>
+  <li><a href="http://perso.orange.fr/organ-au-logis/" target="_blank">Orgues &agrave; nos Logis</a> (site de Didier Guiraud de Willot).</li>
+  <li><a href="http://organi.fr/" target="_blank"><i>Petite</i> collection d'orgues </a> (site de Nicolas Provost).</li>
+  <li>
+   <a href="http://olivier.schmitt.org.free.fr/site_web_moyeuvre" target="_blank">Le grand orgue Bartholom&aelig;i-Bl&eacute;si</a>
+   de l'&eacute;glise Saint-Gorgon de Moyeuvre-Grande (Moselle)
+   (site d'<a href="http://olivier.schmitt.org.free.fr/olivierschmitt.htm" target="_blank">Olivier Schmitt</a>).
+  </li>
+  <li><a href="http://orguesainteucaire.free.fr/" target="_blank">L'orgue de Saint Eucaire de Metz</a> (site de Fr&eacute;d&eacute;ric Mayeur).</li>
+  <li><a href="http://orgues-montpon-menesterol.com/" target="_blank">Orgues  de  Montpon-Menesterol</a> (site de Richard Gross).</li>
+  <li><a href="http://orguesdemartel.chez-alice.fr/" target="_blank">Les Amis des Orgues de Martel</a> (site de Claude R&#xe9;my).</li>
+  <li><a href="http://orguecontz.free.fr/" target="_blank">L'orgue Staudt de Contz-les-Bains</a> (site de Laurent Schmit).</li>
+  <li><a href="http://www.ernancy.org/elements/zicmu/orguency.html" target="_blank">Le grand orgue du temple protestant de Nancy</a> (site de Marc Pernot).</li>
+  <li><a href="http://orgue.stmaurice.free.fr/" target="_blank">Les Amis de l'Orgue de la Basilique Saint-Maurice d'&Eacute;pinal</a>.</li>
+  <li><a href="http://www.orgel-info.de/" target="_blank">Die Orgel</a> - <i>Intonation, Forschung und Erl&auml;uterungen</i> (site en allemand de Reiner Janke).</li>
+  <li><a href="http://orgue.saint.loup.free.fr/" target="_blank">L'orgue Aubertin de Saint-Loup-sur-Thouet</a>.</li>
+  <li><a href="http://membres.lycos.fr/gollgrenoble/" target="_blank">Temple R&eacute;form&eacute; de Grenoble</a>.</li>
+  <li>
+   <a href="http://www.synec-doc.be/musique/trois-claviers/monnaie.htm" target="_blank">Bruxelles, Th&eacute;&acirc;tre de la Monnaie</a> (site de Marc Leuridan).
+   <a href="javascript:void(0)" onClick="ouvre('leuridan')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li>
+   <a href="http://users.swing.be/voce.organo/" target="_blank">Voce et Organo asbl</a> - L'orgue Jacques (site de Pascal Dutry).
+   <a href="javascript:void(0)" onClick="ouvre('voce')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li><a href="http://orguescathares.multimania.com/" target="_blank">Orgue en terre Cathare</a> (site de Philippe Lecoq).</li>
+  <li><a href="http://www.orguefrance.org/" target="_blank">Orgues et Organistes</a> (site de Bruno Desoutter).</li>
+  <li><a href="http://www.organist.com/" target="_blank"><b>G</b>uilde <b>E</b>urop&eacute;enne des <b>O</b>rganistes</a> (site de Marc Adamczewski).</li>
+  <li><a href="http://www.chez.com/oenb/" target="_blank">Orgue en Ba&iuml;gorry</a> (site de Fran&ccedil;oise Clastrier).</li>
+  <li><a href="http://www2.ac-toulouse.fr/lyc-champollion-figeac/orgue/" target="_blank">Orgue passion</a> (site de Brice Orlandini).</li>
+  <li><a href="http://www.musimem.com/" target="_blank">Musica et Memoria</a>.</li>
+  <li>
+   <a href="http://www.orgues-normandie.com/" target="_blank">Les orgues en Haute Normandie</a> (site de Beno&icirc;t Lecoq).
+   <a href="javascript:void(0)" onClick="ouvre('lecoq')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <!-- <li><a href="http://perso.normandnet.fr/delforge/" target="_blank">Les orgues de Saint Cl&eacute;ment et de Saint Maclou de Rouen</a> (site de Bruno Delforge).</li> -->
+  <li>
+   <a href="http://www.claudenadeau.net/" target="_blank">Claude Nadeau</a>, claveciniste.
+   <a href="javascript:void(0)" onClick="ouvre('nadeau')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li><a href="http://alb.thomas.free.fr/orgue/icono/" target="_blank">L'iconographie de l'orgue et du clavecin</a> (site d'Alban Thomas).</li>
+  <li><a href="http://www.multimania.com/orguecallinet/" target="_blank">Les Amis de l'Orgue Joseph Callinet de Dannemarie</a>.</li>
+  <li><a href="http://perso.libertysurf.fr/aforgep/" target="_blank"><b>A</b>ssociation pour la <b>F</b>ormation des <b>Org</b>anistes des <b>&Eacute;</b>glises <b>P</b>rotestantes</a><br>(site de Daniel Leininger).</li>
+
+  <li>
+   <a href="http://orgue-mouzon.org/" target="_blank">L'orgue de l'&eacute;glise de Mouzon</a> (site de Jean-Philippe G&eacute;lu).
+   <a href="javascript:void(0)" onClick="ouvre('gelu')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li><a href="http://www.omnimedia.it/ito" target="_blank">In Tempore Organi</a>.</li>
+  <li><a href="http://www3.sympatico.ca/mario.coutu/mario.coutu/" target="_blank">Orgues de la cath&eacute;drale Saint-Jean l'&Eacute;vang&eacute;liste - (Saint-Jean-sur-Richelieu)</a><br>(site de Mario Coutu).</li>
+  <li><a href="http://orgue.foug.free.fr/" target="_blank">L'orgue de l'&eacute;glise Saint-&Eacute;tienne de Foug</a>.</li>
+  <li><a href="http://perso.magic.fr/desarbre" target="_blank">L'orgue du Val-de-Gr&acirc;ce</a> (site d'Herv&eacute; D&eacute;sarbre).</li>
+  <li><a href="http://orgue.st.louis.free.fr/" target="_blank">L'orgue Saint Louis de Saint &Eacute;tienne</a> (site de Michel Tr&eacute;moulhac).</li>
+  <li>
+   <a href="http://perso.wanadoo.fr/langlais" target="_blank">Jean Langlais</a>.
+   <a href="javascript:void(0)" onClick="ouvre('langlais')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li>
+   L'orgue de <a href="http://www.multimania.com/frdenis/" target="_blank">Notre Dame de la Croix</a> (Paris&nbsp;; site de Fr&eacute;d&eacute;ric Denis).
+   <a href="javascript:void(0)" onClick="ouvre('denis')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li>
+   <a href="http://nelly.johnson.free.fr/" target="_blank">Un temps libre pour l'art</a> -
+   <a href="http://nelly.johnson.free.fr/Page10.html" target="_blank">La petite histoire de l'orgue</a> (site de Nelly Jonhson).
+  </li>
+  <li><a href="http://www.geocities.com/saorgans/" target="_blank">South African Organs</a> (site de David Smit).</li>
+  <li>
+   <a href="http://users.swing.be/Jean-Marc.Steux/" target="_blank">Embourg et Mehagne</a> (site de Jean-Marc Steux).
+   <a href="javascript:void(0)" onClick="ouvre('steux')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li><a href="http://www.leludion.com/" target="_blank">Le Ludion</a> (site de Philippe Crasse).</li>
+  <li><a href="http://www.orgues-et-vitraux.ch/" target="_blank">Orgues &amp; vitraux</a> (site de Charles-Andr&eacute; Schleppy).</li>
+  <li>
+   <a href="http://www.multimania.com/cbrass/" target="_blank">Mes instruments pour
+   jouer les musiques du Moyen &Acirc;ge</a> (site de Claude Brassy).
+   <a href="javascript:void(0)" onClick="ouvre('brassy')"><img src="oeil.gif" border="0" width="16" height="16" alt="Quel talent !"></a>
+  </li>
+  <li><a href="http://musicologie.free.fr/" target="_blank">R&eacute;f&eacute;rences en Musicologie</a> (site de Jean-Marc Warszawski).</li>
+  <li><a href="http://www.sfm.culture.fr/" target="_blank">Soci&eacute;t&eacute; fran&ccedil;aise de musicologie</a>.</li>
+  <li><a href="http://www.hetorgel.nl/" target="_blank">Het Orgel</a>.</li>
+
+  <li><a href="http://www.steendam.com/" target="_blank">Orgelbouwers met Passie</a>.</li>
+  <li><a href="http://kerkorgel.pagina.nl/" target="_blank">Kerkorgel Pagina</a>.</li>
+
+  <li><a href="http://site.voila.fr/improvisations/" target="_blank">Improvisations</a>
+  (site de B&eacute;atrice Piertot).</li>
+  <li><a href="http://site.voila.fr/stephanecatalanotti/index.htm" target="_blank">St&eacute;phane Catalanotti</a>, organiste.</li>
+  <li>
+   <a href="http://www.musica-stnazaire.com/dossiers/moreau.htm" target="_blank">F&eacute;lix Moreau</a>,
+   Titulaire du Grand-Orgue de la Cath&eacute;drale de Nantes (site de Fran&ccedil;oise
+   et Christiane).
+  </li>
+  <li><a href="http://orgue.free.fr/" target="_blank">L'Orgue</a> (site d'Yves Masson).</li>
+  <li><a href="http://ndlourdes.free.fr/orgue/" target="_blank">L'Association des Amis de l'Orgue de Notre-Dame-de-Lourdes de Nancy</a> (site d'Yves Masson).</li>
+  <li><a href="http://www.amorce.org/" target="_blank">AMORCE</a> - (site des Amis de l'Orgue de la Cath&eacute;drale d'&Eacute;vreux).</li>
+  <li>L'orgue de <a href="http://www.chaillotgrandesorgues.com/" target="_blank">Saint Pierre de Chaillot</a> (Paris&nbsp;; site de l'Association <i>Chaillot Grandes Orgues</i>).</li>
+  <li><a href="http://perso.club-internet.fr/yveslaot/" target="_blank">Conna&icirc;tre l'orgue</a> (pages d'Yves Laot inclues dans le pr&eacute;c&eacute;dent).</li>
+  <li><a href="http://poumarat.free.fr/" target="_blank">Un orgue coffre en P&eacute;rigord</a> (site de Laurent-Igor Poumarat).</li>
+  <li><a href="http://perso.libertysurf.fr/montbrisorgue/" target="_blank">Les Amis des orgues de Montbrison</a> (site de Denis Marconnet).</li>
+  <li>
+   <a href="http://snpamc.org/" target="_blank"><b>S</b>yndicat <b>N</b>ational
+   <b>P</b>rofessionnel des <b>A</b>rtistes <b>M</b>usiciens des <b>C</b>ultes</a>.
+  </li>
+  <li><a href="http://www.beaugency-orgues.com/" target="_blank">Les Amis des Orgues de Beaugency</a>.</li>
+  <li><a href="http://perso.wanadoo.fr/ars.organi/" target="_blank">Ars Organi</a>
+  &laquo;&nbsp;<i>Les amis de l'orgue de Saint-Dagobert de Longwy-Haut</i>&nbsp;&raquo; (site de Jean-Louis Girard).</li>
+  <li><a href="http://aosg.free.fr/" target="_blank">Association des Amis de l&#x92;Orgue de Saint-G&eacute;nitour</a>.</li>
+  <li><a href="http://perso.wanadoo.fr/orgueetmusiques/" target="_blank">Association Orgue et Musiques</a>.</li>
+  <li><a href="http://perso.wanadoo.fr/yves.harrand/" target="_blank">Amour, D&#xe9;lices &amp; Orgues</a> (site d'Yves Harrand).</li>
+  <li><a href="http://www.dominicains.be/Bruxelles/index.html" target="_blank">L'&eacute;glise des fr&egrave;res Dominicains de Notre-Dame du Rosaire</a> (site de Mark Butaye)
+  Sous la rubrique <a href="http://www.dominicains.be/Bruxelles/frans/kerk.htm" target="_blank"><i>&Eacute;glise</i></a>, on peut trouver un chapitre consacr&eacute; &agrave; l'orgue <i>Van Bever</i>, ses organistes, sa description et ses m&eacute;ditations.</li>
+  <li><a href="http://michele-gabriel.chez-alice.fr/" target="_blank">L'art du temps libre</a>, le Site aux Mille Surprises. (site de Mich&egrave;le Gabriel).</li>
+  <li><a href="http://www.jeuxdorgues.com/" target="_blank">Jeux d'orgues</a> (site de Joseph Basquin).</li>
+  <li><a href="http://cavaillecolldebecon.com/" target="_blank">L'orgue Cavaill&eacute;-Coll de B&eacute;con-les-Bruy&egrave;res</a> (site de Thomas Monnet).</li>
+  <li><a href="http://www.ffao.com/vierzon" target="_blank">Association &laquo;&nbsp;<i>Renaissance des Orgues de Vierzon</i>&nbsp;&raquo;</a>.</li>
+  <li><a href="http://orgue.coignieres.free.fr/" target="_blank">Les amis de l'orgue de Coigni&egrave;res</a> (site de Jean-Yves Espi&eacute;).</li>
+  <li><a href="http://www.organisula.com/" target="_blank">Organ' Isula</a> (inventaire des orgues de Corse).</li>
+  <li><a href="http://www.orgue-vichy-st-louis.com/" target="_blank">L'orgue Aubertin de l'&eacute;glise Saint-Louis de Vichy</a> (site de Jean Convert).</li>
+  <li><a href="http://gpfo.freefr/" target="_blank">Groupement Professionnel des Facteurs d'Orgues</a> (G.P.F.O.)</li>
+  <li><a href="http://amisorgue.bba.free.fr/" target="_blank">Association des amis de l'orgue de Bouc Bel Air</a> (site de Claude Mousseigne).</li>
+  <li>Les amis de l'orgue de l'&eacute;glise <a href="http://monsite.wanadoo.fr/orgue.st.francois/" target="_blank">Saint Francois de Sales d'Annecy</a> (site de Robert Scotton).</li>
+  <li><a href="http://www.orguedefrejus.fr/" target="_blank">Le grand orgue de la cath&eacute;drale de Fr&eacute;jus</a> (site de Patrice Caron).</li>
+  <li><a href="http://www.orgue-de-salon.com/" target="_blank">L'orgue de salon</a> (site de John Belinguier).</li>
+ </ul>
+
+ <br><h3 align="center"><font color="#008000">Les orgues de ma r&eacute;gion d'origine</font></h3>
+ <ul>
+  <li><a href="http://www.orgue-stpaul-nimes.org/" target="_blank">Orgue de Saint Paul de N&icirc;mes</a> (site de Pierre Viguier).</li>
+  <li>Les <a href="http://www.orgues-agde.com/" target="_blank">Amis des Orgues d'Agde</a>.</li>
+  <li><a href="http://nddusuc.free.fr/Francais/Ganges/orgue.htm" target="_blank">Ganges</a>.</li>
+  <li><a href="http://www.orgue-anduze.org/" target="_blank">Anduze</a>.</li>
+ </ul>
+
+ <br><h3 align="center"><font color="#008000">Orgues de barbarie.</font></h3>
+ <ul>
+  <li><a href="http://www.crevecoeur.org/" target="_blank"><i>Crevec&oelig;ur</i>, orgue de barbariste</a> (site de Patrice Giraud dit <i>Crevec&oelig;ur</i>).</li>
+  <li><a href="http://aaimm.org/" target="_blank">Association des Amis des Instruments et de la Musique M&eacute;canique</a> (AAIMM).</li>
+ </ul>
+
+ <br><h3 align="center"><font color="#008000">Divers</font></h3>
+ <ul>
+  <li>
+   <a href="http://temples.free.fr/" target="_blank">Les temples protestants de France</a>
+   (site de <a href="http://huguenots-france.org/association/" target="_blank">l'association Huguenots de France</a>).
+  </li>
+  <li><a href="http://www.resmusica.com/" target="_blank">Quotidien de la musique classique</a>.</li>
+  <li><a href="http://aripa.free.fr/" target="_blank">Association pour le Respect et l'Int&eacute;grit&eacute; du Patrimoine Artistique</a>.</li>
+  <li><a href="http://www.french-horn.be/" target="_blank">french-horn.be</a>, le site des cornistes belges (site de Claudine Novikow).</li>
+  <li><a href="http://carnyx88.free.fr/pages/accueilpag.html" target="_blank">Carnyx</a>, association pour la promotion du cor.</li>
+  <li><a href="http://metierartgascogne.free.fr/" target="_blank">M&eacute;tiers d'Art en Gascogne</a> - Site des gens les plus sympas du monde.</li>
+ </ul>
+</blockquote>
+
+  <br><br>
+  <script>setupeyes("../../index.html", "yeux.png", "pupille.png"); </script>
+ </body>
+
+<!-- Mirrored from hydraule.org/eglise/narthex/liens.htm by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 02 Jan 2026 17:07:45 GMT -->
+</html>
