@@ -16,14 +16,14 @@
    <h4>Orientez vous vers un domaine d'exploration&nbsp;:</h4>
   </td>
   <td align="right">
-   <a href="../../index-2.html" target="_top" title="Page d'accueil de l'Hydraule" accesskey="H"><img src="../../images/hydraule.gif" border="0" width="216" height="230" alt="Page d'accueil de l'Hydraule"></a>
+   <a href="../index-2.html" target="_top" title="Page d'accueil de l'Hydraule" accesskey="H"><img src="../images/hydraule.gif" border="0" width="216" height="230" alt="Page d'accueil de l'Hydraule"></a>
   </td>
  </tr>
 </table>
 
 <ul>
- <li><a href="pleinjeu/pleinjeu.html" accesskey="P">Calcul et graphiques avec les <b>P</b>leins jeux</a>
-</li>
+ <li><a href="pleinjeu/pleinjeu.html" accesskey="P">Calcul et graphiques avec les<b>P</b>leins jeux</a>
+     (par Pierre C<font size="-1">H&Eacute;RON</font>).</li>
 </ul>
 
 </body>
